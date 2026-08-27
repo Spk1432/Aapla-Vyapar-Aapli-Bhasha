@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aapla Vyapar, Aapli Bhasha - आपला व्यापार, आपली भाषा</title>
+  <meta name="description" content="Local-Language Digital Literacy, AI Translation, Voice Assistant and Learning Platform for Rural Entrepreneurs.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Client-side Document Extraction & PDF Libraries -->
+  <!-- 1. jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- 2. html2pdf for perfect Unicode/Devanagari PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- 3. PDF.js for reading & extracting text from uploaded PDF files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- 4. Mammoth.js for reading & extracting text from DOCX Word files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<!-- Toast Notification Container -->
+<div id="toast-container"></div>
+
+<!-- ========================================================================= -->
+<!-- 1. AUTH GATE (Login / Signup / Admin Login / Guest Access)                -->
+<!-- ========================================================================= -->
+<div id="auth-gate">
+  <div class="auth-card">
+    <div style="text-align:center; margin-bottom:16px;">
+      <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg,var(--green),var(--green-dark)); display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 10px; color:#fff; box-shadow:0 10px 20px rgba(15,107,61,0.3);">🛍️</div>
+      <h1 data-i18n="authTitle" style="font-size:21px; font-weight:800; font-family:'Poppins',sans-serif; color:var(--ink); line-height:1.3;">आपला व्यापार, आपली भाषा</h1>
+      <p data-i18n="authSubtitle" style="font-size:12.5px; color:var(--muted); margin-top:3px;">सुरू करण्यासाठी लॉगिन करा किंवा नवीन खाते तयार करा</p>
+    </div>
+
+    <!-- UPFRONT PROMINENT LANGUAGE SELECTOR -->
+    <div class="auth-lang-selector-section">
+      <div class="auth-lang-heading" data-i18n="authLangHeading">१. प्रथम तुमची पसंतीची भाषा निवडा:</div>
+      <div class="auth-lang-grid">
+        <div class="auth-lang-card active" id="auth-lang-mr" onclick="selectAuthLanguage('mr')">
+          <div class="lang-flag">🚩</div>
+          <div class="lang-title">मराठी</div>
+          <div class="lang-sub">महाराष्ट्र</div>
+        </div>
+        <div class="auth-lang-card" id="auth-lang-hi" onclick="selectAuthLanguage('hi')">
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-title">हिंदी</div>
+          <div class="lang-sub">राष्ट्रीय</div>
+        </div>
+        <div class="auth-lang-card" id="auth-lang-en" onclick="selectAuthLanguage('en')">
+          <div class="lang-flag">🌐</div>
+          <div class="lang-title">English</div>
+          <div class="lang-sub">Global</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auth Tabs (Unified Single Login + Signup) -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')" data-i18n="tabLogin">लॉगिन करा</div>
+      <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')" data-i18n="tabSignup">नवीन नोंदणी</div>
+    </div>
+
+    <!-- UNIFIED LOGIN FORM (For both Admin & Entrepreneurs) -->
+    <form class="auth-form active" id="form-login" onsubmit="return handleUserAuth(event, 'login')">
+      <div class="field">
+        <label data-i18n="loginIdLabel">नोंदणीकृत ईमेल आयडी (Email Address)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">✉️</span>
+          <input type="email" id="login-identifier" data-i18n-ph="loginIdPlaceholder" placeholder="yourname@gmail.com" required>
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="passLabel">पासवर्ड</label>
+        <div class="input-wrap">
+          <span class="lead-icon">🔒</span>
+          <input type="password" id="login-pass" data-i18n-ph="passPlaceholder" placeholder="पासवर्ड टाका" required>
+          <span class="trail-icon" onclick="togglePassword('login-pass', this)">👁</span>
+        </div>
+        <div style="text-align:right; margin-top:5px;">
+          <a href="javascript:void(0)" onclick="openForgotPasswordModal()" data-i18n="forgotPassLink" style="font-size:12px; color:var(--green-dark); font-weight:700; text-decoration:none;">🔑 पासवर्ड विसरलात का? (Forgot Password?)</a>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; margin-top:6px;" data-i18n="btnLogin">लॉगिन करा</button>
+      
+      <div style="text-align:center; margin-top:14px; font-size:12.5px; color:var(--muted);">
+        <span data-i18n="authNewUserPrompt">नवीन उद्योजक आहात का?</span> <a href="javascript:void(0)" onclick="switchAuthTab('signup')" data-i18n="authRegisterHere" style="color:var(--green); font-weight:700; text-decoration:underline;">येथे नवीन नोंदणी करा</a>
+      </div>
+    </form>
+
+    <!-- SIGNUP FORM (Name, Email, Village, Business, Password) -->
+    <form class="auth-form" id="form-signup" onsubmit="return handleUserAuth(event, 'signup')">
+      <div class="field">
+        <label data-i18n="nameLabel">पूर्ण नाव</label>
+        <div class="input-wrap">
+          <span class="lead-icon">👤</span>
+          <input type="text" id="signup-name" data-i18n-ph="namePlaceholder" placeholder="तुमचे पूर्ण नाव टाका" required>
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="emailLabel">ईमेल आयडी (Email Address)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">✉️</span>
+          <input type="email" id="signup-email" data-i18n-ph="emailPlaceholder" placeholder="yourname@gmail.com" required>
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="villageLabel">गाव / तालुका / जिल्हा</label>
+        <div class="input-wrap">
+          <span class="lead-icon">📍</span>
+          <input type="text" id="signup-village" data-i18n-ph="villagePlaceholder" placeholder="उदा. पिंपळगाव, जि. नाशिक" required>
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="businessLabel">व्यवसायाचा प्रकार</label>
+        <div class="input-wrap">
+          <span class="lead-icon">🏬</span>
+          <select id="signup-business" style="width:100%; border:none; background:transparent; font-size:13.5px; padding:6px 0; outline:none; font-family:inherit;">
+            <!-- Options populated dynamically by updateBusinessDropdown() -->
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="passLabel">पासवर्ड</label>
+        <div class="input-wrap">
+          <span class="lead-icon">🔒</span>
+          <input type="password" id="signup-pass" data-i18n-ph="passPlaceholder" placeholder="पासवर्ड टाका" required>
+          <span class="trail-icon" onclick="togglePassword('signup-pass', this)">👁</span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; margin-top:6px;" data-i18n="btnSignup">खाते तयार करा</button>
+
+      <div style="text-align:center; margin-top:14px; font-size:12.5px; color:var(--muted);">
+        <span data-i18n="authAlreadyUserPrompt">आधीच नोंदणी केली आहे का?</span> <a href="javascript:void(0)" onclick="switchAuthTab('login')" data-i18n="authLoginHere" style="color:var(--green); font-weight:700; text-decoration:underline;">येथे लॉगिन करा</a>
+      </div>
+    </form>
+
+    <div class="auth-divider" data-i18n="orText">किंवा</div>
+    <button class="btn btn-outline" style="width:100%;" onclick="continueAsGuest()" data-i18n="btnGuest">👤 पाहुणे म्हणून पुढे जा</button>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 2. USER / ENTREPRENEUR PORTAL                                             -->
+<!-- ========================================================================= -->
+<div id="user-portal" style="display:none;">
+
+  <!-- TOP HEADER -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="badge">🛍️</div>
+        Aapla Vyapar, <span>Aapli Bhasha</span>
+      </div>
+
+      <nav class="main-nav">
+        <a href="#home" data-i18n="navHome">मुख्य पृष्ठ</a>
+        <a href="#features" data-i18n="navFeatures">काय शिकायचे</a>
+        <a href="#assistant" data-i18n="navAssistant">AI मार्गदर्शक</a>
+        <a href="#learn" data-i18n="navLearn">व्हिडिओ प्रशिक्षण</a>
+        <a href="#translate" data-i18n="navTranslate">भाषांतर</a>
+        <a href="#doc-translate" data-i18n="navDocTranslate">दस्तऐवज</a>
+        <a href="#tracker" data-i18n="navTracker">माझी प्रगती</a>
+        <a href="#help" data-i18n="navHelp">मदत आणि प्रश्न</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Language Switcher Dropdown -->
+        <div class="lang-dropdown">
+          <div class="lang-pill"><span class="lang-current-label">मराठी ▾</span></div>
+          <div class="lang-dropdown-menu">
+            <a href="javascript:void(0)" onclick="setLanguage('mr')">मराठी (Marathi)</a>
+            <a href="javascript:void(0)" onclick="setLanguage('hi')">हिंदी (Hindi)</a>
+            <a href="javascript:void(0)" onclick="setLanguage('en')">English</a>
+          </div>
+        </div>
+
+        <button class="btn btn-sm btn-danger" onclick="logout()" data-i18n="logout">⏻ लॉगआउट</button>
+        <button class="burger" onclick="document.getElementById('mobile-drawer').classList.toggle('open')">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav" id="mobile-drawer">
+      <a href="#home" data-i18n="navHome" onclick="document.getElementById('mobile-drawer').classList.remove('open')">मुख्य पृष्ठ</a>
+      <a href="#features" data-i18n="navFeatures" onclick="document.getElementById('mobile-drawer').classList.remove('open')">काय शिकायचे</a>
+      <a href="#assistant" data-i18n="navAssistant" onclick="document.getElementById('mobile-drawer').classList.remove('open')">AI मार्गदर्शक</a>
+      <a href="#learn" data-i18n="navLearn" onclick="document.getElementById('mobile-drawer').classList.remove('open')">व्हिडिओ प्रशिक्षण</a>
+      <a href="#translate" data-i18n="navTranslate" onclick="document.getElementById('mobile-drawer').classList.remove('open')">भाषांतर</a>
+      <a href="#doc-translate" data-i18n="navDocTranslate" onclick="document.getElementById('mobile-drawer').classList.remove('open')">दस्तऐवज</a>
+      <a href="#tracker" data-i18n="navTracker" onclick="document.getElementById('mobile-drawer').classList.remove('open')">माझी प्रगती</a>
+      <a href="#help" data-i18n="navHelp" onclick="document.getElementById('mobile-drawer').classList.remove('open')">मदत आणि प्रश्न</a>
+      <div style="margin-top:10px; display:flex; gap:8px;">
+        <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('mr')">मराठी</button>
+        <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('hi')">हिंदी</button>
+        <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('en')">English</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-eyebrow" data-i18n="heroBadge">👋 नमस्कार! आता डिजिटल टूल्स शिकणे झाले सोपे</div>
+        <h1 data-i18n="heroTitle">आपला व्यापार, <span>आपली भाषा</span></h1>
+        <p class="sub" data-i18n="heroDesc">स्थानिक भाषेत शिका आणि तुमचा व्यवसाय डिजिटल बनवा. किराणा बिलिंग, ऑनलाइन पेमेंट्स, सरकारी योजना आणि NotebookLM द्वारे व्हिडिओ भाषांतर — सर्व एकाच ठिकाणी.</p>
+        <div class="hero-cta">
+          <a href="#learn" class="btn btn-white" data-i18n="heroCtaLearn">शिकायला सुरुवात करा →</a>
+          <a href="#assistant" class="btn btn-outline-white" data-i18n="heroCtaVoice">🎙️ आवाजाने बोला</a>
+          <a href="#doc-translate" class="btn btn-outline-white" data-i18n="heroCtaDoc">📄 दस्तऐवज भाषांतर</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b id="hero-stat-users">1</b><span data-i18n="statUsers">नोंदणीकृत उद्योजक</span></div>
+          <div class="stat"><b id="hero-stat-videos">5</b><span data-i18n="statCourses">प्रशिक्षण मॉड्यूल्स</span></div>
+          <div class="stat"><b>3</b><span data-i18n="statLangs">उपलब्ध भाषा</span></div>
+          <div class="stat"><b>100%</b><span data-i18n="statFree">मोफत व सुरक्षित</span></div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card -->
+      <div class="hero-visual">
+        <div class="avatar-row">
+          <div class="hero-avatar">🧔🏽</div>
+          <div>
+            <div class="wave">
+              <span class="logged-in-user-name">उद्योजक</span>
+              <span style="font-size:11px; background:#ffd8a8; color:#724e00; padding:2px 6px; border-radius:10px; font-weight:700;" data-i18n="activeStatus">✓ सक्रिय</span>
+            </div>
+            <h3><span data-i18n="heroProgressHeader">प्रगती:</span> <span class="progress-pct-text">0%</span> <span data-i18n="heroProgressDone">पूर्ण</span></h3>
+          </div>
+        </div>
+
+        <div class="hero-voice-trigger" onclick="location.href='#assistant'">
+          <div style="font-size:13.5px; font-weight:700;" data-i18n="heroVoiceBoxText">🎙️ काही विचारायचे आहे? फक्त बोला...</div>
+          <div class="mic-pulse">🎤</div>
+        </div>
+
+        <div class="hero-progress">
+          <div class="row">
+            <span data-i18n="heroProgressLabel">डिजिटल साक्षरता प्रगती</span>
+            <span class="progress-pct-text">0%</span>
+          </div>
+          <div class="hp-bar"><div class="hp-fill" style="width:0%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES / TOOLKIT MODULES -->
+  <section id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow-tag" data-i18n="featHeading">तुमचे डिजिटल बिझनेस टूल्स</span>
+        <h2 data-i18n="featTitle">डिजिटल उद्योजक समृद्धी मंच</h2>
+        <p data-i18n="featSubheading">स्थानिक मराठी भाषेत तयार केलेले सोपे आणि प्रभावी प्रशिक्षण मॉड्यूल्स.</p>
+      </div>
+
+      <div class="features-grid">
+        <a class="f-card c1" href="#learn">
+          <div>
+            <div class="ic">📚</div>
+            <div class="lbl" data-i18n="f1Title">डिजिटल बिलिंग आणि बहीखाता</div>
+            <div class="desc" data-i18n="f1Desc">किराणा बिलिंग, स्टॉक मॅनेजमेंट आणि उधारी खात्याची डिजिटल नोंद.</div>
+          </div>
+          <div class="link" data-i18n="btnLearnMore">शिका →</div>
+        </a>
+
+        <a class="f-card c2" href="#learn">
+          <div>
+            <div class="ic">🌐</div>
+            <div class="lbl" data-i18n="f2Title">NotebookLM व्हिडिओ भाषांतर</div>
+            <div class="desc" data-i18n="f2Desc">कोणत्याही इंग्रजी किंवा इतर भाषेतील व्हिडिओचा मराठीत सारांश समजून घ्या.</div>
+          </div>
+          <div class="link" data-i18n="btnUseTool">वापरा →</div>
+        </a>
+
+        <a class="f-card c3" href="#learn">
+          <div>
+            <div class="ic">💳</div>
+            <div class="lbl" data-i18n="f3Title">ऑनलाइन पेमेंट्स (UPI व QR)</div>
+            <div class="desc" data-i18n="f3Desc">PhonePe, Google Pay, QR कोड आणि साउंडबॉक्सचा सुरक्षित वापर.</div>
+          </div>
+          <div class="link" data-i18n="btnLearnMore">शिका →</div>
+        </a>
+
+        <a class="f-card c4" href="#learn">
+          <div>
+            <div class="ic">🏛️</div>
+            <div class="lbl" data-i18n="f4Title">सरकारी योजना आणि सबसिडी</div>
+            <div class="desc" data-i18n="f4Desc">प्रधानमंत्री मुद्रा योजना, PMEGP आणि महिला उद्योग कर्ज योजना.</div>
+          </div>
+          <div class="link" data-i18n="btnLearnMore">शिका →</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- 3. AI VOICE ASSISTANT SECTION                                          -->
+  <!-- ======================================================================= -->
+  <section class="voice-assistant-section" id="assistant">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow-tag" style="background:#e7f5ec; color:#0f6b3d;">🎙️ AI Voice Guide</span>
+        <h2 data-i18n="voiceTitle">आपला AI बोलता मार्गदर्शक</h2>
+        <p data-i18n="voiceSubtitle">लिहिता येत नसेल तर काळजी करू नका — फक्त माइकवर दाबून बोला, आमचा AI सहाय्यक तुम्हाला मराठीत उत्तर देईल आणि बोलून दाखवेल.</p>
+      </div>
+
+      <div class="va-box">
+        <div class="va-mic-wrapper">
+          <button class="va-mic-button" id="va-mic-btn" title="Click to Speak">🎙️</button>
+          <div class="va-status-text" id="va-status-text" data-i18n="voiceBtnStart">बोलण्यासाठी दाबा (Start Speaking)</div>
+          <div class="va-waves" id="va-waves">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <p data-i18n="voiceAskPrompt" style="font-size:13px; font-weight:700; color:var(--muted); margin-top:14px;">किंवा खालीलपैकी कोणत्याही प्रश्नावर क्लिक करा:</p>
+        <div class="va-quick-questions">
+          <div class="va-q-chip" onclick="askQuickQuestion('माझ्या दुकानासाठी QR कोड कसा लावावा?')" data-i18n="voiceQ1">माझ्या दुकानासाठी QR कोड कसा लावावा?</div>
+          <div class="va-q-chip" onclick="askQuickQuestion('मुद्रा लोनसाठी कोणती कागदपत्रे लागतात?')" data-i18n="voiceQ2">मुद्रा लोनसाठी कोणती कागदपत्रे लागतात?</div>
+          <div class="va-q-chip" onclick="askQuickQuestion('NotebookLM वर व्हिडिओ कसा ट्रान्सलेट करावा?')" data-i18n="voiceQ3">NotebookLM वर व्हिडिओ कसा ट्रान्सलेट करावा?</div>
+          <div class="va-q-chip" onclick="askQuickQuestion('किराणा दुकानाचे बिल मोबाईलवर कसे बनवायचे?')" data-i18n="voiceQ4">किराणा दुकानाचे बिल मोबाईलवर कसे बनवायचे?</div>
+        </div>
+
+        <!-- Answer Output Box -->
+        <div class="va-answer-box" id="va-answer-box">
+          <div class="va-answer-header">
+            <span class="va-question-badge" id="va-question-badge" data-i18n="voiceAskedQuestionBadge">🗣️ विचारलेला प्रश्न:</span>
+            <div class="va-answer-actions">
+              <button class="btn btn-sm btn-outline" id="va-speak-btn" data-i18n="voiceSpeakAgain">🔊 पुन्हा ऐका</button>
+              <button class="btn btn-sm btn-danger" id="va-pause-btn" data-i18n="voicePauseBtn">⏸️ आवाज थांबवा</button>
+              <button class="btn btn-sm btn-outline" id="va-copy-btn" data-i18n="voiceCopy">📋 कॉपी करा</button>
+            </div>
+          </div>
+          <div class="va-answer-text" id="va-answer-text" data-i18n="voiceDefaultAnswer">
+            येथे AI सहाय्यकाचे उत्तर दिसेल.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- 4. NOTEBOOKLM & VIDEO TRAINING HUB                                      -->
+  <!-- ======================================================================= -->
+  <section class="video-hub-section" id="learn">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow-tag" style="background:#eaf2fa; color:#2f6fb0;">🎥 Video Training Hub</span>
+        <h2 data-i18n="videoHubTitle">व्हिडिओ प्रशिक्षण आणि NotebookLM केंद्र</h2>
+        <p data-i18n="videoHubSubtitle">स्थानिक भाषेत सर्व शिका. NotebookLM च्या साहाय्याने कोणत्याही इंग्रजी/हिंदी व्हिडिओचे मराठीत सारांश व भाषांतर करण्याची सोपी पद्धत.</p>
+      </div>
+
+      <!-- Featured NotebookLM Banner -->
+      <div class="notebooklm-banner">
+        <div>
+          <span style="background:#ffd8a8; color:#5a3300; font-size:12px; font-weight:800; padding:4px 10px; border-radius:12px;" data-i18n="videoFeaturedTag">⭐ विशेष प्रशिक्षण</span>
+          <h3 style="font-size:22px; font-weight:800; margin:10px 0; line-height:1.3;" data-i18n="videoFeaturedTitle">NotebookLM द्वारे कोणत्याही व्हिडिओचे स्थानिक भाषेत भाषांतर कसे करावे?</h3>
+          <p style="font-size:13.5px; opacity:0.92;" data-i18n="videoFeaturedDesc">या व्हिडिओत शिका: व्हिडिओ लिंक किंवा मजकूर NotebookLM मध्ये कसा टाकायचा, मराठीत नोट्स कशा मिळवायच्या आणि ऑडिओ पॉडकास्ट कसा ऐकायचा.</p>
+          <div class="notebooklm-steps-list">
+            <div class="nlm-step" data-i18n="videoStep1">१. व्हिडिओची लिंक किंवा ट्रान्सक्रिप्ट कॉपी करा.</div>
+            <div class="nlm-step" data-i18n="videoStep2">२. Google NotebookLM उघडून सोर्स म्हणून जोडा.</div>
+            <div class="nlm-step" data-i18n="videoStep3">३. 'मराठीत सारांश द्या' अशी कमांड द्या आणि ऑडिओ ऐका.</div>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <div style="background:rgba(0,0,0,0.25); border-radius:16px; padding:24px; border:1px solid rgba(255,255,255,0.2);">
+            <div style="font-size:48px; margin-bottom:10px;">🤖 📖</div>
+            <button class="btn btn-white" style="width:100%; font-weight:700;" onclick="openVideoModal('vid-1')" data-i18n="videoWatchBtn">▶ व्हिडिओ ट्युटोरियल पहा</button>
+            <button class="btn btn-sm btn-outline-white" style="width:100%; margin-top:8px;" onclick="markVideoDone('vid-1')" data-i18n="btnMarkComplete">✓ पूर्ण झाले म्हणून नोंदवा</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-pills-row">
+        <button class="filter-pill active" onclick="filterVideos('all', this)" data-i18n="filterAll">सर्व व्हिडिओ</button>
+        <button class="filter-pill" onclick="filterVideos('notebooklm', this)" data-i18n="filterNotebookLM">NotebookLM</button>
+        <button class="filter-pill" onclick="filterVideos('billing', this)" data-i18n="filterBilling">बिलिंग अॅप्स</button>
+        <button class="filter-pill" onclick="filterVideos('payments', this)" data-i18n="filterPayments">पेमेंट्स व बँकिंग</button>
+        <button class="filter-pill" onclick="filterVideos('schemes', this)" data-i18n="filterSchemes">सरकारी योजना</button>
+      </div>
+
+      <!-- Videos Dynamic Grid -->
+      <div class="videos-grid" id="videos-grid-container">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- 5. AI TEXT TRANSLATOR SECTION                                          -->
+  <!-- ======================================================================= -->
+  <section class="translator-section" id="translate">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow-tag" style="background:#fef1e8; color:#d4601c;">🌐 Text & Voice Translator</span>
+        <h2 data-i18n="transTitle">AI मजकूर भाषांतरकार</h2>
+        <p data-i18n="transSubtitle">मराठी, हिंदी आणि इंग्रजीमध्ये त्वरित अचूक भाषांतर करा. आवाजाने बोला आणि आवाजात ऐका.</p>
+      </div>
+
+      <div class="translator-grid">
+        <!-- Input Panel -->
+        <div class="trans-panel">
+          <div class="trans-panel-head">
+            <b data-i18n="transInputLabel">मूळ मजकूर</b>
+            <button class="btn btn-sm btn-outline" id="btn-trans-voice-input" data-i18n="transBtnVoiceInput">🎙️ बोला</button>
+          </div>
+          <textarea class="trans-textarea" id="trans-input-text" data-i18n-ph="transPlaceholder" placeholder="येथे मजकूर लिहा किंवा माइक दाबून बोला..."></textarea>
+          <div class="trans-panel-actions">
+            <button class="btn btn-sm btn-outline" id="btn-trans-input-speak" data-i18n="transBtnSpeak">🔊 ऐका</button>
+            <button class="btn btn-primary" id="btn-translate-text" data-i18n="transBtnTranslate">🔄 भाषांतर करा</button>
+          </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="trans-panel">
+          <div class="trans-panel-head">
+            <b data-i18n="transOutputLabel">भाषांतरित मजकूर</b>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:12px; font-weight:700;" data-i18n="transTargetLangLabel">लक्ष्य भाषा:</span>
+              <select id="trans-target-lang" style="padding:4px 8px; border-radius:6px; border:1px solid var(--line); font-size:12.5px;">
+                <option value="mr" selected>मराठी (Marathi)</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+          <textarea class="trans-textarea" id="trans-output-text" data-i18n-ph="transOutputPlaceholder" placeholder="येथे भाषांतरित मजकूर तयार होईल..." readonly></textarea>
+          <div class="trans-panel-actions">
+            <button class="btn btn-sm btn-outline" id="btn-trans-speak" data-i18n="transBtnSpeak">🔊 ऐका</button>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-sm btn-outline" id="btn-trans-copy" data-i18n="transBtnCopy">📋 कॉपी करा</button>
+              <button class="btn btn-sm btn-primary" id="btn-trans-whatsapp" style="background:#25D366; border:none;" data-i18n="transBtnWhatsapp">💬 WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- 6. DOCUMENT TRANSLATOR & PDF DOWNLOADER SECTION                        -->
+  <!-- ======================================================================= -->
+  <section style="background:var(--cream);" id="doc-translate">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow-tag" style="background:#e7f5ec; color:#0f6b3d;">📄 Document AI Translator</span>
+        <h2 data-i18n="docTransTitle">दस्तऐवज भाषांतर आणि डाउनलोड</h2>
+        <p data-i18n="docTransSubtitle">सरकारी फॉर्म्स, PDF, Word किंवा बँक अर्ज अपलोड करा — त्यातील सर्व माहिती आपोआप वाचून मराठीमध्ये भाषांतर करा आणि PDF डाउनलोड करा.</p>
+      </div>
+
+      <div style="background:#fff; border-radius:22px; padding:30px; border:1px solid var(--line); box-shadow:var(--shadow-sm);">
+        <!-- File Upload Area -->
+        <div class="doc-upload-box" onclick="document.getElementById('doc-file-upload').click()">
+          <input type="file" id="doc-file-upload" accept=".pdf,.docx,.doc,.txt,.csv,.png,.jpg,.jpeg" style="display:none;">
+          <div style="font-size:38px; margin-bottom:8px;">📂 📄</div>
+          <b data-i18n="docUploadLabel">दस्तऐवज निवडा (.pdf, .docx, .txt किंवा इमेज)</b>
+          <p data-i18n="docDropText" style="font-size:12.5px; color:var(--muted); margin-top:4px;">PDF, Word किंवा Text फाईल येथे ड्रॅग करा किंवा निवडण्यासाठी क्लिक करा</p>
+        </div>
+
+        <!-- Extraction Status Badge -->
+        <div class="doc-status-badge" id="doc-extract-status-badge"></div>
+
+        <div style="margin-top:10px; margin-bottom:6px;">
+          <b data-i18n="docOriginalLabel" style="font-size:13px; color:var(--ink);">दस्तऐवजातील मूळ मजकूर:</b>
+        </div>
+
+        <textarea class="trans-textarea" id="doc-source-content" style="min-height:160px;" data-i18n-ph="docOriginalPlaceholder" placeholder="सरकारी नोटीस, बँक फॉर्म किंवा व्यवसायाचा मजकूर येथे दिसेल / पेस्ट करा..."></textarea>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <b data-i18n="docTargetLang" style="font-size:13.5px;">कोणत्या भाषेत भाषांतर हवे आहे?</b>
+            <select id="doc-target-lang" style="padding:6px 12px; border-radius:8px; border:1.5px solid var(--line); font-size:13px; font-weight:600;">
+              <option value="mr" selected>मराठी (Marathi)</option>
+              <option value="hi">हिंदी (Hindi)</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btn-process-doc" data-i18n="docBtnProcess">⚡ दस्तऐवज भाषांतर करा</button>
+        </div>
+
+        <!-- Translated Document Preview Box -->
+        <div style="margin-top:24px; border-top:1px solid var(--line); padding-top:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
+            <b data-i18n="docPreviewTitle" style="font-size:15px; color:var(--green-dark);">भाषांतरित दस्तऐवज पूर्वावलोकन</b>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-sm btn-primary" id="btn-download-doc-pdf" data-i18n="docBtnDownloadPdf">📥 भाषांतरित PDF डाउनलोड करा</button>
+              <button class="btn btn-sm btn-outline" id="btn-download-doc-txt" data-i18n="docBtnDownloadTxt">📥 मजकूर (.txt)</button>
+              <button class="btn btn-sm btn-outline" id="btn-print-doc" data-i18n="docBtnPrint">🖨️ प्रिंट करा</button>
+            </div>
+          </div>
+          <div class="doc-preview-container" id="doc-preview-content" data-i18n="docPreviewDefault">
+            येथे भाषांतरित दस्तऐवज तयार होईल...
+          </div>
+        </div>
+      </div>
+
+      <!-- SEPARATE DEDICATED SECTION: Sample Government Forms & Documents Library -->
+      <div style="margin-top:24px; background:#fff; border-radius:20px; padding:22px; border:1px solid var(--line); box-shadow:var(--shadow-sm);">
+        <div style="margin-bottom:14px;">
+          <b data-i18n="docSampleLibraryTitle" style="font-size:15.5px; color:var(--green-dark); display:block;">📂 नमुना शासकीय कागदपत्रे लायब्ररी</b>
+          <p data-i18n="docSampleLibrarySub" style="font-size:12.5px; color:var(--muted); margin-top:2px;">सराव करण्यासाठी किंवा भाषांतर तपासण्यासाठी खालीलपैकी कोणत्याही अधिकृत नमुन्यावर क्लिक करा:</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px;">
+          <div class="sample-doc-card" id="btn-load-sample-mudra">
+            <div style="font-size:26px;">🏛️</div>
+            <div>
+              <b data-i18n="docSample1Title" style="font-size:13.5px; color:var(--ink);">नमुना १: मुद्रा लोन अर्ज (PMMY)</b>
+              <p data-i18n="docSample1Desc" style="font-size:11.5px; color:var(--muted);">सूक्ष्म उद्योग व दुकानासाठी कर्ज अर्ज फॉर्म</p>
+            </div>
+          </div>
+          <div class="sample-doc-card" id="btn-load-sample-shop">
+            <div style="font-size:26px;">📜</div>
+            <div>
+              <b data-i18n="docSample2Title" style="font-size:13.5px; color:var(--ink);">नमुना २: शॉप ॲक्ट नोंदणी (गुमास्ता)</b>
+              <p data-i18n="docSample2Desc" style="font-size:11.5px; color:var(--muted);">महाराष्ट्र दुकान नोंदणी व परवाना मार्गदर्शक</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- 7. LEARNING TRACKER & CERTIFICATE SECTION                              -->
+  <!-- ======================================================================= -->
+  <section class="tracker-section" id="tracker">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow-tag" style="background:#fdf6e2; color:#b07e06;">🏆 Learning Progress & Certificate</span>
+        <h2 data-i18n="trackerTitle">माझी शिकण्याची प्रगती आणि प्रमाणपत्र</h2>
+        <p data-i18n="trackerSubtitle">तुमचा शिकण्याचा प्रवास ट्रॅक करा, बॅजेस जिंका आणि डिजिटल साक्षरता प्रमाणपत्र मिळवा.</p>
+      </div>
+
+      <div class="tracker-grid">
+        <!-- Progress & Badges Card -->
+        <div class="progress-summary-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <b data-i18n="trackProgressLabel" style="font-size:15px;">कोर्स प्रगती</b>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="progress-pct-text" style="font-weight:800; font-size:16px; color:var(--green-dark);">0%</span>
+              <button class="btn btn-xs btn-outline" id="btn-reset-learning-progress" data-i18n="trackResetBtn" title="Reset progress to 0%">🔄 रीसेट करा</button>
+            </div>
+          </div>
+          <div class="hp-bar" style="height:10px;"><div class="hp-fill" id="tracker-progress-fill" style="width:0%;"></div></div>
+          
+          <div style="display:flex; justify-content:space-between; margin-top:14px; font-size:13px; color:var(--muted);">
+            <span><span data-i18n="trackCompletedModules">पूर्ण मॉड्यूल्स:</span> <b class="completed-count-text">0 / 5</b></span>
+            <span>🔥 <span data-i18n="trackStreak">सराव:</span> <b id="streak-count-val">1 दिवस</b></span>
+          </div>
+
+          <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:16px;">
+            <b data-i18n="trackBadgesEarned" style="font-size:14px;">मिळालेले बॅजेस</b>
+            <div class="badges-grid" id="badges-grid">
+              <!-- Rendered dynamically by learning-tracker.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificate Card -->
+        <div class="cert-card-container">
+          <div>
+            <b data-i18n="trackCertTitle" style="font-size:16px; display:block; margin-bottom:14px;">डिजिटल साक्षरता प्रमाणपत्र</b>
+            <div class="cert-status locked" id="cert-status-box">
+              <div style="font-size:32px;">🔒</div>
+              <div>
+                <h4 style="color:#666; font-weight:800; font-size:15px;" data-i18n="trackCertLocked">प्रमाणपत्र सध्या लॉक आहे</h4>
+                <p style="font-size:12.5px; color:#777;" data-i18n="trackCertLockedDesc">प्रमाणपत्र अनलॉक करण्यासाठी किमान ३ व्हिडिओ मॉड्यूल्स पूर्ण करा.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top:20px;">
+            <button class="btn btn-orange btn-disabled" id="btn-download-cert" disabled style="width:100%; padding:14px;" data-i18n="btnDownloadCert">🎓 अधिकृत प्रमाणपत्र डाउनलोड करा (PNG/PDF)</button>
+            <small data-i18n="certReqNotice" style="display:block; margin-top:8px; color:var(--muted); font-size:11.5px;">* किमान ३ मॉड्यूल्स पूर्ण केल्यावर अनलॉक होईल.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Quiz Box -->
+      <div class="daily-quiz-box" id="daily-quiz-container">
+        <!-- Rendered dynamically by learningTracker.renderQuiz(lang) -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- 8. HELP DESK & QUERIES RESOLUTION SECTION                              -->
+  <!-- ======================================================================= -->
+  <section class="help-section" id="help">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow-tag" style="background:#eaf2fa; color:#2f6fb0;">💬 Help Desk & Q&A</span>
+        <h2 data-i18n="helpTitle">उद्योजक मदत कक्ष आणि प्रश्न विचारा</h2>
+        <p data-i18n="helpSubtitle">व्यवसायात किंवा टूल्स वापरताना काही अडचण आली आहे? प्रश्न विचारा — आमचे तज्ज्ञ आणि ॲडमिन तुम्हाला मार्गदर्शन करतील.</p>
+      </div>
+
+      <div class="help-grid">
+        <!-- Submit Query Box -->
+        <div style="background:var(--cream); border:1.5px solid var(--line); border-radius:20px; padding:24px;">
+          <b data-i18n="helpAskLabel" style="font-size:15px; display:block; margin-bottom:10px;">तुमचा प्रश्न विचारा (टाईप करा किंवा बोला):</b>
+          <textarea id="user-query-input" class="trans-textarea" style="min-height:130px; background:#fff;" data-i18n-ph="helpPlaceholder" placeholder="उदा. मला दुकानासाठी करंट अकाउंट उघडायचे आहे, कोणती कागदपत्रे लागतील?"></textarea>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+            <button class="btn btn-sm btn-outline" onclick="askVoiceForQuery()" data-i18n="helpBtnVoice">🎙️ आवाजाने बोला</button>
+            <button class="btn btn-primary" id="btn-submit-query" data-i18n="helpBtnSubmit">📤 प्रश्न पाठवा</button>
+          </div>
+        </div>
+
+        <!-- Queries & Admin Answers List -->
+        <div>
+          <b data-i18n="helpRecentTitle" style="font-size:15px; display:block; margin-bottom:12px;">तुमचे विचारलेले प्रश्न आणि उत्तरे</b>
+          <div id="user-queries-list">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="container trust-grid">
+      <div class="trust-item"><div class="ic">🌐</div><b data-i18n="trust1Title">आपली भाषा</b><span data-i18n="trust1Desc">मराठी, हिंदी व स्थानिक बोली</span></div>
+      <div class="trust-item"><div class="ic">📖</div><b data-i18n="trust2Title">सोपे व्हिडिओ</b><span data-i18n="trust2Desc">प्रत्यक्ष सोपे मार्गदर्शन</span></div>
+      <div class="trust-item"><div class="ic">✅</div><b data-i18n="trust3Title">१००% मोफत व सुरक्षित</b><span data-i18n="trust3Desc">शासकीय नियमांनुसार</span></div>
+      <div class="trust-item"><div class="ic">💬</div><b data-i18n="trust4Title">तज्ज्ञ मार्गदर्शन</b><span data-i18n="trust4Desc">थेट प्रश्न निवारण</span></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <div class="badge" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;">🛍️</div>
+            Aapla Vyapar, Aapli Bhasha
+          </div>
+          <p data-i18n="footerDesc" style="font-size:13px; max-width:300px; opacity:0.85;">महाराष्ट्र आणि ग्रामीण भारतातील प्रत्येक उद्योजकाला त्यांच्या स्वतःच्या भाषेत डिजिटल सक्षम बनवणे हे आमचे ध्येय आहे.</p>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footerColModules">मॉड्यूल्स</h4>
+          <ul>
+            <li><a href="#learn" data-i18n="f2Title">NotebookLM व्हिडिओ भाषांतर</a></li>
+            <li><a href="#translate" data-i18n="transTitle">AI मजकूर भाषांतरकार</a></li>
+            <li><a href="#doc-translate" data-i18n="navDocTranslate">दस्तऐवज</a></li>
+            <li><a href="#tracker" data-i18n="trackCertTitle">डिजिटल साक्षरता प्रमाणपत्र</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footerColSchemes">सरकारी योजना</h4>
+          <ul>
+            <li><a href="#learn">PMEGP सबसिडी</a></li>
+            <li><a href="#learn">मुद्रा योजना (PMMY)</a></li>
+            <li><a href="#learn">उद्योग आधार नोंदणी</a></li>
+            <li><a href="#learn">महिला बचत गट योजना</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footerColSupport">मदत व सपोर्ट</h4>
+          <ul>
+            <li><a href="#help" data-i18n="helpTitle">मदत कक्ष आणि प्रश्न</a></li>
+            <li><a href="https://api.whatsapp.com" target="_blank">WhatsApp सपोर्ट</a></li>
+            <li><a href="#assistant" data-i18n="navAssistant">AI मार्गदर्शक</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom" data-i18n="footerCopy">© २०२६ आपला व्यापार, आपली भाषा. सर्व हक्क सुरक्षित.</div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Floating FAB -->
+  <div class="wa-fab" onclick="window.open('https://api.whatsapp.com/send?text=Namaskar,%20Aapla%20Vyapar%20baddal%20mahiti%20havi%20aahe','_blank')" title="WhatsApp Support">💬</div>
+
+  <!-- Bottom Mobile Navigation Bar -->
+  <nav class="bottom-navbar" id="bottomNav">
+    <a href="#home" class="bn-item active"><span class="bn-ic">🏠</span><span data-i18n="bnHome">मुख्य</span></a>
+    <a href="#assistant" class="bn-item"><span class="bn-ic">🎙️</span><span data-i18n="bnVoice">आवाज</span></a>
+    <a href="#learn" class="bn-item"><span class="bn-ic">📖</span><span data-i18n="bnLearn">शिकणे</span></a>
+    <a href="#translate" class="bn-item"><span class="bn-ic">🌐</span><span data-i18n="bnTranslate">भाषांतर</span></a>
+    <a href="#tracker" class="bn-item"><span class="bn-ic">👤</span><span data-i18n="bnProgress">प्रगती</span></a>
+  </nav>
+
+</div><!-- /#user-portal -->
+
+<!-- ========================================================================= -->
+<!-- 3. ADMIN MANAGEMENT PORTAL                                                -->
+<!-- ========================================================================= -->
+<div id="admin-portal">
+  <div class="admin-header">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="width:36px; height:36px; border-radius:10px; background:var(--orange); display:flex; align-items:center; justify-content:center; font-size:18px;">🛡️</div>
+      <div>
+        <h3 style="font-size:16px; font-weight:800; font-family:'Poppins',sans-serif;" data-i18n="adminTitle">व्यवस्थापक नियंत्रण कक्ष (Admin Portal)</h3>
+        <span style="font-size:11px; color:#a0b2a7;" data-i18n="adminSubtitle">व्हिडिओ ट्युटोरियल्स, दस्तऐवज लायब्ररी आणि उद्योजकांच्या प्रश्नांचे व्यवस्थापन करा.</span>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <button class="btn btn-sm btn-outline-white" onclick="openAdminProfileModal()" data-i18n="adminBtnViewProfile">👤 प्रोफाईल पहा</button>
+      <button class="btn btn-sm btn-outline-white" onclick="openSupabaseModal()" data-i18n="adminBtnSettings">⚙️ ॲडमिन सेटिंग्ज</button>
+      <button class="btn btn-sm btn-outline-white" onclick="loginSuccess('user', 'शैलेश')" data-i18n="adminViewUserPageBtn">👁️ उद्योजक पेज पहा</button>
+      <button class="btn btn-sm btn-danger" onclick="logout()" data-i18n="logout">⏻ लॉगआउट</button>
+    </div>
+  </div>
+
+  <!-- Admin Sub Navigation -->
+  <div class="admin-nav-bar">
+    <div class="admin-nav-item active" id="admin-nav-videos" onclick="switchAdminTab('videos')" data-i18n="adminTabVideos">🎥 व्हिडिओ व्यवस्थापन</div>
+    <div class="admin-nav-item" id="admin-nav-docs" onclick="switchAdminTab('docs')" data-i18n="adminTabDocs">📄 दस्तऐवज लायब्ररी</div>
+    <div class="admin-nav-item" id="admin-nav-queries" onclick="switchAdminTab('queries')" data-i18n="adminTabQueries">💬 प्रश्न निवारण डेस्क</div>
+    <div class="admin-nav-item" id="admin-nav-users" onclick="switchAdminTab('users')">👥 <span data-i18n="adminTabUsers">नोंदणीकृत उद्योजक</span> (<span id="admin-nav-users-count">1</span>)</div>
+  </div>
+
+  <div class="container" style="padding-top:20px; padding-bottom:60px;">
+    <!-- Stat Cards Overview -->
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card">
+        <b id="stat-total-users">1</b>
+        <span data-i18n="adminStatTotalUsers">नोंदणीकृत उद्योजक</span>
+      </div>
+      <div class="admin-stat-card">
+        <b id="stat-total-videos">5</b>
+        <span data-i18n="adminStatTotalVideos">उपलब्ध व्हिडिओ</span>
+      </div>
+      <div class="admin-stat-card">
+        <b id="stat-total-docs">3</b>
+        <span data-i18n="adminStatTotalDocs">उपलब्ध दस्तऐवज</span>
+      </div>
+      <div class="admin-stat-card" style="border-left:4px solid var(--orange);">
+        <b id="stat-pending-queries" style="color:var(--orange);">1</b>
+        <span data-i18n="adminStatPendingQueries">प्रलंबित प्रश्न</span>
+      </div>
+    </div>
+
+    <!-- VIEW 1: VIDEO MANAGEMENT -->
+    <div class="admin-view-panel active" id="admin-view-videos">
+      <div style="background:#fff; border-radius:18px; padding:24px; border:1px solid var(--line); margin-bottom:24px;">
+        <h4 data-i18n="adminAddVideoTitle" style="font-size:16px; margin-bottom:14px; color:var(--green-dark);">नवीन व्हिडिओ जोडा</h4>
+        <form onsubmit="return handleAdminAddVideo(event)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div class="field">
+              <label data-i18n="adminFormVideoName">व्हिडिओचे नाव / शीर्षक</label>
+              <div class="input-wrap">
+                <input type="text" id="add-vid-title" placeholder="उदा. NotebookLM वर ऑडिओ कसा तयार करावा" required>
+              </div>
+            </div>
+            <div class="field">
+              <label data-i18n="adminFormCategory">वर्ग (Category)</label>
+              <div class="input-wrap">
+                <select id="add-vid-cat">
+                  <option value="notebooklm">NotebookLM</option>
+                  <option value="billing">बिलिंग ॲप्स (Billing)</option>
+                  <option value="payments">पेमेंट्स व बँकिंग (Payments)</option>
+                  <option value="schemes">सरकारी योजना (Schemes)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label data-i18n="adminFormVideoUrl">YouTube व्हिडिओ URL किंवा Embed लिंक</label>
+            <div class="input-wrap">
+              <input type="text" id="add-vid-url" placeholder="उदा. https://www.youtube.com/watch?v=... किंवा https://youtu.be/..." required>
+            </div>
+          </div>
+          <div class="field">
+            <label data-i18n="adminFormDesc">वर्णन / माहिती</label>
+            <div class="input-wrap">
+              <textarea id="add-vid-desc" rows="2" placeholder="व्हिडिओमध्ये काय शिकवले आहे..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" data-i18n="adminBtnAddVideo">+ व्हिडिओ प्रकाशित करा</button>
+        </form>
+      </div>
+
+      <div style="background:#fff; border-radius:18px; padding:24px; border:1px solid var(--line);">
+        <h4 data-i18n="adminPublishedVideosTitle" style="font-size:16px; margin-bottom:10px;">सध्या प्रकाशित असलेले व्हिडिओ</h4>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th data-i18n="adminTableTitle">शीर्षक</th>
+              <th data-i18n="adminTableCategory">वर्ग</th>
+              <th data-i18n="adminTableActions">कृती</th>
+            </tr>
+          </thead>
+          <tbody id="admin-videos-tbody">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VIEW 2: DOCUMENT LIBRARY MANAGEMENT -->
+    <div class="admin-view-panel" id="admin-view-docs">
+      <div style="background:#fff; border-radius:18px; padding:24px; border:1px solid var(--line); margin-bottom:24px;">
+        <h4 data-i18n="adminAddDocTitle" style="font-size:16px; margin-bottom:14px; color:var(--green-dark);">नवीन दस्तऐवज जोडा</h4>
+        <form onsubmit="return handleAdminAddDoc(event)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div class="field">
+              <label data-i18n="adminFormDocTitle">दस्तऐवजाचे शीर्षक</label>
+              <div class="input-wrap">
+                <input type="text" id="add-doc-title" placeholder="उदा. PMEGP कर्ज अर्ज नियम पुस्तिका" required>
+              </div>
+            </div>
+            <div class="field">
+              <label data-i18n="adminFormCategory">वर्ग (Category)</label>
+              <div class="input-wrap">
+                <select id="add-doc-cat">
+                  <option value="लोन / बँकिंग">लोन / बँकिंग</option>
+                  <option value="सरकारी नियम">सरकारी नियम</option>
+                  <option value="सुरक्षा">सुरक्षा</option>
+                  <option value="सामान्य">सामान्य</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label data-i18n="adminFormDocContent">दस्तऐवजाचा मजकूर</label>
+            <div class="input-wrap">
+              <textarea id="add-doc-content" rows="4" placeholder="येथे दस्तऐवजाचा मूळ मजकूर टाका जो उद्योजक भाषांतरित करू शकतील..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" data-i18n="adminBtnAddDoc">+ दस्तऐवज जोडा</button>
+        </form>
+      </div>
+
+      <div style="background:#fff; border-radius:18px; padding:24px; border:1px solid var(--line);">
+        <h4 data-i18n="adminLibraryDocsTitle" style="font-size:16px; margin-bottom:10px;">लायब्ररीतील दस्तऐवज</h4>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th data-i18n="adminTableTitle">शीर्षक</th>
+              <th data-i18n="adminTableCategory">वर्ग</th>
+              <th data-i18n="adminTableActions">कृती</th>
+            </tr>
+          </thead>
+          <tbody id="admin-docs-tbody">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VIEW 3: QUERY RESOLUTION DESK -->
+    <div class="admin-view-panel" id="admin-view-queries">
+      <div style="margin-bottom:16px;">
+        <h4 data-i18n="adminQueriesHeading" style="font-size:17px; font-weight:800; color:var(--green-dark);">ग्रामीण उद्योजकांचे प्रश्न व शंका निवारण</h4>
+        <p data-i18n="adminQueriesSub" style="font-size:13px; color:var(--muted);">येथे आलेले प्रश्न तपासून उत्तरे पाठवा. उत्तर दिल्यानंतर उद्योजकाच्या डॅशबोर्डवर त्वरित दिसेल.</p>
+      </div>
+
+      <div id="admin-queries-desk">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+
+    <!-- VIEW 4: REGISTERED ENTREPRENEURS DESK -->
+    <div class="admin-view-panel" id="admin-view-users">
+      <div style="margin-bottom:16px;">
+        <h4 data-i18n="adminUsersHeading" style="font-size:17px; font-weight:800; color:var(--green-dark);">नोंदणीकृत ग्रामीण उद्योजक डेटाबेस</h4>
+        <p data-i18n="adminUsersSub" style="font-size:13px; color:var(--muted);">वेबसाईटवर नोंदणी केलेल्या सर्व उद्योजकांची खरी माहिती, संपर्क, गाव आणि व्यवसाय प्रकार.</p>
+      </div>
+
+      <div style="background:#fff; border-radius:18px; padding:24px; border:1px solid var(--line);">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th data-i18n="adminColName">उद्योजकाचे नाव</th>
+              <th data-i18n="adminColEmail">ईमेल आयडी</th>
+              <th data-i18n="adminColLocation">गाव / जिल्हा</th>
+              <th data-i18n="adminColBizType">व्यवसायाचा प्रकार</th>
+              <th data-i18n="adminColStatus">पडताळणी स्थिती</th>
+              <th data-i18n="adminColDate">नोंदणी दिनांक</th>
+              <th data-i18n="adminColAction">कृती / हटवा</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-tbody">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div><!-- /#admin-portal -->
+
+<!-- ========================================================================= -->
+<!-- 4. VIDEO PLAYER MODAL                                                     -->
+<!-- ========================================================================= -->
+<div class="modal-overlay" id="video-player-modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <b id="modal-video-title" style="font-size:15px;" data-i18n="modalVideoTitle">व्हिडिओ प्रशिक्षण</b>
+      <button class="modal-close-btn" onclick="closeVideoModal()">✕</button>
+    </div>
+    <div style="position:relative; aspect-ratio:16/9; background:#000;">
+      <iframe id="modal-video-frame" style="width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div style="padding:14px 20px; display:flex; justify-content:flex-end;">
+      <button class="btn btn-sm btn-outline" onclick="closeVideoModal()" data-i18n="modalCloseBtn">बंद करा</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 5. REAL-TIME FREE OTP VERIFICATION MODAL                                  -->
+<!-- ========================================================================= -->
+<div class="modal-overlay" id="otp-verification-modal" style="display:none;">
+  <div class="otp-modal-box">
+    <div class="otp-shield-icon">🛡️</div>
+    <h3 data-i18n="otpModalTitle" style="font-size:18px; font-weight:800; color:var(--ink);">सुरक्षा पडताळणी (OTP Verification)</h3>
+    <p data-i18n="otpModalSub" style="font-size:13px; color:var(--muted); margin-top:4px;">सुरक्षित लॉगिनसाठी तुमच्या मोबाईल/ईमेलवर ४ अंकी सुरक्षा कोड पाठवला आहे:</p>
+    
+    <div class="otp-recipient-badge" id="otp-target-display">📞 +91 9876543210</div>
+
+    <form id="otp-form" onsubmit="return handleVerifyOtpSubmit(event)">
+      <div class="otp-inputs-grid">
+        <input type="text" maxlength="1" class="otp-digit-input" id="otp-box-1" inputmode="numeric" required autofocus>
+        <input type="text" maxlength="1" class="otp-digit-input" id="otp-box-2" inputmode="numeric" required>
+        <input type="text" maxlength="1" class="otp-digit-input" id="otp-box-3" inputmode="numeric" required>
+        <input type="text" maxlength="1" class="otp-digit-input" id="otp-box-4" inputmode="numeric" required>
+        <input type="text" maxlength="1" class="otp-digit-input" id="otp-box-5" inputmode="numeric">
+        <input type="text" maxlength="1" class="otp-digit-input" id="otp-box-6" inputmode="numeric">
+      </div>
+
+      <div class="otp-timer-box">
+        <span data-i18n="otpTimerPrefix">पुन्हा OTP पाठवण्यासाठी वेळ:</span> <b id="otp-countdown-text" style="color:var(--orange);">60s</b>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-size:15px;" data-i18n="otpVerifyBtn">🔐 पडताळणी करा व पुढे जा</button>
+      
+      <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; font-size:12.5px;">
+        <span class="otp-resend-link disabled" id="otp-resend-btn" onclick="handleResendOtp()" data-i18n="otpResendBtn">🔄 पुन्हा OTP पाठवा (Resend)</span>
+        <a href="javascript:void(0)" onclick="closeOtpModal()" style="color:var(--muted); text-decoration:underline;" data-i18n="otpCancelBtn">← मागे जा</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 5B. FORGOT PASSWORD REQUEST MODAL                                         -->
+<!-- ========================================================================= -->
+<div class="modal-overlay" id="forgot-password-modal" style="display:none;">
+  <div class="modal-card" style="max-width:440px; padding:26px;">
+    <div class="modal-header" style="padding:0 0 14px 0; margin-bottom:14px;">
+      <b style="font-size:16px; font-weight:800; color:var(--ink);" data-i18n="forgotPassTitle">🔑 पासवर्ड रीसेट करा (Reset Password)</b>
+      <button class="modal-close-btn" onclick="closeForgotPasswordModal()">✕</button>
+    </div>
+    <p style="font-size:12.5px; color:var(--muted); line-height:1.45; margin-bottom:16px;" data-i18n="forgotPassSub">
+      तुमच्या नोंदणीकृत ईमेलवर OTP पाठवून नवीन पासवर्ड सेट करा:
+    </p>
+    <form onsubmit="return handleForgotPasswordSubmit(event)">
+      <div class="field" style="margin-bottom:16px;">
+        <label style="font-size:12px; font-weight:700;" data-i18n="forgotPassEmailLabel">नोंदणीकृत ईमेल आयडी</label>
+        <div class="input-wrap">
+          <span class="lead-icon">✉️</span>
+          <input type="email" id="forgot-email-input" data-i18n-ph="forgotPassEmailPlaceholder" placeholder="तुमचा ईमेल टाका (उदा. yourname@gmail.com)" required style="font-size:13px;">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-size:14px;" data-i18n="btnSendResetOtp">ईमेलवर रीसेट OTP मिळवा</button>
+      <div style="text-align:center; margin-top:14px;">
+        <a href="javascript:void(0)" onclick="closeForgotPasswordModal()" style="font-size:12.5px; color:var(--muted); text-decoration:underline;">← मागे जा</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 5C. SET NEW PASSWORD MODAL (AFTER OTP VERIFICATION)                       -->
+<!-- ========================================================================= -->
+<div class="modal-overlay" id="set-new-password-modal" style="display:none;">
+  <div class="modal-card" style="max-width:440px; padding:26px;">
+    <div class="modal-header" style="padding:0 0 14px 0; margin-bottom:14px;">
+      <b style="font-size:16px; font-weight:800; color:var(--green-dark);" data-i18n="newPassModalTitle">🔐 नवीन पासवर्ड सेट करा</b>
+      <button class="modal-close-btn" onclick="closeSetNewPasswordModal()">✕</button>
+    </div>
+    <p style="font-size:12.5px; color:var(--muted); line-height:1.45; margin-bottom:16px;" data-i18n="newPassModalSub">
+      ईमेल पडताळणी झाली आहे. आता तुमचा नवीन पासवर्ड तयार करा:
+    </p>
+    <form onsubmit="return handleSaveNewPassword(event)">
+      <div class="field" style="margin-bottom:14px;">
+        <label style="font-size:12px; font-weight:700;" data-i18n="newPassLabel">नवीन पासवर्ड (New Password)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">🔒</span>
+          <input type="password" id="reset-new-pass" data-i18n-ph="newPassPlaceholder" placeholder="किमान ४ अक्षरी नवीन पासवर्ड" required style="font-size:13px;">
+          <span class="trail-icon" onclick="togglePassword('reset-new-pass', this)">👁</span>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:16px;">
+        <label style="font-size:12px; font-weight:700;" data-i18n="confirmPassLabel">नवीन पासवर्ड पुन्हा टाका (Confirm Password)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">🔒</span>
+          <input type="password" id="reset-confirm-pass" data-i18n-ph="confirmPassPlaceholder" placeholder="नवीन पासवर्ड पुन्हा टाका" required style="font-size:13px;">
+          <span class="trail-icon" onclick="togglePassword('reset-confirm-pass', this)">👁</span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-size:14px;" data-i18n="btnSaveNewPass">💾 नवीन पासवर्ड सेव्ह करा</button>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 6. ADMIN SETTINGS MODAL                                                   -->
+<!-- ========================================================================= -->
+<div class="modal-overlay" id="supabase-setup-modal" style="display:none;">
+  <div class="modal-card" style="max-width:480px; padding:26px;">
+    <div class="modal-header" style="padding:0 0 14px 0; margin-bottom:14px; border-bottom:1px solid var(--line);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:22px;">⚙️</span>
+        <b style="font-size:16px; font-weight:800; color:var(--ink);" data-i18n="adminSettingsModalTitle">व्यवस्थापक सेटिंग्ज (Admin Settings)</b>
+      </div>
+      <button class="modal-close-btn" onclick="closeSupabaseModal()">✕</button>
+    </div>
+    
+    <p style="font-size:12.5px; color:var(--muted); line-height:1.45; margin-bottom:18px;" data-i18n="adminSettingsModalDesc">
+      येथे तुमचे नाव, ईमेल, पासवर्ड आणि सिस्टीम प्राधान्ये व्यवस्थापित करा:
+    </p>
+
+    <form onsubmit="return handleSaveAdminSettings(event)">
+      <div class="field" style="margin-bottom:12px;">
+        <label style="font-size:12px; font-weight:700;" data-i18n="adminSettingsNameLabel">प्रशासकाचे नाव (Admin Name)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">👤</span>
+          <input type="text" id="cfg-admin-name" value="शैलेश (Administrator)" placeholder="Admin Name" required style="font-size:13px;">
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:12px;">
+        <label style="font-size:12px; font-weight:700;" data-i18n="adminSettingsEmailLabel">प्रशासक ईमेल (Admin Email)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">✉️</span>
+          <input type="email" id="cfg-admin-email" value="shailesh14362@gmail.com" placeholder="shailesh14362@gmail.com" required style="font-size:13px;">
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:12px;">
+        <label style="font-size:12px; font-weight:700;" data-i18n="adminSettingsPassLabel">नवीन ॲडमिन पासवर्ड (New Password - बदलायचा असल्यास)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">🔒</span>
+          <input type="password" id="cfg-admin-new-pass" placeholder="नवीन पासवर्ड (उदा. 123456)" style="font-size:13px;">
+          <span class="trail-icon" onclick="togglePassword('cfg-admin-new-pass', this)">👁</span>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:18px;">
+        <label style="font-size:12px; font-weight:700;" data-i18n="adminSettingsLangLabel">डीफॉल्ट भाषा (Default Language)</label>
+        <div class="input-wrap">
+          <span class="lead-icon">🌐</span>
+          <select id="cfg-admin-lang" style="font-size:13px;">
+            <option value="mr">🚩 मराठी (Marathi)</option>
+            <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+            <option value="en">🌐 English</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeSupabaseModal()" data-i18n="modalCloseBtn">बंद करा</button>
+        <button type="submit" class="btn btn-primary" style="flex:1;" data-i18n="adminSettingsBtnSave">💾 सेटिंग्ज सेव्ह करा</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 8. ADMIN PROFILE MODAL                                                    -->
+<!-- ========================================================================= -->
+<div class="modal-overlay" id="admin-profile-modal" style="display:none;">
+  <div class="modal-card" style="max-width:460px; padding:28px;">
+    <div class="modal-header" style="padding:0 0 14px 0; margin-bottom:14px; border-bottom:1px solid var(--line);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:24px;">👑</span>
+        <b style="font-size:16px; font-weight:800; color:var(--green-dark);" data-i18n="adminProfileModalTitle">मुख्य प्रशासक प्रोफाईल (Admin Profile)</b>
+      </div>
+      <button class="modal-close-btn" onclick="closeAdminProfileModal()">✕</button>
+    </div>
+
+    <div style="text-align:center; padding:16px 0;">
+      <div style="width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg, var(--orange), var(--orange-dark)); color:#fff; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 12px; box-shadow:0 6px 16px rgba(230,81,0,0.3);">
+        👨‍💼
+      </div>
+      <h3 id="admin-prof-name" style="font-size:18px; font-weight:800; color:var(--ink); margin-bottom:4px;">शैलेश (Administrator)</h3>
+      <span class="badge badge-warning" style="font-size:12px; padding:4px 10px;">👑 System Administrator</span>
+    </div>
+
+    <div style="background:var(--cream); border-radius:14px; padding:16px; margin-bottom:20px; border:1px solid var(--line);">
+      <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13px;">
+        <span style="color:var(--muted);" data-i18n="adminProfileEmailLabel">प्रशासक ईमेल आयडी:</span>
+        <b id="admin-prof-email" style="color:var(--ink);">shailesh14362@gmail.com</b>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.06); font-size:13px;">
+        <span style="color:var(--muted);" data-i18n="adminProfileRoleLabel">प्रणालीतील भूमिका:</span>
+        <b style="color:var(--green-dark);">Full Admin Privileges</b>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:13px;">
+        <span style="color:var(--muted);" data-i18n="adminProfileStatusLabel">खाते स्थिती:</span>
+        <span class="badge badge-verified">✓ Active & Live</span>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:10px;">
+      <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeAdminProfileModal(); openSupabaseSetupModal();" data-i18n="adminBtnSettings">⚙️ ॲडमिन सेटिंग्ज</button>
+      <button type="button" class="btn btn-primary" style="flex:1;" onclick="closeAdminProfileModal()" data-i18n="modalCloseBtn">बंद करा</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- JavaScript Files (Supabase SDK + App Modules)                             -->
+<!-- ========================================================================= -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/translations.js"></script>
+<script src="js/voice-assistant.js"></script>
+<script src="js/translator.js"></script>
+<script src="js/learning-tracker.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
