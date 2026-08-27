@@ -10,12 +10,18 @@ window.currentUser = JSON.parse(localStorage.getItem('aapla_vyapar_current_user'
 window.currentUserName = window.currentUser ? window.currentUser.name : (localStorage.getItem('aapla_vyapar_name') || 'पाहुणे उद्योजक');
 
 // Global Instances
-let voiceAssistant;
-let translator;
-let learningTracker;
-let adminPortal;
+let voiceAssistant = (typeof VoiceAssistant === 'function') ? new VoiceAssistant() : null;
+let translator = (typeof MultiLingualTranslator === 'function') ? new MultiLingualTranslator() : null;
+let learningTracker = (typeof LearningTracker === 'function') ? new LearningTracker() : null;
+let adminPortal = (typeof AdminPortal === 'function') ? new AdminPortal() : null;
+let supabaseManager = (typeof SupabaseManager === 'function') ? new SupabaseManager() : null;
 let otpEngine;
-let supabaseManager;
+
+window.voiceAssistant = voiceAssistant;
+window.translator = translator;
+window.learningTracker = learningTracker;
+window.adminPortal = adminPortal;
+window.supabaseManager = supabaseManager;
 
 // Toast Utility
 function showToast(message, type = 'info') {
@@ -258,6 +264,8 @@ class FreeOtpEngine {
     this.pendingPayload = null;
   }
 }
+otpEngine = new FreeOtpEngine();
+window.otpEngine = otpEngine;
 
 // Auto-advance logic for 6 OTP boxes
 function setupOtpBoxListeners() {
@@ -1052,6 +1060,7 @@ function renderUserPortal() {
   if (heroStatUsers) heroStatUsers.innerText = `${users.length > 0 ? users.length : 1}`;
   if (heroStatVideos) heroStatVideos.innerText = `${videos.length}`;
 
+  renderVideoHub('all');
   if (learningTracker) learningTracker.updateUI();
   renderUserQueriesList();
 }

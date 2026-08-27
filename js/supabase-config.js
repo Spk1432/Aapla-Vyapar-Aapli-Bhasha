@@ -236,6 +236,63 @@ class SupabaseManager {
       return { success: false, error: err.message };
     }
   }
+
+  // SYNC VIDEO TO SUPABASE CLOUD
+  async syncVideoToSupabase(video) {
+    if (!this.isConfigured() || !video) return;
+    try {
+      const row = {
+        id: video.id,
+        title: video.title,
+        title_hi: video.titleHi || video.title,
+        title_en: video.titleEn || video.title,
+        embed_url: video.embedUrl,
+        category: video.category || 'notebooklm',
+        description: video.desc || '',
+        description_hi: video.descHi || video.desc || '',
+        description_en: video.descEn || video.desc || '',
+        duration: video.duration || '08:00',
+        language: video.language || 'मराठी / हिंदी'
+      };
+      await this.client.from('videos').upsert(row, { onConflict: 'id' });
+    } catch (e) {
+      console.warn('Supabase video sync error:', e);
+    }
+  }
+
+  // FETCH VIDEOS FROM SUPABASE CLOUD
+  async fetchVideosFromSupabase() {
+    if (!this.isConfigured()) return null;
+    try {
+      const { data, error } = await this.client.from('videos').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) return null;
+      return data.map(v => ({
+        id: v.id,
+        title: v.title,
+        titleHi: v.title_hi || v.title,
+        titleEn: v.title_en || v.title,
+        embedUrl: v.embed_url,
+        category: v.category,
+        desc: v.description,
+        descHi: v.description_hi || v.description,
+        descEn: v.description_en || v.description,
+        duration: v.duration,
+        language: v.language
+      }));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // DELETE VIDEO FROM SUPABASE CLOUD
+  async deleteVideoFromSupabase(videoId) {
+    if (!this.isConfigured() || !videoId) return;
+    try {
+      await this.client.from('videos').delete().eq('id', videoId);
+    } catch (e) {
+      console.warn('Supabase video delete error:', e);
+    }
+  }
 }
 
 window.SupabaseManager = SupabaseManager;

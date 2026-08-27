@@ -10,38 +10,78 @@ class AdminPortal {
     this.queriesKey = 'aapla_vyapar_admin_queries';
 
     this.initDefaultData();
+    setTimeout(() => this.syncFromCloud(), 800);
+  }
+
+  async syncFromCloud() {
+    if (window.supabaseManager && typeof window.supabaseManager.fetchVideosFromSupabase === 'function') {
+      try {
+        const cloudVideos = await window.supabaseManager.fetchVideosFromSupabase();
+        if (cloudVideos && cloudVideos.length > 0) {
+          const localVideos = this.getVideos();
+          const merged = [...cloudVideos];
+          localVideos.forEach(lv => {
+            if (!merged.some(mv => mv.id === lv.id || mv.embedUrl === lv.embedUrl)) {
+              merged.push(lv);
+            }
+          });
+          localStorage.setItem(this.videosKey, JSON.stringify(merged));
+          if (typeof renderVideoHub === 'function') {
+            renderVideoHub();
+          }
+        }
+      } catch (e) {
+        console.warn('Cloud video sync note:', e);
+      }
+    }
   }
 
   extractYouTubeEmbedUrl(url) {
     if (!url || typeof url !== 'string') return 'https://www.youtube.com/embed/41X1WpXh46g';
     url = url.trim();
-    if (url.includes('youtube.com/embed/')) return url;
-    
-    const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+
+    // 1. If user pasted iframe HTML embed code
+    const iframeMatch = url.match(/src=["']([^"']+)["']/i);
+    if (iframeMatch && iframeMatch[1]) {
+      url = iframeMatch[1];
+    }
+
+    // 2. If it's already an embed URL
+    const embedMatch = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/i);
+    if (embedMatch && embedMatch[1]) {
+      return `https://www.youtube.com/embed/${embedMatch[1]}`;
+    }
+
+    // 3. If it's a short URL: youtu.be/VIDEO_ID
+    const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/i);
     if (shortMatch && shortMatch[1]) {
       return `https://www.youtube.com/embed/${shortMatch[1]}`;
     }
-    
-    const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+
+    // 4. If it's standard watch: youtube.com/watch?v=VIDEO_ID
+    const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/i);
     if (watchMatch && watchMatch[1]) {
       return `https://www.youtube.com/embed/${watchMatch[1]}`;
     }
-    
-    const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
-    if (shortsMatch && shortsMatch[1]) {
-      return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+
+    // 5. If it's YouTube Shorts or Live: youtube.com/shorts/VIDEO_ID or youtube.com/live/VIDEO_ID
+    const streamMatch = url.match(/youtube\.com\/(?:shorts|live)\/([a-zA-Z0-9_-]+)/i);
+    if (streamMatch && streamMatch[1]) {
+      return `https://www.youtube.com/embed/${streamMatch[1]}`;
     }
-    
-    if (/^[a-zA-Z0-9_-]{11}$/.test(url)) {
-      return `https://www.youtube.com/embed/${url}`;
+
+    // 6. If it's just the 11-character video ID
+    const cleanId = url.replace(/[^a-zA-Z0-9_-]/g, '');
+    if (cleanId.length === 11) {
+      return `https://www.youtube.com/embed/${cleanId}`;
     }
-    
+
     return url;
   }
 
   getYouTubeThumbnail(embedUrl) {
     if (!embedUrl) return '';
-    const match = embedUrl.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/);
+    const match = embedUrl.match(/(?:embed\/|youtu\.be\/|[?&]v=|shorts\/|live\/)([a-zA-Z0-9_-]+)/i);
     if (match && match[1]) {
       return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
     }
@@ -221,10 +261,10 @@ class AdminPortal {
       title: videoData.title,
       titleHi: videoData.titleHi || videoData.title,
       titleEn: videoData.titleEn || videoData.title,
-      category: videoData.category || 'all',
+      category: videoData.category || 'notebooklm',
       embedUrl: cleanEmbedUrl,
-      duration: videoData.duration || '07:15',
-      language: videoData.language || 'मराठी / हिंदी / English',
+      duration: videoData.duration || '08:30',
+      language: videoData.language || 'मराठी / हिंदी',
       desc: videoData.desc || '',
       descHi: videoData.descHi || videoData.desc || '',
       descEn: videoData.descEn || videoData.desc || ''
@@ -232,6 +272,10 @@ class AdminPortal {
     
     videos.unshift(newVideo);
     localStorage.setItem(this.videosKey, JSON.stringify(videos));
+
+    if (window.supabaseManager) {
+      window.supabaseManager.syncVideoToSupabase(newVideo);
+    }
     
     const lang = window.currentLanguage || 'mr';
     const msg = lang === 'hi' ? '🎥 नया वीडियो सफलतापूर्वक प्रकाशित हुआ!' : lang === 'en' ? '🎥 Video tutorial published successfully!' : '🎥 नवीन व्हिडिओ यशस्वीरीत्या प्रकाशित झाला!';
@@ -243,6 +287,11 @@ class AdminPortal {
     let videos = this.getVideos();
     videos = videos.filter(v => v.id !== videoId);
     localStorage.setItem(this.videosKey, JSON.stringify(videos));
+
+    if (window.supabaseManager) {
+      window.supabaseManager.deleteVideoFromSupabase(videoId);
+    }
+
     const lang = window.currentLanguage || 'mr';
     const msg = lang === 'hi' ? 'वीडियो हटा दिया गया।' : lang === 'en' ? 'Video deleted.' : 'व्हिडिओ हटवला गेला.';
     showToast(msg, 'info');
