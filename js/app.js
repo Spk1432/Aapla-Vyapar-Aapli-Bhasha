@@ -1015,8 +1015,12 @@ function showPage(targetRoute, updateHistory = true) {
   // 5. Trigger view-specific dynamic updates
   onRouteEnter(route);
 
-  // 6. Smoothly scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // 6. Reset scroll position of main content container and window
+  const mainContent = document.getElementById('appMainContent');
+  if (mainContent) {
+    mainContent.scrollTop = 0;
+  }
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 window.showPage = showPage;
 
@@ -1145,6 +1149,10 @@ function applyAuthSession(role, user) {
     // Open current hash route or default to home
     const initialRoute = resolveRouteFromHash(window.location.hash);
     showPage(initialRoute, false);
+  }
+  const mainContent = document.getElementById('appMainContent');
+  if (mainContent) {
+    mainContent.scrollTop = 0;
   }
   window.scrollTo(0, 0);
 }
