@@ -16,11 +16,23 @@ class AdminPortal {
   async syncFromCloud() {
     if (!window.supabaseManager) return;
     try {
-      // 1. Sync Videos
+      // 1. VIDEOS: Bidirectional Sync (Desktop Local -> Supabase Cloud -> Phone)
       if (typeof window.supabaseManager.fetchVideosFromSupabase === 'function') {
         const cloudVideos = await window.supabaseManager.fetchVideosFromSupabase();
+        const localVideos = this.getVideos();
+
+        // 1A. Back-sync: Upload any local videos that are missing from Supabase Cloud
+        if (localVideos && localVideos.length > 0) {
+          for (const lv of localVideos) {
+            const existsInCloud = cloudVideos && cloudVideos.some(cv => cv.id === lv.id || cv.embedUrl === lv.embedUrl);
+            if (!existsInCloud) {
+              await window.supabaseManager.syncVideoToSupabase(lv);
+            }
+          }
+        }
+
+        // 1B. Down-sync: Merge Supabase Cloud videos into local storage
         if (cloudVideos && cloudVideos.length > 0) {
-          const localVideos = this.getVideos();
           const merged = [...cloudVideos];
           localVideos.forEach(lv => {
             if (!merged.some(mv => mv.id === lv.id || mv.embedUrl === lv.embedUrl)) {
@@ -28,17 +40,24 @@ class AdminPortal {
             }
           });
           localStorage.setItem(this.videosKey, JSON.stringify(merged));
-          if (typeof renderVideoHub === 'function') {
-            renderVideoHub();
-          }
         }
       }
 
-      // 2. Sync Documents
+      // 2. DOCUMENTS: Bidirectional Sync
       if (typeof window.supabaseManager.fetchDocsFromSupabase === 'function') {
         const cloudDocs = await window.supabaseManager.fetchDocsFromSupabase();
+        const localDocs = this.getDocs();
+
+        if (localDocs && localDocs.length > 0) {
+          for (const ld of localDocs) {
+            const existsInCloud = cloudDocs && cloudDocs.some(cd => cd.id === ld.id || cd.title === ld.title);
+            if (!existsInCloud) {
+              await window.supabaseManager.syncDocToSupabase(ld);
+            }
+          }
+        }
+
         if (cloudDocs && cloudDocs.length > 0) {
-          const localDocs = this.getDocs();
           const mergedDocs = [...cloudDocs];
           localDocs.forEach(ld => {
             if (!mergedDocs.some(md => md.id === ld.id || md.title === ld.title)) {
@@ -49,11 +68,21 @@ class AdminPortal {
         }
       }
 
-      // 3. Sync Queries
+      // 3. QUERIES: Bidirectional Sync
       if (typeof window.supabaseManager.fetchQueriesFromSupabase === 'function') {
         const cloudQueries = await window.supabaseManager.fetchQueriesFromSupabase();
+        const localQueries = this.getQueries();
+
+        if (localQueries && localQueries.length > 0) {
+          for (const lq of localQueries) {
+            const existsInCloud = cloudQueries && cloudQueries.some(cq => cq.id === lq.id || cq.query === lq.query);
+            if (!existsInCloud) {
+              await window.supabaseManager.syncQueryToSupabase(lq);
+            }
+          }
+        }
+
         if (cloudQueries && cloudQueries.length > 0) {
-          const localQueries = this.getQueries();
           const mergedQueries = [...cloudQueries];
           localQueries.forEach(lq => {
             if (!mergedQueries.some(mq => mq.id === lq.id || mq.query === lq.query)) {
@@ -61,13 +90,16 @@ class AdminPortal {
             }
           });
           localStorage.setItem(this.queriesKey, JSON.stringify(mergedQueries));
-          if (typeof renderUserQueries === 'function') {
-            renderUserQueries();
-          }
         }
       }
 
-      // Refresh admin tables if admin is active
+      // Re-render views with updated unified cloud data
+      if (typeof renderVideoHub === 'function') {
+        renderVideoHub();
+      }
+      if (typeof renderUserQueriesList === 'function') {
+        renderUserQueriesList();
+      }
       if (typeof renderAdminPanel === 'function' && document && document.body && document.body.classList && typeof document.body.classList.contains === 'function' && document.body.classList.contains('admin-active')) {
         renderAdminPanel();
       }
