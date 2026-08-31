@@ -379,9 +379,46 @@ function selectAuthLanguage(lang) {
 }
 window.selectAuthLanguage = selectAuthLanguage;
 
+// Apply Translation Strings to DOM (Pure Localization)
+function applyTranslations(lang = window.currentLanguage || 'mr') {
+  if (!window.translations || !window.translations[lang]) lang = 'mr';
+  const t = window.translations[lang] || window.translations.mr;
+
+  // Update text for all elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key && t[key.trim()] !== undefined) {
+      el.innerHTML = t[key.trim()];
+    }
+  });
+
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (key && t[key.trim()] !== undefined) {
+      el.placeholder = t[key.trim()];
+    }
+  });
+
+  // Update default user placeholder text if default name is shown
+  const defaultUserName = lang === 'hi' ? 'उद्यमी' : lang === 'en' ? 'Entrepreneur' : 'उद्योजक';
+  const defaultUserLocation = lang === 'hi' ? 'महाराष्ट्र' : lang === 'en' ? 'Maharashtra' : 'महाराष्ट्र';
+  document.querySelectorAll('.logged-in-user-name').forEach(el => {
+    if (!window.currentUser || !window.currentUser.name || window.currentUser.name === 'उद्योजक' || window.currentUser.name === 'उद्यमी' || window.currentUser.name === 'Entrepreneur' || window.currentUser.name.includes('उद्योजक')) {
+      el.textContent = defaultUserName;
+    }
+  });
+  document.querySelectorAll('.logged-in-user-location').forEach(el => {
+    if (!window.currentUser || !window.currentUser.village || window.currentUser.village === 'महाराष्ट्र' || window.currentUser.village === 'Maharashtra') {
+      el.textContent = (el.textContent.includes('📍') ? '📍 ' : '') + defaultUserLocation;
+    }
+  });
+}
+window.applyTranslations = applyTranslations;
+
 // Language Switcher Function (Pure Localization)
 function setLanguage(lang) {
-  if (!window.translations[lang]) lang = 'mr';
+  if (!window.translations || !window.translations[lang]) lang = 'mr';
   window.currentLanguage = lang;
   localStorage.setItem('aapla_vyapar_lang', lang);
   document.documentElement.lang = lang;
@@ -397,24 +434,6 @@ function setLanguage(lang) {
       saveRegisteredUsers(users);
     }
   }
-
-  const t = window.translations[lang];
-
-  // Update text for all elements with data-i18n
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key]) {
-      el.innerHTML = t[key];
-    }
-  });
-
-  // Update placeholders
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-    const key = el.getAttribute('data-i18n-ph');
-    if (t[key]) {
-      el.placeholder = t[key];
-    }
-  });
 
   // Update language pill labels
   const langLabels = { mr: 'मराठी ▾', hi: 'हिंदी ▾', en: 'English ▾' };
@@ -445,19 +464,8 @@ function setLanguage(lang) {
     voiceAssistant.currentLang = lang;
   }
 
-  // Update default user placeholder text if default name is shown
-  const defaultUserName = lang === 'hi' ? 'उद्यमी' : lang === 'en' ? 'Entrepreneur' : 'उद्योजक';
-  const defaultUserLocation = lang === 'hi' ? 'महाराष्ट्र' : lang === 'en' ? 'Maharashtra' : 'महाराष्ट्र';
-  document.querySelectorAll('.logged-in-user-name').forEach(el => {
-    if (!window.currentUser || !window.currentUser.name || window.currentUser.name === 'उद्योजक' || window.currentUser.name === 'उद्यमी' || window.currentUser.name === 'Entrepreneur') {
-      el.textContent = defaultUserName;
-    }
-  });
-  document.querySelectorAll('.logged-in-user-location').forEach(el => {
-    if (!window.currentUser || !window.currentUser.village || window.currentUser.village === 'महाराष्ट्र' || window.currentUser.village === 'Maharashtra') {
-      el.textContent = (el.textContent.includes('📍') ? '📍 ' : '') + defaultUserLocation;
-    }
-  });
+  // Apply all translation strings to DOM
+  applyTranslations(lang);
 
   // Refresh dynamic listings
   renderVideoHub();
@@ -1029,6 +1037,7 @@ function showPage(targetRoute, updateHistory = true) {
 
   // 5. Trigger view-specific dynamic updates
   onRouteEnter(route);
+  applyTranslations(window.currentLanguage);
 
   // 6. Reset scroll position of main content container and window
   const mainContent = document.getElementById('appMainContent');
