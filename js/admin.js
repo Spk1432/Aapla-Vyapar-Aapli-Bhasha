@@ -234,33 +234,53 @@ class AdminPortal {
     }
 
     // 2. Initial Documents
-    if (!localStorage.getItem(this.docsKey)) {
-      const defaultDocs = [
-        {
-          id: 'doc-1',
-          title: 'मुद्रा लोन (PMMY) मार्गदर्शक व आवश्यक कागदपत्रे यादी',
-          category: 'लोन / बँकिंग',
-          size: '1.2 MB',
-          date: '15 Feb 2026',
-          content: 'मुद्रा लोन अर्ज मार्गदर्शिका: आवश्यक कागदपत्रे - आधार कार्ड, पॅन कार्ड, ६ महिन्यांचे बँक खाते स्टेटमेंट, उद्योग आधार नोंदणी प्रमाणपत्र आणि व्यवसायाचा पत्ता पुरावा.'
-        },
-        {
-          id: 'doc-2',
-          title: 'महाराष्ट्र गुमास्ता (Shop Act) नोंदणी नियम व नमुना फॉर्म',
-          category: 'सरकारी नियम',
-          size: '850 KB',
-          date: '10 Feb 2026',
-          content: 'ग्रामीण भागातील दुकानांसाठी शॉप ॲक्ट नोंदणी कशी करावी. ऑनलाईन महाईसेवा केंद्रावरून किंवा थेट आपले सरकार पोर्टलवरून नोंदणी प्रक्रिया.'
-        },
-        {
-          id: 'doc-3',
-          title: 'डिजिटल पेमेंट सायबर सुरक्षा व फसवणूक प्रतिबंधक मार्गदर्शक',
-          category: 'सुरक्षा',
-          size: '950 KB',
-          date: '02 Feb 2026',
-          content: 'व्यापाऱ्यांसाठी सुरक्षा टिप्स: कधीही अनोळखी व्यक्तीला UPI PIN सांगू नका. पैसे प्राप्त करण्यासाठी PIN टाकण्याची आवश्यकता नसते.'
-        }
-      ];
+    const savedDocs = localStorage.getItem(this.docsKey);
+    const defaultDocs = [
+      {
+        id: 'doc-1',
+        title: 'मुद्रा लोन (PMMY) मार्गदर्शक व आवश्यक कागदपत्रे यादी',
+        titleHi: 'मुद्रा लोन (PMMY) मार्गदर्शक व आवश्यक दस्तावेज़ सूची',
+        titleEn: 'Mudra Loan (PMMY) Guidelines & Required Documents List',
+        category: 'लोन / बँकिंग',
+        categoryHi: 'ऋण / बैंकिंग',
+        categoryEn: 'Loans & Banking',
+        size: '1.2 MB',
+        date: '15 Feb 2026',
+        content: 'मुद्रा लोन अर्ज मार्गदर्शिका: आवश्यक कागदपत्रे - आधार कार्ड, पॅन कार्ड, ६ महिन्यांचे बँक खाते स्टेटमेंट, उद्योग आधार नोंदणी प्रमाणपत्र आणि व्यवसायाचा पत्ता पुरावा.',
+        contentHi: 'मुद्रा ऋण आवेदन दिशानिर्देश: आवश्यक दस्तावेज़ - आधार कार्ड, पैन कार्ड, 6 महीने का बैंक स्टेटमेंट, उद्यम आधार पंजीकरण और व्यावसायिक पता प्रमाण।',
+        contentEn: 'Mudra Loan Application Guidelines: Required documents - Aadhaar Card, PAN Card, 6 months bank statement, Udyam Aadhar Registration certificate, and business address proof.'
+      },
+      {
+        id: 'doc-2',
+        title: 'महाराष्ट्र गुमास्ता (Shop Act) नोंदणी नियम व नमुना फॉर्म',
+        titleHi: 'महाराष्ट्र गुमास्ता (Shop Act) पंजीकरण नियम व नमूना फॉर्म',
+        titleEn: 'Maharashtra Shop Act (Gumasta) Registration Rules & Sample Form',
+        category: 'सरकारी नियम',
+        categoryHi: 'सरकारी नियम',
+        categoryEn: 'Official Regulations',
+        size: '850 KB',
+        date: '10 Feb 2026',
+        content: 'ग्रामीण भागातील दुकानांसाठी शॉप ॲक्ट नोंदणी कशी करावी. ऑनलाईन महाईसेवा केंद्रावरून किंवा थेट आपले सरकार पोर्टलवरून नोंदणी प्रक्रिया.',
+        contentHi: 'ग्रामीण क्षेत्रों में दुकानों के लिए शॉप एक्ट पंजीकरण कैसे करें। ऑनलाइन महाईसेवा केंद्र या आपले सरकार पोर्टल से पंजीकरण प्रक्रिया।',
+        contentEn: 'How to register a rural shop under Maharashtra Shop Act. Step-by-step registration via Maha e-Seva centers or Aaple Sarkar portal.'
+      },
+      {
+        id: 'doc-3',
+        title: 'डिजिटल पेमेंट सायबर सुरक्षा व फसवणूक प्रतिबंधक मार्गदर्शक',
+        titleHi: 'डिजिटल पेमेंट साइबर सुरक्षा व धोखाधड़ी रोकथाम मार्गदर्शक',
+        titleEn: 'Digital Payment Cyber Security & Fraud Prevention Guide',
+        category: 'सुरक्षा',
+        categoryHi: 'सुरक्षा',
+        categoryEn: 'Security',
+        size: '950 KB',
+        date: '02 Feb 2026',
+        content: 'व्यापाऱ्यांसाठी सुरक्षा टिप्स: कधीही अनोळखी व्यक्तीला UPI PIN सांगू नका. पैसे प्राप्त करण्यासाठी PIN टाकण्याची आवश्यकता नसते.',
+        contentHi: 'व्यापारियों के लिए सुरक्षा सुझाव: कभी भी अनजान व्यक्ति को UPI PIN न बताएं। पैसे प्राप्त करने के लिए PIN दर्ज करने की आवश्यकता नहीं होती।',
+        contentEn: 'Security tips for merchants: Never share your UPI PIN with strangers. Entering a UPI PIN is only required for sending money, never for receiving money.'
+      }
+    ];
+
+    if (!savedDocs || !savedDocs.includes('titleEn')) {
       localStorage.setItem(this.docsKey, JSON.stringify(defaultDocs));
     }
 

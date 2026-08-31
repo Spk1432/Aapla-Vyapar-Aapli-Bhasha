@@ -445,10 +445,25 @@ function setLanguage(lang) {
     voiceAssistant.currentLang = lang;
   }
 
+  // Update default user placeholder text if default name is shown
+  const defaultUserName = lang === 'hi' ? 'उद्यमी' : lang === 'en' ? 'Entrepreneur' : 'उद्योजक';
+  const defaultUserLocation = lang === 'hi' ? 'महाराष्ट्र' : lang === 'en' ? 'Maharashtra' : 'महाराष्ट्र';
+  document.querySelectorAll('.logged-in-user-name').forEach(el => {
+    if (!window.currentUser || !window.currentUser.name || window.currentUser.name === 'उद्योजक' || window.currentUser.name === 'उद्यमी' || window.currentUser.name === 'Entrepreneur') {
+      el.textContent = defaultUserName;
+    }
+  });
+  document.querySelectorAll('.logged-in-user-location').forEach(el => {
+    if (!window.currentUser || !window.currentUser.village || window.currentUser.village === 'महाराष्ट्र' || window.currentUser.village === 'Maharashtra') {
+      el.textContent = (el.textContent.includes('📍') ? '📍 ' : '') + defaultUserLocation;
+    }
+  });
+
   // Refresh dynamic listings
   renderVideoHub();
   if (learningTracker) learningTracker.updateUI();
   renderUserQueriesList();
+  renderProfileView();
   renderAdminPanel();
 }
 window.setLanguage = setLanguage;
@@ -1072,15 +1087,21 @@ function onRouteEnter(route) {
 
 function renderProfileView() {
   const user = window.currentUser || {};
+  const lang = window.currentLanguage || 'mr';
+  const t = window.translations[lang] || window.translations.mr;
   const emailEl = document.getElementById('prof-view-email');
   const villageEl = document.getElementById('prof-view-village');
   const bizEl = document.getElementById('prof-view-biz');
   const streakEl = document.getElementById('prof-view-streak');
 
+  const defaultLocation = lang === 'hi' ? 'महाराष्ट्र' : lang === 'en' ? 'Maharashtra' : 'महाराष्ट्र';
+  const defaultBiz = t.bizCat1 || 'किराणा व जनरल स्टोअर्स';
+  const daysText = lang === 'hi' ? 'दिन' : lang === 'en' ? 'Day' : 'दिवस';
+
   if (emailEl) emailEl.textContent = user.email || 'entrepreneur@gmail.com';
-  if (villageEl) villageEl.textContent = user.village || 'महाराष्ट्र';
-  if (bizEl) bizEl.textContent = user.businessType || 'किराणा व जनरल स्टोअर्स';
-  if (streakEl) streakEl.textContent = `🔥 ${localStorage.getItem('aapla_vyapar_learning_streak') || 1} दिवस`;
+  if (villageEl) villageEl.textContent = user.village || defaultLocation;
+  if (bizEl) bizEl.textContent = user.businessType || defaultBiz;
+  if (streakEl) streakEl.textContent = `🔥 ${localStorage.getItem('aapla_vyapar_learning_streak') || 1} ${daysText}`;
 }
 window.renderProfileView = renderProfileView;
 
@@ -1872,30 +1893,37 @@ function renderAdminPanel() {
   const videosTbody = document.getElementById('admin-videos-tbody');
   if (videosTbody) {
     const videos = adminPortal.getVideos();
-    videosTbody.innerHTML = videos.map(v => `
+    videosTbody.innerHTML = videos.map(v => {
+      const vTitle = (lang === 'hi' && v.titleHi) ? v.titleHi : (lang === 'en' && v.titleEn) ? v.titleEn : v.title;
+      return `
       <tr>
-        <td><b>${v.title}</b><br><small style="color:#666;">${v.duration} | ${v.language}</small></td>
+        <td><b>${vTitle}</b><br><small style="color:#666;">${v.duration} | ${v.language}</small></td>
         <td><span class="badge badge-info">${v.category}</span></td>
         <td>
           <button class="btn btn-xs btn-danger" onclick="deleteAdminVideo('${v.id}')">${window.translations[lang].adminDelete || 'हटवा'}</button>
         </td>
       </tr>
-    `).join('');
+    `;
+    }).join('');
   }
 
   // Render Admin Docs Table
   const docsTbody = document.getElementById('admin-docs-tbody');
   if (docsTbody) {
     const docs = adminPortal.getDocs();
-    docsTbody.innerHTML = docs.map(d => `
+    docsTbody.innerHTML = docs.map(d => {
+      const dTitle = (lang === 'hi' && d.titleHi) ? d.titleHi : (lang === 'en' && d.titleEn) ? d.titleEn : d.title;
+      const dCat = (lang === 'hi' && d.categoryHi) ? d.categoryHi : (lang === 'en' && d.categoryEn) ? d.categoryEn : d.category;
+      return `
       <tr>
-        <td><b>${d.title}</b><br><small style="color:#666;">${d.size} | ${d.date}</small></td>
-        <td><span class="badge badge-warning">${d.category}</span></td>
+        <td><b>${dTitle}</b><br><small style="color:#666;">${d.size} | ${d.date}</small></td>
+        <td><span class="badge badge-warning">${dCat}</span></td>
         <td>
           <button class="btn btn-xs btn-danger" onclick="deleteAdminDoc('${d.id}')">${window.translations[lang].adminDelete || 'हटवा'}</button>
         </td>
       </tr>
-    `).join('');
+    `;
+    }).join('');
   }
 
   // Render Admin Queries Desk
