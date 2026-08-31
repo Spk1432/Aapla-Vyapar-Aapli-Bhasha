@@ -1473,6 +1473,47 @@ function bindEventListeners() {
       renderUserQueriesList();
     });
   }
+
+  // Mobile Bottom Navigation and Drawer Active State Handler
+  const bottomNavItems = document.querySelectorAll('.bn-item');
+  bottomNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      bottomNavItems.forEach(el => el.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // Auto-close mobile drawer when clicking outside
+  document.addEventListener('click', (e) => {
+    const drawer = document.getElementById('mobile-drawer');
+    const burger = document.querySelector('.burger');
+    if (drawer && drawer.classList.contains('open')) {
+      if (!drawer.contains(e.target) && !burger.contains(e.target)) {
+        drawer.classList.remove('open');
+      }
+    }
+  });
+
+  // Mobile Scrollspy for bottom navbar
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('scroll', () => {
+      const sections = ['home', 'assistant', 'learn', 'translate', 'tracker'];
+      const scrollPos = (window.scrollY || 0) + 200;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sec = document.getElementById(sections[i]);
+        if (sec && sec.offsetTop <= scrollPos) {
+          bottomNavItems.forEach(item => {
+            if (item.getAttribute('href') === `#${sections[i]}`) {
+              item.classList.add('active');
+            } else {
+              item.classList.remove('active');
+            }
+          });
+          break;
+        }
+      }
+    }, { passive: true });
+  }
 }
 
 // Helper to update extraction status badge
