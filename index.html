@@ -183,7 +183,7 @@
           </div>
         </div>
 
-        <button class="btn btn-sm btn-danger" onclick="logout()" data-i18n="logout">⏻ लॉगआउट</button>
+        <button class="btn btn-sm btn-danger nav-logout-btn" onclick="logout()" data-i18n="logout">⏻ लॉगआउट</button>
         <button class="burger" onclick="document.getElementById('mobile-drawer').classList.toggle('open')">
           <span></span><span></span><span></span>
         </button>
@@ -200,11 +200,12 @@
       <a href="#doc-translate" data-i18n="navDocTranslate" onclick="document.getElementById('mobile-drawer').classList.remove('open')">दस्तऐवज</a>
       <a href="#tracker" data-i18n="navTracker" onclick="document.getElementById('mobile-drawer').classList.remove('open')">माझी प्रगती</a>
       <a href="#help" data-i18n="navHelp" onclick="document.getElementById('mobile-drawer').classList.remove('open')">मदत आणि प्रश्न</a>
-      <div style="margin-top:10px; display:flex; gap:8px;">
+      <div style="margin-top:14px; display:flex; gap:8px;">
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('mr')">मराठी</button>
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('hi')">हिंदी</button>
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('en')">English</button>
       </div>
+      <button class="btn btn-sm btn-danger" style="margin-top:10px; width:100%;" onclick="logout()" data-i18n="logout">⏻ लॉगआउट (Logout)</button>
     </div>
   </header>
 
@@ -514,7 +515,7 @@
           <b data-i18n="docSampleLibraryTitle" style="font-size:15.5px; color:var(--green-dark); display:block;">📂 नमुना शासकीय कागदपत्रे लायब्ररी</b>
           <p data-i18n="docSampleLibrarySub" style="font-size:12.5px; color:var(--muted); margin-top:2px;">सराव करण्यासाठी किंवा भाषांतर तपासण्यासाठी खालीलपैकी कोणत्याही अधिकृत नमुन्यावर क्लिक करा:</p>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px;">
+        <div class="doc-samples-grid">
           <div class="sample-doc-card" id="btn-load-sample-mudra">
             <div style="font-size:26px;">🏛️</div>
             <div>
@@ -708,7 +709,7 @@
         <span style="font-size:11px; color:#a0b2a7;" data-i18n="adminSubtitle">व्हिडिओ ट्युटोरियल्स, दस्तऐवज लायब्ररी आणि उद्योजकांच्या प्रश्नांचे व्यवस्थापन करा.</span>
       </div>
     </div>
-    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <div class="admin-header-actions">
       <button class="btn btn-sm btn-outline-white" onclick="openAdminProfileModal()" data-i18n="adminBtnViewProfile">👤 प्रोफाईल पहा</button>
       <button class="btn btn-sm btn-outline-white" onclick="openSupabaseModal()" data-i18n="adminBtnSettings">⚙️ ॲडमिन सेटिंग्ज</button>
       <button class="btn btn-sm btn-outline-white" onclick="loginSuccess('user', 'शैलेश')" data-i18n="adminViewUserPageBtn">👁️ उद्योजक पेज पहा</button>
@@ -750,7 +751,7 @@
       <div style="background:#fff; border-radius:18px; padding:24px; border:1px solid var(--line); margin-bottom:24px;">
         <h4 data-i18n="adminAddVideoTitle" style="font-size:16px; margin-bottom:14px; color:var(--green-dark);">नवीन व्हिडिओ जोडा</h4>
         <form onsubmit="return handleAdminAddVideo(event)">
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="admin-form-row">
             <div class="field">
               <label data-i18n="adminFormVideoName">व्हिडिओचे नाव / शीर्षक</label>
               <div class="input-wrap">
@@ -809,7 +810,7 @@
       <div style="background:#fff; border-radius:18px; padding:24px; border:1px solid var(--line); margin-bottom:24px;">
         <h4 data-i18n="adminAddDocTitle" style="font-size:16px; margin-bottom:14px; color:var(--green-dark);">नवीन दस्तऐवज जोडा</h4>
         <form onsubmit="return handleAdminAddDoc(event)">
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="admin-form-row">
             <div class="field">
               <label data-i18n="adminFormDocTitle">दस्तऐवजाचे शीर्षक</label>
               <div class="input-wrap">

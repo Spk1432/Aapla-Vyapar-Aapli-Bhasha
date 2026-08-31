@@ -408,22 +408,35 @@ nav.main-nav a:hover {
 }
 
 .hero-stats {
-  display: flex;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
   margin-top: 36px;
-  flex-wrap: wrap;
+}
+
+.hero-stats .stat {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: center;
+  backdrop-filter: blur(6px);
 }
 
 .hero-stats .stat b {
   display: block;
-  font-size: 24px;
+  font-size: 22px;
   font-family: 'Poppins', sans-serif;
   font-weight: 800;
+  color: #ffd8a8;
 }
 
 .hero-stats .stat span {
-  font-size: 12.5px;
-  opacity: 0.85;
+  font-size: 12px;
+  opacity: 0.9;
+  line-height: 1.3;
+  display: block;
+  margin-top: 2px;
 }
 
 .hero-visual {
@@ -1002,9 +1015,21 @@ body.site-active {
   .hero p.sub { font-size: 13.5px; line-height: 1.5; margin-bottom: 20px; }
   .hero-cta { flex-direction: column; gap: 10px; }
   .hero-cta .btn { width: 100%; min-height: 46px; font-size: 14.5px; }
-  .hero-stats { grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
-  .hero-stats .stat { padding: 10px 8px; font-size: 11px; }
-  .hero-stats .stat b { font-size: 20px; }
+  
+  .hero-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .hero-stats .stat {
+    padding: 10px 8px;
+  }
+  .hero-stats .stat b {
+    font-size: 20px;
+  }
+  .hero-stats .stat span {
+    font-size: 11px;
+  }
   
   .features-grid { grid-template-columns: 1fr; gap: 14px; }
   .f-card { min-height: 140px; padding: 20px 18px; }
@@ -1026,9 +1051,10 @@ body.site-active {
     font-size: 16px !important;
   }
   
-  .site-header { padding: 10px 0; }
-  .logo { font-size: 15px; }
-  .logo .badge { width: 32px; height: 32px; font-size: 16px; }
+  .site-header { padding: 8px 0; }
+  .logo { font-size: 15px; gap: 6px; }
+  .logo .badge { width: 30px; height: 30px; font-size: 15px; }
+  .nav-logout-btn { display: none !important; }
   
   #toast-container {
     left: 16px;
@@ -1038,9 +1064,10 @@ body.site-active {
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
   .logo span { display: none; }
-  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .lang-pill { padding: 5px 8px; font-size: 11.5px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
   .bn-item { font-size: 10px; padding: 4px 6px; }
   .bn-item .bn-ic { font-size: 16px; }
 }
