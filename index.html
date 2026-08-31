@@ -442,7 +442,7 @@
           <textarea class="trans-textarea" id="trans-output-text" data-i18n-ph="transOutputPlaceholder" placeholder="येथे भाषांतरित मजकूर तयार होईल..." readonly></textarea>
           <div class="trans-panel-actions">
             <button class="btn btn-sm btn-outline" id="btn-trans-speak" data-i18n="transBtnSpeak">🔊 ऐका</button>
-            <div style="display:flex; gap:8px;">
+            <div class="trans-panel-btns">
               <button class="btn btn-sm btn-outline" id="btn-trans-copy" data-i18n="transBtnCopy">📋 कॉपी करा</button>
               <button class="btn btn-sm btn-primary" id="btn-trans-whatsapp" style="background:#25D366; border:none;" data-i18n="transBtnWhatsapp">💬 WhatsApp</button>
             </div>
@@ -495,9 +495,9 @@
 
         <!-- Translated Document Preview Box -->
         <div style="margin-top:24px; border-top:1px solid var(--line); padding-top:20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
             <b data-i18n="docPreviewTitle" style="font-size:15px; color:var(--green-dark);">भाषांतरित दस्तऐवज पूर्वावलोकन</b>
-            <div style="display:flex; gap:8px;">
+            <div class="doc-preview-actions">
               <button class="btn btn-sm btn-primary" id="btn-download-doc-pdf" data-i18n="docBtnDownloadPdf">📥 भाषांतरित PDF डाउनलोड करा</button>
               <button class="btn btn-sm btn-outline" id="btn-download-doc-txt" data-i18n="docBtnDownloadTxt">📥 मजकूर (.txt)</button>
               <button class="btn btn-sm btn-outline" id="btn-print-doc" data-i18n="docBtnPrint">🖨️ प्रिंट करा</button>
@@ -614,7 +614,7 @@
         <div style="background:var(--cream); border:1.5px solid var(--line); border-radius:20px; padding:24px;">
           <b data-i18n="helpAskLabel" style="font-size:15px; display:block; margin-bottom:10px;">तुमचा प्रश्न विचारा (टाईप करा किंवा बोला):</b>
           <textarea id="user-query-input" class="trans-textarea" style="min-height:130px; background:#fff;" data-i18n-ph="helpPlaceholder" placeholder="उदा. मला दुकानासाठी करंट अकाउंट उघडायचे आहे, कोणती कागदपत्रे लागतील?"></textarea>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+          <div class="help-action-row">
             <button class="btn btn-sm btn-outline" onclick="askVoiceForQuery()" data-i18n="helpBtnVoice">🎙️ आवाजाने बोला</button>
             <button class="btn btn-primary" id="btn-submit-query" data-i18n="helpBtnSubmit">📤 प्रश्न पाठवा</button>
           </div>

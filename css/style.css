@@ -84,7 +84,7 @@ section[id] {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 11px 22px;
+  padding: 11px 20px;
   border-radius: 12px;
   font-weight: 700;
   font-size: 14px;
@@ -93,7 +93,9 @@ section[id] {
   font-family: inherit;
   transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), background 0.18s;
   min-height: 42px;
-  white-space: nowrap;
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.35;
 }
 
 .btn:active {
@@ -1055,6 +1057,14 @@ body.site-active {
   .logo { font-size: 15px; gap: 6px; }
   .logo .badge { width: 30px; height: 30px; font-size: 15px; }
   .nav-logout-btn { display: none !important; }
+  
+  .wa-fab {
+    bottom: 74px;
+    right: 14px;
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
   
   #toast-container {
     left: 16px;
