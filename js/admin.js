@@ -14,8 +14,10 @@ class AdminPortal {
   }
 
   async syncFromCloud() {
-    if (window.supabaseManager && typeof window.supabaseManager.fetchVideosFromSupabase === 'function') {
-      try {
+    if (!window.supabaseManager) return;
+    try {
+      // 1. Sync Videos
+      if (typeof window.supabaseManager.fetchVideosFromSupabase === 'function') {
         const cloudVideos = await window.supabaseManager.fetchVideosFromSupabase();
         if (cloudVideos && cloudVideos.length > 0) {
           const localVideos = this.getVideos();
@@ -30,9 +32,47 @@ class AdminPortal {
             renderVideoHub();
           }
         }
-      } catch (e) {
-        console.warn('Cloud video sync note:', e);
       }
+
+      // 2. Sync Documents
+      if (typeof window.supabaseManager.fetchDocsFromSupabase === 'function') {
+        const cloudDocs = await window.supabaseManager.fetchDocsFromSupabase();
+        if (cloudDocs && cloudDocs.length > 0) {
+          const localDocs = this.getDocs();
+          const mergedDocs = [...cloudDocs];
+          localDocs.forEach(ld => {
+            if (!mergedDocs.some(md => md.id === ld.id || md.title === ld.title)) {
+              mergedDocs.push(ld);
+            }
+          });
+          localStorage.setItem(this.docsKey, JSON.stringify(mergedDocs));
+        }
+      }
+
+      // 3. Sync Queries
+      if (typeof window.supabaseManager.fetchQueriesFromSupabase === 'function') {
+        const cloudQueries = await window.supabaseManager.fetchQueriesFromSupabase();
+        if (cloudQueries && cloudQueries.length > 0) {
+          const localQueries = this.getQueries();
+          const mergedQueries = [...cloudQueries];
+          localQueries.forEach(lq => {
+            if (!mergedQueries.some(mq => mq.id === lq.id || mq.query === lq.query)) {
+              mergedQueries.push(lq);
+            }
+          });
+          localStorage.setItem(this.queriesKey, JSON.stringify(mergedQueries));
+          if (typeof renderUserQueries === 'function') {
+            renderUserQueries();
+          }
+        }
+      }
+
+      // Refresh admin tables if admin is active
+      if (typeof renderAdminPanel === 'function' && document && document.body && document.body.classList && typeof document.body.classList.contains === 'function' && document.body.classList.contains('admin-active')) {
+        renderAdminPanel();
+      }
+    } catch (e) {
+      console.warn('Cloud sync error note:', e);
     }
   }
 
@@ -314,6 +354,11 @@ class AdminPortal {
     };
     docs.unshift(newDoc);
     localStorage.setItem(this.docsKey, JSON.stringify(docs));
+
+    if (window.supabaseManager && typeof window.supabaseManager.syncDocToSupabase === 'function') {
+      window.supabaseManager.syncDocToSupabase(newDoc);
+    }
+
     const lang = window.currentLanguage || 'mr';
     const msg = lang === 'hi' ? '📄 दस्तावेज़ सफलतापूर्वक जोड़ा गया!' : lang === 'en' ? '📄 Document added successfully!' : '📄 दस्तऐवज यशस्वीरीत्या जोडला!';
     showToast(msg, 'success');
@@ -324,6 +369,11 @@ class AdminPortal {
     let docs = this.getDocs();
     docs = docs.filter(d => d.id !== docId);
     localStorage.setItem(this.docsKey, JSON.stringify(docs));
+
+    if (window.supabaseManager && typeof window.supabaseManager.deleteDocFromSupabase === 'function') {
+      window.supabaseManager.deleteDocFromSupabase(docId);
+    }
+
     const lang = window.currentLanguage || 'mr';
     const msg = lang === 'hi' ? 'दस्तावेज़ हटा दिया गया।' : lang === 'en' ? 'Document deleted.' : 'दस्तऐवज हटवला गेला.';
     showToast(msg, 'info');
@@ -347,6 +397,10 @@ class AdminPortal {
     };
     queries.unshift(newQuery);
     localStorage.setItem(this.queriesKey, JSON.stringify(queries));
+
+    if (window.supabaseManager && typeof window.supabaseManager.syncQueryToSupabase === 'function') {
+      window.supabaseManager.syncQueryToSupabase(newQuery);
+    }
     
     const lang = window.currentLanguage || 'mr';
     const msg = lang === 'hi' ? '📤 आपका प्रश्न भेज दिया गया है। जल्द ही उत्तर मिलेगा।' : lang === 'en' ? '📤 Your question has been submitted to experts!' : '📤 तुमचा प्रश्न पाठवला गेला आहे. लवकरच उत्तर मिळेल.';
@@ -361,6 +415,11 @@ class AdminPortal {
       target.reply = replyText;
       target.status = 'resolved';
       localStorage.setItem(this.queriesKey, JSON.stringify(queries));
+
+      if (window.supabaseManager && typeof window.supabaseManager.syncQueryToSupabase === 'function') {
+        window.supabaseManager.syncQueryToSupabase(target);
+      }
+
       const lang = window.currentLanguage || 'mr';
       const msg = lang === 'hi' ? '✅ उद्यमी के प्रश्न का उत्तर भेजा गया!' : lang === 'en' ? '✅ Reply sent to entrepreneur!' : '✅ उद्योजकाच्या प्रश्नाचे उत्तर पाठवले गेले!';
       showToast(msg, 'success');

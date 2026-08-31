@@ -293,6 +293,106 @@ class SupabaseManager {
       console.warn('Supabase video delete error:', e);
     }
   }
+
+  // SYNC DOCUMENT TO SUPABASE CLOUD
+  async syncDocToSupabase(doc) {
+    if (!this.isConfigured() || !doc) return;
+    try {
+      const row = {
+        id: doc.id,
+        title: doc.title,
+        category: doc.category || 'सामान्य',
+        size: doc.size || '1.0 MB',
+        date: doc.date || new Date().toLocaleDateString('mr-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        content: doc.content || ''
+      };
+      await this.client.from('documents').upsert(row, { onConflict: 'id' });
+    } catch (e) {
+      console.warn('Supabase document sync error:', e);
+    }
+  }
+
+  // FETCH DOCUMENTS FROM SUPABASE CLOUD
+  async fetchDocsFromSupabase() {
+    if (!this.isConfigured()) return null;
+    try {
+      const { data, error } = await this.client.from('documents').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) return null;
+      return data.map(d => ({
+        id: d.id,
+        title: d.title,
+        category: d.category,
+        size: d.size,
+        date: d.date,
+        content: d.content
+      }));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // DELETE DOCUMENT FROM SUPABASE CLOUD
+  async deleteDocFromSupabase(docId) {
+    if (!this.isConfigured() || !docId) return;
+    try {
+      await this.client.from('documents').delete().eq('id', docId);
+    } catch (e) {
+      console.warn('Supabase document delete error:', e);
+    }
+  }
+
+  // SYNC USER QUERY TO SUPABASE CLOUD
+  async syncQueryToSupabase(q) {
+    if (!this.isConfigured() || !q) return;
+    try {
+      const row = {
+        id: q.id,
+        user_name: q.userName || 'ग्रामीण उद्योजक',
+        user_name_hi: q.userNameHi || q.userName,
+        user_name_en: q.userNameEn || q.userName,
+        email: q.email || '',
+        phone: q.phone || '',
+        query: q.query || '',
+        query_hi: q.queryHi || q.query,
+        query_en: q.queryEn || q.query,
+        status: q.status || 'pending',
+        date: q.date || new Date().toLocaleDateString('mr-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        reply: q.reply || '',
+        reply_hi: q.replyHi || q.reply,
+        reply_en: q.replyEn || q.reply
+      };
+      await this.client.from('queries').upsert(row, { onConflict: 'id' });
+    } catch (e) {
+      console.warn('Supabase query sync error:', e);
+    }
+  }
+
+  // FETCH QUERIES FROM SUPABASE CLOUD
+  async fetchQueriesFromSupabase() {
+    if (!this.isConfigured()) return null;
+    try {
+      const { data, error } = await this.client.from('queries').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) return null;
+      return data.map(q => ({
+        id: q.id,
+        userName: q.user_name,
+        userNameHi: q.user_name_hi,
+        userNameEn: q.user_name_en,
+        email: q.email,
+        phone: q.phone,
+        query: q.query,
+        queryHi: q.query_hi,
+        queryEn: q.query_en,
+        status: q.status,
+        date: q.date,
+        reply: q.reply,
+        replyHi: q.reply_hi,
+        replyEn: q.reply_en
+      }));
+    } catch (e) {
+      return null;
+    }
+  }
 }
 
 window.SupabaseManager = SupabaseManager;

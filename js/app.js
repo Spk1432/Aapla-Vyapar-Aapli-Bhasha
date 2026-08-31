@@ -114,6 +114,35 @@ function saveRegisteredUsers(users) {
   localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
 }
 
+// Multi-Device Cloud Sync for Users DB
+async function syncUsersFromCloud() {
+  if (window.supabaseManager && typeof window.supabaseManager.fetchUsersFromSupabase === 'function') {
+    try {
+      const cloudUsers = await window.supabaseManager.fetchUsersFromSupabase();
+      if (cloudUsers && cloudUsers.length > 0) {
+        const localUsers = getRegisteredUsers();
+        const merged = [...localUsers];
+        cloudUsers.forEach(cu => {
+          if (!cu.email) return;
+          const existingIdx = merged.findIndex(lu => lu.email && lu.email.toLowerCase() === cu.email.toLowerCase());
+          if (existingIdx !== -1) {
+            merged[existingIdx] = { ...merged[existingIdx], ...cu };
+          } else {
+            merged.push(cu);
+          }
+        });
+        saveRegisteredUsers(merged);
+        if (typeof renderAdminPanel === 'function' && document && document.body && document.body.classList && typeof document.body.classList.contains === 'function' && document.body.classList.contains('admin-active')) {
+          renderAdminPanel();
+        }
+      }
+    } catch (e) {
+      console.warn('Cloud users sync note:', e);
+    }
+  }
+}
+window.syncUsersFromCloud = syncUsersFromCloud;
+
 // Dynamic Business Category Options
 function updateBusinessDropdown(lang = window.currentLanguage || 'mr') {
   const select = document.getElementById('signup-business');
@@ -330,6 +359,12 @@ document.addEventListener('DOMContentLoaded', () => {
   bindEventListeners();
   setupOtpBoxListeners();
   renderAllViews();
+
+  // Automatic Cloud Sync across all devices (Mobile Phone, Desktop, Laptop)
+  syncUsersFromCloud();
+  if (adminPortal && typeof adminPortal.syncFromCloud === 'function') {
+    adminPortal.syncFromCloud();
+  }
 });
 
 // Upfront Auth Language Selection
@@ -445,7 +480,7 @@ function togglePassword(inputId, iconEl) {
 window.togglePassword = togglePassword;
 
 // PURE EMAIL AUTHENTICATION HANDLER (Sign Up & Login with Email & Password)
-function handleUserAuth(event, type) {
+async function handleUserAuth(event, type) {
   event.preventDefault();
   const users = getRegisteredUsers();
   const lang = window.currentLanguage || 'mr';
@@ -537,6 +572,17 @@ function handleUserAuth(event, type) {
     // 1. Find User by Email
     let user = users.find(u => u.email && u.email.toLowerCase() === email);
     const isAdminEmail = (email === 'shailesh14362@gmail.com' || (supabaseManager && supabaseManager.adminEmail && supabaseManager.adminEmail.toLowerCase() === email));
+
+    // If not found locally, fetch latest registered users from Supabase Cloud immediately
+    if (!user && window.supabaseManager && typeof window.supabaseManager.fetchUsersFromSupabase === 'function') {
+      try {
+        await syncUsersFromCloud();
+        users = getRegisteredUsers();
+        user = users.find(u => u.email && u.email.toLowerCase() === email);
+      } catch (e) {
+        console.warn('Cloud sync on login error:', e);
+      }
+    }
 
     if (!user && isAdminEmail) {
       user = {
