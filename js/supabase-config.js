@@ -264,22 +264,26 @@ class SupabaseManager {
   async fetchVideosFromSupabase() {
     if (!this.isConfigured()) return null;
     try {
-      const { data, error } = await this.client.from('videos').select('*').order('created_at', { ascending: false });
-      if (error || !data || data.length === 0) return null;
-      return data.map(v => ({
+      let res = await this.client.from('videos').select('*').order('created_at', { ascending: false });
+      if (res.error) {
+        res = await this.client.from('videos').select('*');
+      }
+      if (res.error || !res.data || res.data.length === 0) return null;
+      return res.data.map(v => ({
         id: v.id,
         title: v.title,
         titleHi: v.title_hi || v.title,
         titleEn: v.title_en || v.title,
-        embedUrl: v.embed_url,
-        category: v.category,
-        desc: v.description,
-        descHi: v.description_hi || v.description,
-        descEn: v.description_en || v.description,
-        duration: v.duration,
-        language: v.language
+        embedUrl: v.embed_url || v.embedUrl,
+        category: v.category || 'notebooklm',
+        desc: v.description || v.desc || '',
+        descHi: v.description_hi || v.descHi || v.description || '',
+        descEn: v.description_en || v.descEn || v.description || '',
+        duration: v.duration || '08:00',
+        language: v.language || 'मराठी / हिंदी'
       }));
     } catch (e) {
+      console.warn('fetchVideosFromSupabase error:', e);
       return null;
     }
   }

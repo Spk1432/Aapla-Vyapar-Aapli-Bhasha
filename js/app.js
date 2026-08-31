@@ -1109,6 +1109,11 @@ function renderUserPortal() {
   renderVideoHub('all');
   if (learningTracker) learningTracker.updateUI();
   renderUserQueriesList();
+
+  // Pull latest videos, documents & queries from Supabase Cloud
+  if (adminPortal && typeof adminPortal.syncFromCloud === 'function') {
+    adminPortal.syncFromCloud();
+  }
 }
 
 function renderUserQueriesList() {
