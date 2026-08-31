@@ -18,7 +18,9 @@ const translations = {
     navDocTranslate: "दस्तऐवज",
     navAssistant: "AI मार्गदर्शक",
     navTracker: "माझी प्रगती",
+    navSchemes: "सरकारी योजना",
     navHelp: "मदत आणि प्रश्न",
+    navProfile: "माझी प्रोफाईल",
     navAdmin: "व्यवस्थापक पॅनेल",
     logout: "⏻ लॉगआउट",
     guestBadge: "पाहुणे",
@@ -32,6 +34,7 @@ const translations = {
     bnLearn: "शिकणे",
     bnTranslate: "भाषांतर",
     bnProgress: "प्रगती",
+    bnProfile: "प्रोफाईल",
     
     // Auth Gate
     authLangHeading: "१. प्रथम तुमची पसंतीची भाषा निवडा:",
@@ -341,7 +344,9 @@ const translations = {
     navDocTranslate: "दस्तावेज़",
     navAssistant: "AI मार्गदर्शक",
     navTracker: "मेरी प्रगति",
+    navSchemes: "सरकारी योजनाएं",
     navHelp: "मदद और सवाल",
+    navProfile: "मेरी प्रोफ़ाइल",
     navAdmin: "प्रशासक पैनल",
     logout: "⏻ लॉगआउट",
     guestBadge: "अतिथि",
@@ -355,6 +360,7 @@ const translations = {
     bnLearn: "सीखें",
     bnTranslate: "अनुवाद",
     bnProgress: "प्रगति",
+    bnProfile: "प्रोफ़ाइल",
     
     // Auth Gate
     authLangHeading: "1. पहले अपनी पसंदीदा भाषा चुनें:",
@@ -665,7 +671,9 @@ const translations = {
     navDocTranslate: "Documents",
     navAssistant: "Voice AI",
     navTracker: "My Progress",
+    navSchemes: "Schemes",
     navHelp: "Help Desk",
+    navProfile: "My Profile",
     navAdmin: "Admin Panel",
     logout: "⏻ Logout",
     guestBadge: "Guest",
@@ -679,6 +687,7 @@ const translations = {
     bnLearn: "Learn",
     bnTranslate: "Translate",
     bnProgress: "Progress",
+    bnProfile: "Profile",
     
     // Auth Gate
     authLangHeading: "1. First, Choose Your Preferred Language:",

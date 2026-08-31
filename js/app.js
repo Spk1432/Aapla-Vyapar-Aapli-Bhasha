@@ -939,6 +939,147 @@ function continueAsGuest() {
 }
 window.continueAsGuest = continueAsGuest;
 
+// =========================================================================
+// SPA ROUTER & VIEW NAVIGATION ENGINE
+// =========================================================================
+const VALID_ROUTES = [
+  'home',
+  'modules',
+  'voice-ai',
+  'video-hub',
+  'translator',
+  'document-translator',
+  'schemes',
+  'tracker',
+  'help-desk',
+  'profile'
+];
+
+function resolveRouteFromHash(hash) {
+  let clean = (hash || window.location.hash || '').replace(/^#\/?/, '').trim().toLowerCase();
+  if (!clean) return 'home';
+
+  // Map legacy aliases or synonyms
+  if (clean === 'features') return 'modules';
+  if (clean === 'assistant' || clean === 'voice') return 'voice-ai';
+  if (clean === 'learn' || clean === 'videos') return 'video-hub';
+  if (clean === 'translate') return 'translator';
+  if (clean === 'doc-translate' || clean === 'doc' || clean === 'documents') return 'document-translator';
+  if (clean === 'help') return 'help-desk';
+  if (clean === 'progress') return 'tracker';
+  
+  if (VALID_ROUTES.includes(clean)) return clean;
+  return 'home';
+}
+window.resolveRouteFromHash = resolveRouteFromHash;
+
+function showPage(targetRoute, updateHistory = true) {
+  const role = window.currentUserRole || localStorage.getItem('aapla_vyapar_role');
+
+  // If user is not logged in, enforce Auth Gate
+  if (!role) {
+    showAuthGate();
+    return;
+  }
+
+  // If Admin is logged in, show Admin Portal
+  if (role === 'admin') {
+    applyAuthSession('admin', window.currentUser);
+    return;
+  }
+
+  const route = resolveRouteFromHash(targetRoute);
+
+  // 1. Hide all app views
+  document.querySelectorAll('.app-view').forEach(v => {
+    v.classList.remove('active-view');
+  });
+
+  // 2. Show the targeted view
+  const targetView = document.getElementById(`view-${route}`);
+  if (targetView) {
+    targetView.classList.add('active-view');
+  }
+
+  // 3. Update Browser URL hash and History state
+  if (updateHistory) {
+    const currentHash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+    if (currentHash !== route) {
+      window.history.pushState({ route: route }, '', `#${route}`);
+    }
+  }
+
+  // 4. Update Navigation active indicators (Desktop, Drawer, Bottom Nav)
+  updateNavigationState(route);
+
+  // 5. Trigger view-specific dynamic updates
+  onRouteEnter(route);
+
+  // 6. Smoothly scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+window.showPage = showPage;
+
+function updateNavigationState(activeRoute) {
+  // Desktop header links
+  document.querySelectorAll('nav.main-nav a').forEach(link => {
+    const route = link.getAttribute('data-route') || resolveRouteFromHash(link.getAttribute('href'));
+    if (route === activeRoute) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+
+  // Mobile drawer links
+  document.querySelectorAll('.mobile-nav a').forEach(link => {
+    const route = link.getAttribute('data-route') || resolveRouteFromHash(link.getAttribute('href'));
+    if (route === activeRoute) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+
+  // Bottom navbar links
+  document.querySelectorAll('.bottom-navbar .bn-item').forEach(item => {
+    const route = item.getAttribute('data-route') || resolveRouteFromHash(item.getAttribute('href'));
+    if (route === activeRoute) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+}
+
+function onRouteEnter(route) {
+  if (route === 'home') {
+    renderUserPortal();
+  } else if (route === 'video-hub') {
+    renderVideoHub('all');
+  } else if (route === 'tracker') {
+    if (learningTracker) learningTracker.updateUI();
+  } else if (route === 'help-desk') {
+    renderUserQueriesList();
+  } else if (route === 'profile') {
+    renderProfileView();
+  }
+}
+
+function renderProfileView() {
+  const user = window.currentUser || {};
+  const emailEl = document.getElementById('prof-view-email');
+  const villageEl = document.getElementById('prof-view-village');
+  const bizEl = document.getElementById('prof-view-biz');
+  const streakEl = document.getElementById('prof-view-streak');
+
+  if (emailEl) emailEl.textContent = user.email || 'entrepreneur@gmail.com';
+  if (villageEl) villageEl.textContent = user.village || 'महाराष्ट्र';
+  if (bizEl) bizEl.textContent = user.businessType || 'किराणा व जनरल स्टोअर्स';
+  if (streakEl) streakEl.textContent = `🔥 ${localStorage.getItem('aapla_vyapar_learning_streak') || 1} दिवस`;
+}
+window.renderProfileView = renderProfileView;
+
 function loginSuccess(role, userObject) {
   window.currentUserRole = role;
   window.currentUser = typeof userObject === 'object' ? userObject : { id: 'usr-1', name: userObject };
@@ -960,6 +1101,13 @@ function loginSuccess(role, userObject) {
   setLanguage(activeLang);
 
   applyAuthSession(role, window.currentUser);
+  
+  if (role === 'admin') {
+    // Admin opens admin panel
+  } else {
+    // Regular entrepreneur opens home page
+    showPage('home', true);
+  }
 }
 
 function applyAuthSession(role, user) {
@@ -970,8 +1118,8 @@ function applyAuthSession(role, user) {
 
   if (authGate) authGate.style.display = 'none';
 
-  const displayName = user.name || (lang === 'hi' ? 'उद्यमी' : lang === 'en' ? 'Entrepreneur' : 'उद्योजक');
-  const displayLocation = user.village ? `📍 ${user.village}` : (lang === 'en' ? '📍 Maharashtra' : '📍 महाराष्ट्र');
+  const displayName = (user && user.name) || (lang === 'hi' ? 'उद्यमी' : lang === 'en' ? 'Entrepreneur' : 'उद्योजक');
+  const displayLocation = (user && user.village) ? `📍 ${user.village}` : (lang === 'en' ? '📍 Maharashtra' : '📍 महाराष्ट्र');
 
   // Update user name and village in header and profile
   document.querySelectorAll('.logged-in-user-name').forEach(el => {
@@ -993,7 +1141,10 @@ function applyAuthSession(role, user) {
     if (adminPortalEl) adminPortalEl.style.display = 'none';
     document.body.classList.add('site-active');
     document.body.classList.remove('admin-active');
-    renderUserPortal();
+    
+    // Open current hash route or default to home
+    const initialRoute = resolveRouteFromHash(window.location.hash);
+    showPage(initialRoute, false);
   }
   window.scrollTo(0, 0);
 }
@@ -1004,6 +1155,11 @@ function logout() {
   window.currentUser = null;
   localStorage.removeItem('aapla_vyapar_role');
   localStorage.removeItem('aapla_vyapar_current_user');
+  
+  // Clean hash in address bar
+  if (window.history && window.history.pushState) {
+    window.history.pushState(null, '', window.location.pathname);
+  }
   showAuthGate();
   
   const msg = lang === 'hi' ? 'आप सफलतापूर्वक लॉगआउट हो गए हैं।' : lang === 'en' ? 'You have logged out successfully.' : 'तुम्ही यशस्वीरीत्या लॉगआउट झाला आहात.';
@@ -1338,7 +1494,7 @@ function bindEventListeners() {
   if (transVoiceInputBtn) {
     transVoiceInputBtn.addEventListener('click', () => {
       const lang = window.currentLanguage || 'mr';
-      if (!voiceAssistant.recognition) {
+      if (!voiceAssistant || !voiceAssistant.recognition) {
         showToast(lang === 'en' ? 'Voice input not supported.' : 'व्हॉईस इनपुट उपलब्ध नाही.', 'warning');
         return;
       }
@@ -1433,9 +1589,9 @@ function bindEventListeners() {
     loadSampleMudra.addEventListener('click', () => {
       const sampleText = translator.getSampleDocument('mudra');
       const inputEl = document.getElementById('doc-source-content');
-      inputEl.value = sampleText;
+      if (inputEl) inputEl.value = sampleText;
       updateDocExtractBadge({ name: 'PMMY_Mudra_Loan_Application.pdf', size: '1.2 MB', wordCount: sampleText.split(/\s+/).length });
-      inputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showPage('document-translator');
     });
   }
 
@@ -1444,9 +1600,9 @@ function bindEventListeners() {
     loadSampleShopAct.addEventListener('click', () => {
       const sampleText = translator.getSampleDocument('shop_act');
       const inputEl = document.getElementById('doc-source-content');
-      inputEl.value = sampleText;
+      if (inputEl) inputEl.value = sampleText;
       updateDocExtractBadge({ name: 'Shop_Act_Registration_Guideline.pdf', size: '850 KB', wordCount: sampleText.split(/\s+/).length });
-      inputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showPage('document-translator');
     });
   }
 
@@ -1525,13 +1681,26 @@ function bindEventListeners() {
     });
   }
 
-  // Mobile Bottom Navigation and Drawer Active State Handler
-  const bottomNavItems = document.querySelectorAll('.bn-item');
-  bottomNavItems.forEach(item => {
-    item.addEventListener('click', () => {
-      bottomNavItems.forEach(el => el.classList.remove('active'));
-      item.classList.add('active');
-    });
+  // Global SPA Route Link Interceptor
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"], a[data-route], button[data-route]');
+    if (!link) return;
+
+    const dataRoute = link.getAttribute('data-route');
+    const href = link.getAttribute('href');
+
+    if (dataRoute || (href && href.startsWith('#') && href.length > 1)) {
+      const routeStr = dataRoute || href.replace(/^#\/?/, '');
+      const cleanRoute = resolveRouteFromHash(routeStr);
+      if (VALID_ROUTES.includes(cleanRoute)) {
+        e.preventDefault();
+        const drawer = document.getElementById('mobile-drawer');
+        if (drawer && drawer.classList.contains('open')) {
+          drawer.classList.remove('open');
+        }
+        showPage(cleanRoute, true);
+      }
+    }
   });
 
   // Auto-close mobile drawer when clicking outside
@@ -1545,25 +1714,31 @@ function bindEventListeners() {
     }
   });
 
-  // Mobile Scrollspy for bottom navbar
+  // Browser Back and Forward buttons support (History API & hashchange)
   if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
-    window.addEventListener('scroll', () => {
-      const sections = ['home', 'assistant', 'learn', 'translate', 'tracker'];
-      const scrollPos = (window.scrollY || 0) + 200;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const sec = document.getElementById(sections[i]);
-        if (sec && sec.offsetTop <= scrollPos) {
-          bottomNavItems.forEach(item => {
-            if (item.getAttribute('href') === `#${sections[i]}`) {
-              item.classList.add('active');
-            } else {
-              item.classList.remove('active');
-            }
-          });
-          break;
-        }
+    window.addEventListener('popstate', (e) => {
+      const role = window.currentUserRole || localStorage.getItem('aapla_vyapar_role');
+      if (!role) {
+        showAuthGate();
+        return;
       }
-    }, { passive: true });
+      if (role === 'admin') return;
+
+      const route = (e.state && e.state.route) ? e.state.route : resolveRouteFromHash(window.location.hash);
+      showPage(route, false);
+    });
+
+    window.addEventListener('hashchange', () => {
+      const role = window.currentUserRole || localStorage.getItem('aapla_vyapar_role');
+      if (!role) {
+        showAuthGate();
+        return;
+      }
+      if (role === 'admin') return;
+
+      const route = resolveRouteFromHash(window.location.hash);
+      showPage(route, false);
+    });
   }
 }
 

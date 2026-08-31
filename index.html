@@ -156,20 +156,22 @@
   <!-- TOP HEADER -->
   <header class="site-header">
     <div class="nav-inner">
-      <div class="logo">
+      <div class="logo" style="cursor:pointer;" onclick="showPage('home')">
         <div class="badge">🛍️</div>
         Aapla Vyapar, <span>Aapli Bhasha</span>
       </div>
 
       <nav class="main-nav">
-        <a href="#home" data-i18n="navHome">मुख्य पृष्ठ</a>
-        <a href="#features" data-i18n="navFeatures">काय शिकायचे</a>
-        <a href="#assistant" data-i18n="navAssistant">AI मार्गदर्शक</a>
-        <a href="#learn" data-i18n="navLearn">व्हिडिओ प्रशिक्षण</a>
-        <a href="#translate" data-i18n="navTranslate">भाषांतर</a>
-        <a href="#doc-translate" data-i18n="navDocTranslate">दस्तऐवज</a>
-        <a href="#tracker" data-i18n="navTracker">माझी प्रगती</a>
-        <a href="#help" data-i18n="navHelp">मदत आणि प्रश्न</a>
+        <a href="#home" data-route="home" data-i18n="navHome">मुख्य पृष्ठ</a>
+        <a href="#modules" data-route="modules" data-i18n="navFeatures">काय शिकायचे</a>
+        <a href="#voice-ai" data-route="voice-ai" data-i18n="navAssistant">AI मार्गदर्शक</a>
+        <a href="#video-hub" data-route="video-hub" data-i18n="navLearn">व्हिडिओ प्रशिक्षण</a>
+        <a href="#translator" data-route="translator" data-i18n="navTranslate">भाषांतर</a>
+        <a href="#document-translator" data-route="document-translator" data-i18n="navDocTranslate">दस्तऐवज</a>
+        <a href="#schemes" data-route="schemes" data-i18n="navSchemes">सरकारी योजना</a>
+        <a href="#tracker" data-route="tracker" data-i18n="navTracker">माझी प्रगती</a>
+        <a href="#help-desk" data-route="help-desk" data-i18n="navHelp">मदत आणि प्रश्न</a>
+        <a href="#profile" data-route="profile" data-i18n="navProfile">👤 प्रोफाईल</a>
       </nav>
 
       <div class="nav-actions">
@@ -192,14 +194,16 @@
 
     <!-- Mobile Navigation Drawer -->
     <div class="mobile-nav" id="mobile-drawer">
-      <a href="#home" data-i18n="navHome" onclick="document.getElementById('mobile-drawer').classList.remove('open')">मुख्य पृष्ठ</a>
-      <a href="#features" data-i18n="navFeatures" onclick="document.getElementById('mobile-drawer').classList.remove('open')">काय शिकायचे</a>
-      <a href="#assistant" data-i18n="navAssistant" onclick="document.getElementById('mobile-drawer').classList.remove('open')">AI मार्गदर्शक</a>
-      <a href="#learn" data-i18n="navLearn" onclick="document.getElementById('mobile-drawer').classList.remove('open')">व्हिडिओ प्रशिक्षण</a>
-      <a href="#translate" data-i18n="navTranslate" onclick="document.getElementById('mobile-drawer').classList.remove('open')">भाषांतर</a>
-      <a href="#doc-translate" data-i18n="navDocTranslate" onclick="document.getElementById('mobile-drawer').classList.remove('open')">दस्तऐवज</a>
-      <a href="#tracker" data-i18n="navTracker" onclick="document.getElementById('mobile-drawer').classList.remove('open')">माझी प्रगती</a>
-      <a href="#help" data-i18n="navHelp" onclick="document.getElementById('mobile-drawer').classList.remove('open')">मदत आणि प्रश्न</a>
+      <a href="#home" data-route="home" data-i18n="navHome" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🏠 मुख्य पृष्ठ (Home)</a>
+      <a href="#modules" data-route="modules" data-i18n="navFeatures" onclick="document.getElementById('mobile-drawer').classList.remove('open')">📚 काय शिकायचे (Modules)</a>
+      <a href="#voice-ai" data-route="voice-ai" data-i18n="navAssistant" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🎙️ AI मार्गदर्शक (Voice)</a>
+      <a href="#video-hub" data-route="video-hub" data-i18n="navLearn" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🎥 व्हिडिओ प्रशिक्षण (Videos)</a>
+      <a href="#translator" data-route="translator" data-i18n="navTranslate" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🌐 मजकूर भाषांतर (Translate)</a>
+      <a href="#document-translator" data-route="document-translator" data-i18n="navDocTranslate" onclick="document.getElementById('mobile-drawer').classList.remove('open')">📄 दस्तऐवज भाषांतर (Docs)</a>
+      <a href="#schemes" data-route="schemes" data-i18n="navSchemes" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🏛️ सरकारी योजना (Schemes)</a>
+      <a href="#tracker" data-route="tracker" data-i18n="navTracker" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🏆 माझी प्रगती (Progress)</a>
+      <a href="#help-desk" data-route="help-desk" data-i18n="navHelp" onclick="document.getElementById('mobile-drawer').classList.remove('open')">💬 मदत आणि प्रश्न (Help Desk)</a>
+      <a href="#profile" data-route="profile" data-i18n="navProfile" onclick="document.getElementById('mobile-drawer').classList.remove('open')">👤 माझी प्रोफाईल (Profile)</a>
       <div style="margin-top:14px; display:flex; gap:8px;">
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('mr')">मराठी</button>
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('hi')">हिंदी</button>
@@ -209,437 +213,613 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="hero" id="home">
-    <div class="container hero-grid">
-      <div>
-        <div class="hero-eyebrow" data-i18n="heroBadge">👋 नमस्कार! आता डिजिटल टूल्स शिकणे झाले सोपे</div>
-        <h1 data-i18n="heroTitle">आपला व्यापार, <span>आपली भाषा</span></h1>
-        <p class="sub" data-i18n="heroDesc">स्थानिक भाषेत शिका आणि तुमचा व्यवसाय डिजिटल बनवा. किराणा बिलिंग, ऑनलाइन पेमेंट्स, सरकारी योजना आणि NotebookLM द्वारे व्हिडिओ भाषांतर — सर्व एकाच ठिकाणी.</p>
-        <div class="hero-cta">
-          <a href="#learn" class="btn btn-white" data-i18n="heroCtaLearn">शिकायला सुरुवात करा →</a>
-          <a href="#assistant" class="btn btn-outline-white" data-i18n="heroCtaVoice">🎙️ आवाजाने बोला</a>
-          <a href="#doc-translate" class="btn btn-outline-white" data-i18n="heroCtaDoc">📄 दस्तऐवज भाषांतर</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat"><b id="hero-stat-users">1</b><span data-i18n="statUsers">नोंदणीकृत उद्योजक</span></div>
-          <div class="stat"><b id="hero-stat-videos">5</b><span data-i18n="statCourses">प्रशिक्षण मॉड्यूल्स</span></div>
-          <div class="stat"><b>3</b><span data-i18n="statLangs">उपलब्ध भाषा</span></div>
-          <div class="stat"><b>100%</b><span data-i18n="statFree">मोफत व सुरक्षित</span></div>
-        </div>
-      </div>
-
-      <!-- Hero Visual Card -->
-      <div class="hero-visual">
-        <div class="avatar-row">
-          <div class="hero-avatar">🧔🏽</div>
-          <div>
-            <div class="wave">
-              <span class="logged-in-user-name">उद्योजक</span>
-              <span style="font-size:11px; background:#ffd8a8; color:#724e00; padding:2px 6px; border-radius:10px; font-weight:700;" data-i18n="activeStatus">✓ सक्रिय</span>
-            </div>
-            <h3><span data-i18n="heroProgressHeader">प्रगती:</span> <span class="progress-pct-text">0%</span> <span data-i18n="heroProgressDone">पूर्ण</span></h3>
-          </div>
-        </div>
-
-        <div class="hero-voice-trigger" onclick="location.href='#assistant'">
-          <div style="font-size:13.5px; font-weight:700;" data-i18n="heroVoiceBoxText">🎙️ काही विचारायचे आहे? फक्त बोला...</div>
-          <div class="mic-pulse">🎤</div>
-        </div>
-
-        <div class="hero-progress">
-          <div class="row">
-            <span data-i18n="heroProgressLabel">डिजिटल साक्षरता प्रगती</span>
-            <span class="progress-pct-text">0%</span>
-          </div>
-          <div class="hp-bar"><div class="hp-fill" style="width:0%;"></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES / TOOLKIT MODULES -->
-  <section id="features">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow-tag" data-i18n="featHeading">तुमचे डिजिटल बिझनेस टूल्स</span>
-        <h2 data-i18n="featTitle">डिजिटल उद्योजक समृद्धी मंच</h2>
-        <p data-i18n="featSubheading">स्थानिक मराठी भाषेत तयार केलेले सोपे आणि प्रभावी प्रशिक्षण मॉड्यूल्स.</p>
-      </div>
-
-      <div class="features-grid">
-        <a class="f-card c1" href="#learn">
-          <div>
-            <div class="ic">📚</div>
-            <div class="lbl" data-i18n="f1Title">डिजिटल बिलिंग आणि बहीखाता</div>
-            <div class="desc" data-i18n="f1Desc">किराणा बिलिंग, स्टॉक मॅनेजमेंट आणि उधारी खात्याची डिजिटल नोंद.</div>
-          </div>
-          <div class="link" data-i18n="btnLearnMore">शिका →</div>
-        </a>
-
-        <a class="f-card c2" href="#learn">
-          <div>
-            <div class="ic">🌐</div>
-            <div class="lbl" data-i18n="f2Title">NotebookLM व्हिडिओ भाषांतर</div>
-            <div class="desc" data-i18n="f2Desc">कोणत्याही इंग्रजी किंवा इतर भाषेतील व्हिडिओचा मराठीत सारांश समजून घ्या.</div>
-          </div>
-          <div class="link" data-i18n="btnUseTool">वापरा →</div>
-        </a>
-
-        <a class="f-card c3" href="#learn">
-          <div>
-            <div class="ic">💳</div>
-            <div class="lbl" data-i18n="f3Title">ऑनलाइन पेमेंट्स (UPI व QR)</div>
-            <div class="desc" data-i18n="f3Desc">PhonePe, Google Pay, QR कोड आणि साउंडबॉक्सचा सुरक्षित वापर.</div>
-          </div>
-          <div class="link" data-i18n="btnLearnMore">शिका →</div>
-        </a>
-
-        <a class="f-card c4" href="#learn">
-          <div>
-            <div class="ic">🏛️</div>
-            <div class="lbl" data-i18n="f4Title">सरकारी योजना आणि सबसिडी</div>
-            <div class="desc" data-i18n="f4Desc">प्रधानमंत्री मुद्रा योजना, PMEGP आणि महिला उद्योग कर्ज योजना.</div>
-          </div>
-          <div class="link" data-i18n="btnLearnMore">शिका →</div>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- ======================================================================= -->
-  <!-- 3. AI VOICE ASSISTANT SECTION                                          -->
+  <!-- 1. HOME VIEW                                                           -->
   <!-- ======================================================================= -->
-  <section class="voice-assistant-section" id="assistant">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow-tag" style="background:#e7f5ec; color:#0f6b3d;">🎙️ AI Voice Guide</span>
-        <h2 data-i18n="voiceTitle">आपला AI बोलता मार्गदर्शक</h2>
-        <p data-i18n="voiceSubtitle">लिहिता येत नसेल तर काळजी करू नका — फक्त माइकवर दाबून बोला, आमचा AI सहाय्यक तुम्हाला मराठीत उत्तर देईल आणि बोलून दाखवेल.</p>
-      </div>
-
-      <div class="va-box">
-        <div class="va-mic-wrapper">
-          <button class="va-mic-button" id="va-mic-btn" title="Click to Speak">🎙️</button>
-          <div class="va-status-text" id="va-status-text" data-i18n="voiceBtnStart">बोलण्यासाठी दाबा (Start Speaking)</div>
-          <div class="va-waves" id="va-waves">
-            <span></span><span></span><span></span><span></span><span></span>
-          </div>
-        </div>
-
-        <p data-i18n="voiceAskPrompt" style="font-size:13px; font-weight:700; color:var(--muted); margin-top:14px;">किंवा खालीलपैकी कोणत्याही प्रश्नावर क्लिक करा:</p>
-        <div class="va-quick-questions">
-          <div class="va-q-chip" onclick="askQuickQuestion('माझ्या दुकानासाठी QR कोड कसा लावावा?')" data-i18n="voiceQ1">माझ्या दुकानासाठी QR कोड कसा लावावा?</div>
-          <div class="va-q-chip" onclick="askQuickQuestion('मुद्रा लोनसाठी कोणती कागदपत्रे लागतात?')" data-i18n="voiceQ2">मुद्रा लोनसाठी कोणती कागदपत्रे लागतात?</div>
-          <div class="va-q-chip" onclick="askQuickQuestion('NotebookLM वर व्हिडिओ कसा ट्रान्सलेट करावा?')" data-i18n="voiceQ3">NotebookLM वर व्हिडिओ कसा ट्रान्सलेट करावा?</div>
-          <div class="va-q-chip" onclick="askQuickQuestion('किराणा दुकानाचे बिल मोबाईलवर कसे बनवायचे?')" data-i18n="voiceQ4">किराणा दुकानाचे बिल मोबाईलवर कसे बनवायचे?</div>
-        </div>
-
-        <!-- Answer Output Box -->
-        <div class="va-answer-box" id="va-answer-box">
-          <div class="va-answer-header">
-            <span class="va-question-badge" id="va-question-badge" data-i18n="voiceAskedQuestionBadge">🗣️ विचारलेला प्रश्न:</span>
-            <div class="va-answer-actions">
-              <button class="btn btn-sm btn-outline" id="va-speak-btn" data-i18n="voiceSpeakAgain">🔊 पुन्हा ऐका</button>
-              <button class="btn btn-sm btn-danger" id="va-pause-btn" data-i18n="voicePauseBtn">⏸️ आवाज थांबवा</button>
-              <button class="btn btn-sm btn-outline" id="va-copy-btn" data-i18n="voiceCopy">📋 कॉपी करा</button>
-            </div>
-          </div>
-          <div class="va-answer-text" id="va-answer-text" data-i18n="voiceDefaultAnswer">
-            येथे AI सहाय्यकाचे उत्तर दिसेल.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======================================================================= -->
-  <!-- 4. NOTEBOOKLM & VIDEO TRAINING HUB                                      -->
-  <!-- ======================================================================= -->
-  <section class="video-hub-section" id="learn">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow-tag" style="background:#eaf2fa; color:#2f6fb0;">🎥 Video Training Hub</span>
-        <h2 data-i18n="videoHubTitle">व्हिडिओ प्रशिक्षण आणि NotebookLM केंद्र</h2>
-        <p data-i18n="videoHubSubtitle">स्थानिक भाषेत सर्व शिका. NotebookLM च्या साहाय्याने कोणत्याही इंग्रजी/हिंदी व्हिडिओचे मराठीत सारांश व भाषांतर करण्याची सोपी पद्धत.</p>
-      </div>
-
-      <!-- Featured NotebookLM Banner -->
-      <div class="notebooklm-banner">
+  <div class="app-view active-view" id="view-home">
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
         <div>
-          <span style="background:#ffd8a8; color:#5a3300; font-size:12px; font-weight:800; padding:4px 10px; border-radius:12px;" data-i18n="videoFeaturedTag">⭐ विशेष प्रशिक्षण</span>
-          <h3 style="font-size:22px; font-weight:800; margin:10px 0; line-height:1.3;" data-i18n="videoFeaturedTitle">NotebookLM द्वारे कोणत्याही व्हिडिओचे स्थानिक भाषेत भाषांतर कसे करावे?</h3>
-          <p style="font-size:13.5px; opacity:0.92;" data-i18n="videoFeaturedDesc">या व्हिडिओत शिका: व्हिडिओ लिंक किंवा मजकूर NotebookLM मध्ये कसा टाकायचा, मराठीत नोट्स कशा मिळवायच्या आणि ऑडिओ पॉडकास्ट कसा ऐकायचा.</p>
-          <div class="notebooklm-steps-list">
-            <div class="nlm-step" data-i18n="videoStep1">१. व्हिडिओची लिंक किंवा ट्रान्सक्रिप्ट कॉपी करा.</div>
-            <div class="nlm-step" data-i18n="videoStep2">२. Google NotebookLM उघडून सोर्स म्हणून जोडा.</div>
-            <div class="nlm-step" data-i18n="videoStep3">३. 'मराठीत सारांश द्या' अशी कमांड द्या आणि ऑडिओ ऐका.</div>
+          <div class="hero-eyebrow" data-i18n="heroBadge">👋 नमस्कार! आता डिजिटल टूल्स शिकणे झाले सोपे</div>
+          <h1 data-i18n="heroTitle">आपला व्यापार, <span>आपली भाषा</span></h1>
+          <p class="sub" data-i18n="heroDesc">स्थानिक भाषेत शिका आणि तुमचा व्यवसाय डिजिटल बनवा. किराणा बिलिंग, ऑनलाइन पेमेंट्स, सरकारी योजना आणि NotebookLM द्वारे व्हिडिओ भाषांतर — सर्व एकाच ठिकाणी.</p>
+          <div class="hero-cta">
+            <a href="#video-hub" class="btn btn-white" data-i18n="heroCtaLearn">शिकायला सुरुवात करा →</a>
+            <a href="#voice-ai" class="btn btn-outline-white" data-i18n="heroCtaVoice">🎙️ आवाजाने बोला</a>
+            <a href="#document-translator" class="btn btn-outline-white" data-i18n="heroCtaDoc">📄 दस्तऐवज भाषांतर</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><b id="hero-stat-users">1</b><span data-i18n="statUsers">नोंदणीकृत उद्योजक</span></div>
+            <div class="stat"><b id="hero-stat-videos">5</b><span data-i18n="statCourses">प्रशिक्षण मॉड्यूल्स</span></div>
+            <div class="stat"><b>3</b><span data-i18n="statLangs">उपलब्ध भाषा</span></div>
+            <div class="stat"><b>100%</b><span data-i18n="statFree">मोफत व सुरक्षित</span></div>
           </div>
         </div>
-        <div style="text-align:center;">
-          <div style="background:rgba(0,0,0,0.25); border-radius:16px; padding:24px; border:1px solid rgba(255,255,255,0.2);">
-            <div style="font-size:48px; margin-bottom:10px;">🤖 📖</div>
-            <button class="btn btn-white" style="width:100%; font-weight:700;" onclick="openVideoModal('vid-1')" data-i18n="videoWatchBtn">▶ व्हिडिओ ट्युटोरियल पहा</button>
-            <button class="btn btn-sm btn-outline-white" style="width:100%; margin-top:8px;" onclick="markVideoDone('vid-1')" data-i18n="btnMarkComplete">✓ पूर्ण झाले म्हणून नोंदवा</button>
+
+        <!-- Hero Visual Card -->
+        <div class="hero-visual">
+          <div class="avatar-row">
+            <div class="hero-avatar">🧔🏽</div>
+            <div>
+              <div class="wave">
+                <span class="logged-in-user-name">उद्योजक</span>
+                <span style="font-size:11px; background:#ffd8a8; color:#724e00; padding:2px 6px; border-radius:10px; font-weight:700;" data-i18n="activeStatus">✓ सक्रिय</span>
+              </div>
+              <h3><span data-i18n="heroProgressHeader">प्रगती:</span> <span class="progress-pct-text">0%</span> <span data-i18n="heroProgressDone">पूर्ण</span></h3>
+            </div>
+          </div>
+
+          <div class="hero-voice-trigger" onclick="showPage('voice-ai')">
+            <div style="font-size:13.5px; font-weight:700;" data-i18n="heroVoiceBoxText">🎙️ काही विचारायचे आहे? फक्त बोला...</div>
+            <div class="mic-pulse">🎤</div>
+          </div>
+
+          <div class="hero-progress">
+            <div class="row">
+              <span data-i18n="heroProgressLabel">डिजिटल साक्षरता प्रगती</span>
+              <span class="progress-pct-text">0%</span>
+            </div>
+            <div class="hp-bar"><div class="hp-fill" style="width:0%;"></div></div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Filter Tabs -->
-      <div class="filter-pills-row">
-        <button class="filter-pill active" onclick="filterVideos('all', this)" data-i18n="filterAll">सर्व व्हिडिओ</button>
-        <button class="filter-pill" onclick="filterVideos('notebooklm', this)" data-i18n="filterNotebookLM">NotebookLM</button>
-        <button class="filter-pill" onclick="filterVideos('billing', this)" data-i18n="filterBilling">बिलिंग अॅप्स</button>
-        <button class="filter-pill" onclick="filterVideos('payments', this)" data-i18n="filterPayments">पेमेंट्स व बँकिंग</button>
-        <button class="filter-pill" onclick="filterVideos('schemes', this)" data-i18n="filterSchemes">सरकारी योजना</button>
+    <!-- Quick Navigation Hub on Home Page -->
+    <div class="container" style="padding-top: 36px; padding-bottom: 24px;">
+      <div class="section-head" style="margin-bottom: 20px;">
+        <span class="eyebrow-tag" data-i18n="featHeading">तुमचे डिजिटल बिझनेस टूल्स</span>
+        <h2 style="font-size: clamp(20px, 3vw, 26px); font-family: 'Poppins', sans-serif;">त्वरित सेवा आणि साधने निवडा</h2>
       </div>
-
-      <!-- Videos Dynamic Grid -->
-      <div class="videos-grid" id="videos-grid-container">
-        <!-- Rendered dynamically by app.js -->
+      <div class="home-quick-nav-grid">
+        <a class="home-quick-card" href="#modules">
+          <div class="hq-icon">📚</div>
+          <div class="hq-info">
+            <b data-i18n="navFeatures">काय शिकायचे (Modules)</b>
+            <span data-i18n="f1Desc">किराणा बिलिंग, स्टॉक व डिजिटल बहीखाता</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#voice-ai">
+          <div class="hq-icon" style="background:#eaf2fa; color:#2f6fb0;">🎙️</div>
+          <div class="hq-info">
+            <b data-i18n="navAssistant">AI मार्गदर्शक (Voice AI)</b>
+            <span data-i18n="voiceSubtitle">बोलून प्रश्न विचारा व त्वरित उत्तर ऐका</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#video-hub">
+          <div class="hq-icon" style="background:#fef1e8; color:#e8722a;">🎥</div>
+          <div class="hq-info">
+            <b data-i18n="navLearn">व्हिडिओ प्रशिक्षण (Video Hub)</b>
+            <span data-i18n="videoSubtitle">NotebookLM आणि सोपे व्हिडिओ ट्युटोरियल्स</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#translator">
+          <div class="hq-icon" style="background:#e7f5ec; color:#1a8449;">🌐</div>
+          <div class="hq-info">
+            <b data-i18n="navTranslate">AI मजकूर भाषांतर (Translator)</b>
+            <span data-i18n="transSubtitle">मराठी, हिंदी आणि इंग्रजी संवाद</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#document-translator">
+          <div class="hq-icon" style="background:#eaf2fa; color:#2f6fb0;">📄</div>
+          <div class="hq-info">
+            <b data-i18n="navDocTranslate">दस्तऐवज भाषांतर (Docs)</b>
+            <span data-i18n="docSubtitle">शासकीय फॉर्म्स आणि PDF भाषांतर</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#schemes">
+          <div class="hq-icon" style="background:#fdf6e2; color:#b07e06;">🏛️</div>
+          <div class="hq-info">
+            <b data-i18n="navSchemes">सरकारी योजना (Schemes)</b>
+            <span data-i18n="docSampleLibrarySub">मुद्रा लोन, शॉप ॲक्ट आणि सबसिडी फॉर्म</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#tracker">
+          <div class="hq-icon" style="background:#fdf6e2; color:#b07e06;">🏆</div>
+          <div class="hq-info">
+            <b data-i18n="navTracker">माझी प्रगती (Progress)</b>
+            <span data-i18n="trackerSubtitle">शिकण्याची प्रगती आणि डिजिटल प्रमाणपत्र</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#help-desk">
+          <div class="hq-icon" style="background:#eaf2fa; color:#2f6fb0;">💬</div>
+          <div class="hq-info">
+            <b data-i18n="navHelp">मदत आणि प्रश्न (Help Desk)</b>
+            <span data-i18n="helpSubtitle">थेट तज्ज्ञांना प्रश्न विचारा</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="#profile">
+          <div class="hq-icon" style="background:#fef1e8; color:#e8722a;">👤</div>
+          <div class="hq-info">
+            <b data-i18n="navProfile">माझी प्रोफाईल (Profile)</b>
+            <span>तुमची माहिती, व्यवसाय व खात्याची स्थिती</span>
+          </div>
+        </a>
       </div>
     </div>
-  </section>
 
-  <!-- ======================================================================= -->
-  <!-- 5. AI TEXT TRANSLATOR SECTION                                          -->
-  <!-- ======================================================================= -->
-  <section class="translator-section" id="translate">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow-tag" style="background:#fef1e8; color:#d4601c;">🌐 Text & Voice Translator</span>
-        <h2 data-i18n="transTitle">AI मजकूर भाषांतरकार</h2>
-        <p data-i18n="transSubtitle">मराठी, हिंदी आणि इंग्रजीमध्ये त्वरित अचूक भाषांतर करा. आवाजाने बोला आणि आवाजात ऐका.</p>
+    <!-- TRUST STRIP -->
+    <div class="trust-strip">
+      <div class="container trust-grid">
+        <div class="trust-item"><div class="ic">🌐</div><b data-i18n="trust1Title">आपली भाषा</b><span data-i18n="trust1Desc">मराठी, हिंदी व स्थानिक बोली</span></div>
+        <div class="trust-item"><div class="ic">📖</div><b data-i18n="trust2Title">सोपे व्हिडिओ</b><span data-i18n="trust2Desc">प्रत्यक्ष सोपे मार्गदर्शन</span></div>
+        <div class="trust-item"><div class="ic">✅</div><b data-i18n="trust3Title">१००% मोफत व सुरक्षित</b><span data-i18n="trust3Desc">शासकीय नियमांनुसार</span></div>
+        <div class="trust-item"><div class="ic">💬</div><b data-i18n="trust4Title">तज्ज्ञ मार्गदर्शन</b><span data-i18n="trust4Desc">थेट प्रश्न निवारण</span></div>
       </div>
+    </div>
+  </div><!-- /#view-home -->
 
-      <div class="translator-grid">
-        <!-- Input Panel -->
-        <div class="trans-panel">
-          <div class="trans-panel-head">
-            <b data-i18n="transInputLabel">मूळ मजकूर</b>
-            <button class="btn btn-sm btn-outline" id="btn-trans-voice-input" data-i18n="transBtnVoiceInput">🎙️ बोला</button>
+  <!-- ======================================================================= -->
+  <!-- 2. MODULES VIEW                                                        -->
+  <!-- ======================================================================= -->
+  <div class="app-view" id="view-modules">
+    <section id="features">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" data-i18n="featHeading">तुमचे डिजिटल बिझनेस टूल्स</span>
+          <h2 data-i18n="featTitle">डिजिटल उद्योजक समृद्धी मंच</h2>
+          <p data-i18n="featSubheading">स्थानिक मराठी भाषेत तयार केलेले सोपे आणि प्रभावी प्रशिक्षण मॉड्यूल्स.</p>
+        </div>
+
+        <div class="features-grid">
+          <a class="f-card c1" href="#video-hub">
+            <div>
+              <div class="ic">📚</div>
+              <div class="lbl" data-i18n="f1Title">डिजिटल बिलिंग आणि बहीखाता</div>
+              <div class="desc" data-i18n="f1Desc">किराणा बिलिंग, स्टॉक मॅनेजमेंट आणि उधारी खात्याची डिजिटल नोंद.</div>
+            </div>
+            <div class="link" data-i18n="btnLearnMore">शिका →</div>
+          </a>
+
+          <a class="f-card c2" href="#video-hub">
+            <div>
+              <div class="ic">🌐</div>
+              <div class="lbl" data-i18n="f2Title">NotebookLM व्हिडिओ भाषांतर</div>
+              <div class="desc" data-i18n="f2Desc">कोणत्याही इंग्रजी किंवा इतर भाषेतील व्हिडिओचा मराठीत सारांश समजून घ्या.</div>
+            </div>
+            <div class="link" data-i18n="btnUseTool">वापरा →</div>
+          </a>
+
+          <a class="f-card c3" href="#video-hub">
+            <div>
+              <div class="ic">💳</div>
+              <div class="lbl" data-i18n="f3Title">ऑनलाइन पेमेंट्स (UPI व QR)</div>
+              <div class="desc" data-i18n="f3Desc">PhonePe, Google Pay, QR कोड आणि साउंडबॉक्सचा सुरक्षित वापर.</div>
+            </div>
+            <div class="link" data-i18n="btnLearnMore">शिका →</div>
+          </a>
+
+          <a class="f-card c4" href="#schemes">
+            <div>
+              <div class="ic">🏛️</div>
+              <div class="lbl" data-i18n="f4Title">सरकारी योजना आणि सबसिडी</div>
+              <div class="desc" data-i18n="f4Desc">प्रधानमंत्री मुद्रा योजना, PMEGP आणि महिला उद्योग कर्ज योजना.</div>
+            </div>
+            <div class="link" data-i18n="btnLearnMore">शिका →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div><!-- /#view-modules -->
+
+  <!-- ======================================================================= -->
+  <!-- 3. AI VOICE ASSISTANT VIEW                                             -->
+  <!-- ======================================================================= -->
+  <div class="app-view" id="view-voice-ai">
+    <section class="voice-assistant-section" id="assistant">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" style="background:#e7f5ec; color:#0f6b3d;">🎙️ AI Voice Guide</span>
+          <h2 data-i18n="voiceTitle">आपला AI बोलता मार्गदर्शक</h2>
+          <p data-i18n="voiceSubtitle">लिहिता येत नसेल तर काळजी करू नका — फक्त माइकवर दाबून बोला, आमचा AI सहाय्यक तुम्हाला मराठीत उत्तर देईल आणि बोलून दाखवेल.</p>
+        </div>
+
+        <div class="va-box">
+          <div class="va-mic-wrapper">
+            <button class="va-mic-button" id="va-mic-btn" title="Click to Speak">🎙️</button>
+            <div class="va-status-text" id="va-status-text" data-i18n="voiceBtnStart">बोलण्यासाठी दाबा (Start Speaking)</div>
+            <div class="va-waves" id="va-waves">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
           </div>
-          <textarea class="trans-textarea" id="trans-input-text" data-i18n-ph="transPlaceholder" placeholder="येथे मजकूर लिहा किंवा माइक दाबून बोला..."></textarea>
-          <div class="trans-panel-actions">
-            <button class="btn btn-sm btn-outline" id="btn-trans-input-speak" data-i18n="transBtnSpeak">🔊 ऐका</button>
-            <button class="btn btn-primary" id="btn-translate-text" data-i18n="transBtnTranslate">🔄 भाषांतर करा</button>
+
+          <p data-i18n="voiceAskPrompt" style="font-size:13px; font-weight:700; color:var(--muted); margin-top:14px;">किंवा खालीलपैकी कोणत्याही प्रश्नावर क्लिक करा:</p>
+          <div class="va-quick-questions">
+            <div class="va-q-chip" onclick="askQuickQuestion('माझ्या दुकानासाठी QR कोड कसा लावावा?')" data-i18n="voiceQ1">माझ्या दुकानासाठी QR कोड कसा लावावा?</div>
+            <div class="va-q-chip" onclick="askQuickQuestion('मुद्रा लोनसाठी कोणती कागदपत्रे लागतात?')" data-i18n="voiceQ2">मुद्रा लोनसाठी कोणती कागदपत्रे लागतात?</div>
+            <div class="va-q-chip" onclick="askQuickQuestion('NotebookLM वर व्हिडिओ कसा ट्रान्सलेट करावा?')" data-i18n="voiceQ3">NotebookLM वर व्हिडिओ कसा ट्रान्सलेट करावा?</div>
+            <div class="va-q-chip" onclick="askQuickQuestion('किराणा दुकानाचे बिल मोबाईलवर कसे बनवायचे?')" data-i18n="voiceQ4">किराणा दुकानाचे बिल मोबाईलवर कसे बनवायचे?</div>
+          </div>
+
+          <!-- Answer Output Box -->
+          <div class="va-answer-box" id="va-answer-box">
+            <div class="va-answer-header">
+              <span class="va-question-badge" id="va-question-badge" data-i18n="voiceAskedQuestionBadge">🗣️ विचारलेला प्रश्न:</span>
+              <div class="va-answer-actions">
+                <button class="btn btn-sm btn-outline" id="va-speak-btn" data-i18n="voiceSpeakAgain">🔊 पुन्हा ऐका</button>
+                <button class="btn btn-sm btn-danger" id="va-pause-btn" data-i18n="voicePauseBtn">⏸️ आवाज थांबवा</button>
+                <button class="btn btn-sm btn-outline" id="va-copy-btn" data-i18n="voiceCopy">📋 कॉपी करा</button>
+              </div>
+            </div>
+            <div class="va-answer-text" id="va-answer-text" data-i18n="voiceDefaultAnswer">
+              येथे AI सहाय्यकाचे उत्तर दिसेल.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /#view-voice-ai -->
+
+  <!-- ======================================================================= -->
+  <!-- 4. NOTEBOOKLM & VIDEO TRAINING HUB VIEW                                 -->
+  <!-- ======================================================================= -->
+  <div class="app-view" id="view-video-hub">
+    <section class="video-hub-section" id="learn">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" style="background:#eaf2fa; color:#2f6fb0;">🎥 Video Training Hub</span>
+          <h2 data-i18n="videoHubTitle">व्हिडिओ प्रशिक्षण आणि NotebookLM केंद्र</h2>
+          <p data-i18n="videoHubSubtitle">स्थानिक भाषेत सर्व शिका. NotebookLM च्या साहाय्याने कोणत्याही इंग्रजी/हिंदी व्हिडिओचे मराठीत सारांश व भाषांतर करण्याची सोपी पद्धत.</p>
+        </div>
+
+        <!-- Featured NotebookLM Banner -->
+        <div class="notebooklm-banner">
+          <div>
+            <span style="background:#ffd8a8; color:#5a3300; font-size:12px; font-weight:800; padding:4px 10px; border-radius:12px;" data-i18n="videoFeaturedTag">⭐ विशेष प्रशिक्षण</span>
+            <h3 style="font-size:22px; font-weight:800; margin:10px 0; line-height:1.3;" data-i18n="videoFeaturedTitle">NotebookLM द्वारे कोणत्याही व्हिडिओचे स्थानिक भाषेत भाषांतर कसे करावे?</h3>
+            <p style="font-size:13.5px; opacity:0.92;" data-i18n="videoFeaturedDesc">या व्हिडिओत शिका: व्हिडिओ लिंक किंवा मजकूर NotebookLM मध्ये कसा टाकायचा, मराठीत नोट्स कशा मिळवायच्या आणि ऑडिओ पॉडकास्ट कसा ऐकायचा.</p>
+            <div class="notebooklm-steps-list">
+              <div class="nlm-step" data-i18n="videoStep1">१. व्हिडिओची लिंक किंवा ट्रान्सक्रिप्ट कॉपी करा.</div>
+              <div class="nlm-step" data-i18n="videoStep2">२. Google NotebookLM उघडून सोर्स म्हणून जोडा.</div>
+              <div class="nlm-step" data-i18n="videoStep3">३. 'मराठीत सारांश द्या' अशी कमांड द्या आणि ऑडिओ ऐका.</div>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <div style="background:rgba(0,0,0,0.25); border-radius:16px; padding:24px; border:1px solid rgba(255,255,255,0.2);">
+              <div style="font-size:48px; margin-bottom:10px;">🤖 📖</div>
+              <button class="btn btn-white" style="width:100%; font-weight:700;" onclick="openVideoModal('vid-1')" data-i18n="videoWatchBtn">▶ व्हिडिओ ट्युटोरियल पहा</button>
+              <button class="btn btn-sm btn-outline-white" style="width:100%; margin-top:8px;" onclick="markVideoDone('vid-1')" data-i18n="btnMarkComplete">✓ पूर्ण झाले म्हणून नोंदवा</button>
+            </div>
           </div>
         </div>
 
-        <!-- Output Panel -->
-        <div class="trans-panel">
-          <div class="trans-panel-head">
-            <b data-i18n="transOutputLabel">भाषांतरित मजकूर</b>
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span style="font-size:12px; font-weight:700;" data-i18n="transTargetLangLabel">लक्ष्य भाषा:</span>
-              <select id="trans-target-lang" style="padding:4px 8px; border-radius:6px; border:1px solid var(--line); font-size:12.5px;">
+        <!-- Filter Tabs -->
+        <div class="filter-pills-row">
+          <button class="filter-pill active" onclick="filterVideos('all', this)" data-i18n="filterAll">सर्व व्हिडिओ</button>
+          <button class="filter-pill" onclick="filterVideos('notebooklm', this)" data-i18n="filterNotebookLM">NotebookLM</button>
+          <button class="filter-pill" onclick="filterVideos('billing', this)" data-i18n="filterBilling">बिलिंग अॅप्स</button>
+          <button class="filter-pill" onclick="filterVideos('payments', this)" data-i18n="filterPayments">पेमेंट्स व बँकिंग</button>
+          <button class="filter-pill" onclick="filterVideos('schemes', this)" data-i18n="filterSchemes">सरकारी योजना</button>
+        </div>
+
+        <!-- Videos Dynamic Grid -->
+        <div class="videos-grid" id="videos-grid-container">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </div>
+    </section>
+  </div><!-- /#view-video-hub -->
+
+  <!-- ======================================================================= -->
+  <!-- 5. AI TEXT TRANSLATOR VIEW                                             -->
+  <!-- ======================================================================= -->
+  <div class="app-view" id="view-translator">
+    <section class="translator-section" id="translate">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" style="background:#fef1e8; color:#d4601c;">🌐 Text & Voice Translator</span>
+          <h2 data-i18n="transTitle">AI मजकूर भाषांतरकार</h2>
+          <p data-i18n="transSubtitle">मराठी, हिंदी आणि इंग्रजीमध्ये त्वरित अचूक भाषांतर करा. आवाजाने बोला आणि आवाजात ऐका.</p>
+        </div>
+
+        <div class="translator-grid">
+          <!-- Input Panel -->
+          <div class="trans-panel">
+            <div class="trans-panel-head">
+              <b data-i18n="transInputLabel">मूळ मजकूर</b>
+              <button class="btn btn-sm btn-outline" id="btn-trans-voice-input" data-i18n="transBtnVoiceInput">🎙️ बोला</button>
+            </div>
+            <textarea class="trans-textarea" id="trans-input-text" data-i18n-ph="transPlaceholder" placeholder="येथे मजकूर लिहा किंवा माइक दाबून बोला..."></textarea>
+            <div class="trans-panel-actions">
+              <button class="btn btn-sm btn-outline" id="btn-trans-input-speak" data-i18n="transBtnSpeak">🔊 ऐका</button>
+              <button class="btn btn-primary" id="btn-translate-text" data-i18n="transBtnTranslate">🔄 भाषांतर करा</button>
+            </div>
+          </div>
+
+          <!-- Output Panel -->
+          <div class="trans-panel">
+            <div class="trans-panel-head">
+              <b data-i18n="transOutputLabel">भाषांतरित मजकूर</b>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:12px; font-weight:700;" data-i18n="transTargetLangLabel">लक्ष्य भाषा:</span>
+                <select id="trans-target-lang" style="padding:4px 8px; border-radius:6px; border:1px solid var(--line); font-size:12.5px;">
+                  <option value="mr" selected>मराठी (Marathi)</option>
+                  <option value="hi">हिंदी (Hindi)</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+            </div>
+            <textarea class="trans-textarea" id="trans-output-text" data-i18n-ph="transOutputPlaceholder" placeholder="येथे भाषांतरित मजकूर तयार होईल..." readonly></textarea>
+            <div class="trans-panel-actions">
+              <button class="btn btn-sm btn-outline" id="btn-trans-speak" data-i18n="transBtnSpeak">🔊 ऐका</button>
+              <div class="trans-panel-btns">
+                <button class="btn btn-sm btn-outline" id="btn-trans-copy" data-i18n="transBtnCopy">📋 कॉपी करा</button>
+                <button class="btn btn-sm btn-primary" id="btn-trans-whatsapp" style="background:#25D366; border:none;" data-i18n="transBtnWhatsapp">💬 WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /#view-translator -->
+
+  <!-- ======================================================================= -->
+  <!-- 6. DOCUMENT TRANSLATOR & PDF DOWNLOADER VIEW                           -->
+  <!-- ======================================================================= -->
+  <div class="app-view" id="view-document-translator">
+    <section style="background:var(--cream);" id="doc-translate">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" style="background:#e7f5ec; color:#0f6b3d;">📄 Document AI Translator</span>
+          <h2 data-i18n="docTransTitle">दस्तऐवज भाषांतर आणि डाउनलोड</h2>
+          <p data-i18n="docTransSubtitle">सरकारी फॉर्म्स, PDF, Word किंवा बँक अर्ज अपलोड करा — त्यातील सर्व माहिती आपोआप वाचून मराठीमध्ये भाषांतर करा आणि PDF डाउनलोड करा.</p>
+        </div>
+
+        <div style="background:#fff; border-radius:22px; padding:30px; border:1px solid var(--line); box-shadow:var(--shadow-sm);">
+          <!-- File Upload Area -->
+          <div class="doc-upload-box" onclick="document.getElementById('doc-file-upload').click()">
+            <input type="file" id="doc-file-upload" accept=".pdf,.docx,.doc,.txt,.csv,.png,.jpg,.jpeg" style="display:none;">
+            <div style="font-size:38px; margin-bottom:8px;">📂 📄</div>
+            <b data-i18n="docUploadLabel">दस्तऐवज निवडा (.pdf, .docx, .txt किंवा इमेज)</b>
+            <p data-i18n="docDropText" style="font-size:12.5px; color:var(--muted); margin-top:4px;">PDF, Word किंवा Text फाईल येथे ड्रॅग करा किंवा निवडण्यासाठी क्लिक करा</p>
+          </div>
+
+          <!-- Extraction Status Badge -->
+          <div class="doc-status-badge" id="doc-extract-status-badge"></div>
+
+          <div style="margin-top:10px; margin-bottom:6px;">
+            <b data-i18n="docOriginalLabel" style="font-size:13px; color:var(--ink);">दस्तऐवजातील मूळ मजकूर:</b>
+          </div>
+
+          <textarea class="trans-textarea" id="doc-source-content" style="min-height:160px;" data-i18n-ph="docOriginalPlaceholder" placeholder="सरकारी नोटीस, बँक फॉर्म किंवा व्यवसायाचा मजकूर येथे दिसेल / पेस्ट करा..."></textarea>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <b data-i18n="docTargetLang" style="font-size:13.5px;">कोणत्या भाषेत भाषांतर हवे आहे?</b>
+              <select id="doc-target-lang" style="padding:6px 12px; border-radius:8px; border:1.5px solid var(--line); font-size:13px; font-weight:600;">
                 <option value="mr" selected>मराठी (Marathi)</option>
                 <option value="hi">हिंदी (Hindi)</option>
                 <option value="en">English</option>
               </select>
             </div>
+            <button class="btn btn-primary" id="btn-process-doc" data-i18n="docBtnProcess">⚡ दस्तऐवज भाषांतर करा</button>
           </div>
-          <textarea class="trans-textarea" id="trans-output-text" data-i18n-ph="transOutputPlaceholder" placeholder="येथे भाषांतरित मजकूर तयार होईल..." readonly></textarea>
-          <div class="trans-panel-actions">
-            <button class="btn btn-sm btn-outline" id="btn-trans-speak" data-i18n="transBtnSpeak">🔊 ऐका</button>
-            <div class="trans-panel-btns">
-              <button class="btn btn-sm btn-outline" id="btn-trans-copy" data-i18n="transBtnCopy">📋 कॉपी करा</button>
-              <button class="btn btn-sm btn-primary" id="btn-trans-whatsapp" style="background:#25D366; border:none;" data-i18n="transBtnWhatsapp">💬 WhatsApp</button>
+
+          <!-- Translated Document Preview Box -->
+          <div style="margin-top:24px; border-top:1px solid var(--line); padding-top:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+              <b data-i18n="docPreviewTitle" style="font-size:15px; color:var(--green-dark);">भाषांतरित दस्तऐवज पूर्वावलोकन</b>
+              <div class="doc-preview-actions">
+                <button class="btn btn-sm btn-primary" id="btn-download-doc-pdf" data-i18n="docBtnDownloadPdf">📥 भाषांतरित PDF डाउनलोड करा</button>
+                <button class="btn btn-sm btn-outline" id="btn-download-doc-txt" data-i18n="docBtnDownloadTxt">📥 मजकूर (.txt)</button>
+                <button class="btn btn-sm btn-outline" id="btn-print-doc" data-i18n="docBtnPrint">🖨️ प्रिंट करा</button>
+              </div>
+            </div>
+            <div class="doc-preview-container" id="doc-preview-content" data-i18n="docPreviewDefault">
+              येथे भाषांतरित दस्तऐवज तयार होईल...
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div><!-- /#view-document-translator -->
 
   <!-- ======================================================================= -->
-  <!-- 6. DOCUMENT TRANSLATOR & PDF DOWNLOADER SECTION                        -->
+  <!-- 7. GOVERNMENT SCHEMES & SUBSIDIES VIEW                                 -->
   <!-- ======================================================================= -->
-  <section style="background:var(--cream);" id="doc-translate">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow-tag" style="background:#e7f5ec; color:#0f6b3d;">📄 Document AI Translator</span>
-        <h2 data-i18n="docTransTitle">दस्तऐवज भाषांतर आणि डाउनलोड</h2>
-        <p data-i18n="docTransSubtitle">सरकारी फॉर्म्स, PDF, Word किंवा बँक अर्ज अपलोड करा — त्यातील सर्व माहिती आपोआप वाचून मराठीमध्ये भाषांतर करा आणि PDF डाउनलोड करा.</p>
-      </div>
-
-      <div style="background:#fff; border-radius:22px; padding:30px; border:1px solid var(--line); box-shadow:var(--shadow-sm);">
-        <!-- File Upload Area -->
-        <div class="doc-upload-box" onclick="document.getElementById('doc-file-upload').click()">
-          <input type="file" id="doc-file-upload" accept=".pdf,.docx,.doc,.txt,.csv,.png,.jpg,.jpeg" style="display:none;">
-          <div style="font-size:38px; margin-bottom:8px;">📂 📄</div>
-          <b data-i18n="docUploadLabel">दस्तऐवज निवडा (.pdf, .docx, .txt किंवा इमेज)</b>
-          <p data-i18n="docDropText" style="font-size:12.5px; color:var(--muted); margin-top:4px;">PDF, Word किंवा Text फाईल येथे ड्रॅग करा किंवा निवडण्यासाठी क्लिक करा</p>
+  <div class="app-view" id="view-schemes">
+    <section style="background:var(--cream);" id="schemes">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" style="background:#fdf6e2; color:#b07e06;">🏛️ Government Schemes & Subsidies</span>
+          <h2 data-i18n="docSampleLibraryTitle">शासकीय योजना आणि नमुना कागदपत्रे</h2>
+          <p data-i18n="docSampleLibrarySub">उद्योजकांसाठी सरकारी योजना, मुद्रा लोन, शॉप ॲक्ट आणि सबसिडी फॉर्म्सची माहिती व थेट भाषांतर:</p>
         </div>
 
-        <!-- Extraction Status Badge -->
-        <div class="doc-status-badge" id="doc-extract-status-badge"></div>
-
-        <div style="margin-top:10px; margin-bottom:6px;">
-          <b data-i18n="docOriginalLabel" style="font-size:13px; color:var(--ink);">दस्तऐवजातील मूळ मजकूर:</b>
-        </div>
-
-        <textarea class="trans-textarea" id="doc-source-content" style="min-height:160px;" data-i18n-ph="docOriginalPlaceholder" placeholder="सरकारी नोटीस, बँक फॉर्म किंवा व्यवसायाचा मजकूर येथे दिसेल / पेस्ट करा..."></textarea>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:12px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <b data-i18n="docTargetLang" style="font-size:13.5px;">कोणत्या भाषेत भाषांतर हवे आहे?</b>
-            <select id="doc-target-lang" style="padding:6px 12px; border-radius:8px; border:1.5px solid var(--line); font-size:13px; font-weight:600;">
-              <option value="mr" selected>मराठी (Marathi)</option>
-              <option value="hi">हिंदी (Hindi)</option>
-              <option value="en">English</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" id="btn-process-doc" data-i18n="docBtnProcess">⚡ दस्तऐवज भाषांतर करा</button>
-        </div>
-
-        <!-- Translated Document Preview Box -->
-        <div style="margin-top:24px; border-top:1px solid var(--line); padding-top:20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
-            <b data-i18n="docPreviewTitle" style="font-size:15px; color:var(--green-dark);">भाषांतरित दस्तऐवज पूर्वावलोकन</b>
-            <div class="doc-preview-actions">
-              <button class="btn btn-sm btn-primary" id="btn-download-doc-pdf" data-i18n="docBtnDownloadPdf">📥 भाषांतरित PDF डाउनलोड करा</button>
-              <button class="btn btn-sm btn-outline" id="btn-download-doc-txt" data-i18n="docBtnDownloadTxt">📥 मजकूर (.txt)</button>
-              <button class="btn btn-sm btn-outline" id="btn-print-doc" data-i18n="docBtnPrint">🖨️ प्रिंट करा</button>
-            </div>
-          </div>
-          <div class="doc-preview-container" id="doc-preview-content" data-i18n="docPreviewDefault">
-            येथे भाषांतरित दस्तऐवज तयार होईल...
-          </div>
-        </div>
-      </div>
-
-      <!-- SEPARATE DEDICATED SECTION: Sample Government Forms & Documents Library -->
-      <div style="margin-top:24px; background:#fff; border-radius:20px; padding:22px; border:1px solid var(--line); box-shadow:var(--shadow-sm);">
-        <div style="margin-bottom:14px;">
-          <b data-i18n="docSampleLibraryTitle" style="font-size:15.5px; color:var(--green-dark); display:block;">📂 नमुना शासकीय कागदपत्रे लायब्ररी</b>
-          <p data-i18n="docSampleLibrarySub" style="font-size:12.5px; color:var(--muted); margin-top:2px;">सराव करण्यासाठी किंवा भाषांतर तपासण्यासाठी खालीलपैकी कोणत्याही अधिकृत नमुन्यावर क्लिक करा:</p>
-        </div>
-        <div class="doc-samples-grid">
-          <div class="sample-doc-card" id="btn-load-sample-mudra">
-            <div style="font-size:26px;">🏛️</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+          <!-- Mudra Loan Card -->
+          <div style="background:#fff; border-radius:20px; padding:24px; border:1px solid var(--line); box-shadow:var(--shadow-sm); display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <b data-i18n="docSample1Title" style="font-size:13.5px; color:var(--ink);">नमुना १: मुद्रा लोन अर्ज (PMMY)</b>
-              <p data-i18n="docSample1Desc" style="font-size:11.5px; color:var(--muted);">सूक्ष्म उद्योग व दुकानासाठी कर्ज अर्ज फॉर्म</p>
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="font-size:32px; width:52px; height:52px; border-radius:14px; background:#fef1e8; display:flex; align-items:center; justify-content:center;">🏛️</div>
+                <div>
+                  <b data-i18n="docSample1Title" style="font-size:16px; color:var(--ink); display:block;">मुद्रा लोन योजना (PMMY)</b>
+                  <span style="font-size:12px; color:var(--muted);">शिशू, किशोर व तरुण कर्ज (₹५०,००० ते ₹१० लाख)</span>
+                </div>
+              </div>
+              <p data-i18n="docSample1Desc" style="font-size:13px; color:var(--muted); line-height:1.5;">सूक्ष्म व्यवसाय, किराणा आणि उत्पादन युनिटसाठी विनातारण कर्ज अर्ज फॉर्म आणि पात्रता नियम.</p>
+            </div>
+            <div style="margin-top:18px; display:flex; gap:8px;">
+              <button class="btn btn-sm btn-primary" style="flex:1;" id="btn-load-sample-mudra">📄 नमुना फॉर्म भाषांतर करा</button>
+              <button class="btn btn-sm btn-outline" onclick="showPage('video-hub'); filterVideos('schemes');">🎥 व्हिडिओ पहा</button>
             </div>
           </div>
-          <div class="sample-doc-card" id="btn-load-sample-shop">
-            <div style="font-size:26px;">📜</div>
+
+          <!-- Shop Act Gumasta Card -->
+          <div style="background:#fff; border-radius:20px; padding:24px; border:1px solid var(--line); box-shadow:var(--shadow-sm); display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <b data-i18n="docSample2Title" style="font-size:13.5px; color:var(--ink);">नमुना २: शॉप ॲक्ट नोंदणी (गुमास्ता)</b>
-              <p data-i18n="docSample2Desc" style="font-size:11.5px; color:var(--muted);">महाराष्ट्र दुकान नोंदणी व परवाना मार्गदर्शक</p>
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="font-size:32px; width:52px; height:52px; border-radius:14px; background:#e7f5ec; display:flex; align-items:center; justify-content:center;">📜</div>
+                <div>
+                  <b data-i18n="docSample2Title" style="font-size:16px; color:var(--ink); display:block;">शॉप ॲक्ट नोंदणी (गुमास्ता परवाना)</b>
+                  <span style="font-size:12px; color:var(--muted);">आपले सरकार पोर्टल द्वारे ऑनलाइन परवाना</span>
+                </div>
+              </div>
+              <p data-i18n="docSample2Desc" style="font-size:13px; color:var(--muted); line-height:1.5;">महाराष्ट्र दुकाने व आस्थापना अधिनियम अंतर्गत व्यवसाय नोंदणीसाठी आवश्यक कागदपत्रे व अर्ज मार्गदर्शक.</p>
+            </div>
+            <div style="margin-top:18px; display:flex; gap:8px;">
+              <button class="btn btn-sm btn-primary" style="flex:1;" id="btn-load-sample-shop">📄 नमुना फॉर्म भाषांतर करा</button>
+              <button class="btn btn-sm btn-outline" onclick="showPage('video-hub'); filterVideos('schemes');">🎥 व्हिडिओ पहा</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div><!-- /#view-schemes -->
 
   <!-- ======================================================================= -->
-  <!-- 7. LEARNING TRACKER & CERTIFICATE SECTION                              -->
+  <!-- 8. LEARNING TRACKER & CERTIFICATE VIEW                                 -->
   <!-- ======================================================================= -->
-  <section class="tracker-section" id="tracker">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow-tag" style="background:#fdf6e2; color:#b07e06;">🏆 Learning Progress & Certificate</span>
-        <h2 data-i18n="trackerTitle">माझी शिकण्याची प्रगती आणि प्रमाणपत्र</h2>
-        <p data-i18n="trackerSubtitle">तुमचा शिकण्याचा प्रवास ट्रॅक करा, बॅजेस जिंका आणि डिजिटल साक्षरता प्रमाणपत्र मिळवा.</p>
-      </div>
-
-      <div class="tracker-grid">
-        <!-- Progress & Badges Card -->
-        <div class="progress-summary-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <b data-i18n="trackProgressLabel" style="font-size:15px;">कोर्स प्रगती</b>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="progress-pct-text" style="font-weight:800; font-size:16px; color:var(--green-dark);">0%</span>
-              <button class="btn btn-xs btn-outline" id="btn-reset-learning-progress" data-i18n="trackResetBtn" title="Reset progress to 0%">🔄 रीसेट करा</button>
-            </div>
-          </div>
-          <div class="hp-bar" style="height:10px;"><div class="hp-fill" id="tracker-progress-fill" style="width:0%;"></div></div>
-          
-          <div style="display:flex; justify-content:space-between; margin-top:14px; font-size:13px; color:var(--muted);">
-            <span><span data-i18n="trackCompletedModules">पूर्ण मॉड्यूल्स:</span> <b class="completed-count-text">0 / 5</b></span>
-            <span>🔥 <span data-i18n="trackStreak">सराव:</span> <b id="streak-count-val">1 दिवस</b></span>
-          </div>
-
-          <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:16px;">
-            <b data-i18n="trackBadgesEarned" style="font-size:14px;">मिळालेले बॅजेस</b>
-            <div class="badges-grid" id="badges-grid">
-              <!-- Rendered dynamically by learning-tracker.js -->
-            </div>
-          </div>
+  <div class="app-view" id="view-tracker">
+    <section class="tracker-section" id="tracker">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" style="background:#fdf6e2; color:#b07e06;">🏆 Learning Progress & Certificate</span>
+          <h2 data-i18n="trackerTitle">माझी शिकण्याची प्रगती आणि प्रमाणपत्र</h2>
+          <p data-i18n="trackerSubtitle">तुमचा शिकण्याचा प्रवास ट्रॅक करा, बॅजेस जिंका आणि डिजिटल साक्षरता प्रमाणपत्र मिळवा.</p>
         </div>
 
-        <!-- Certificate Card -->
-        <div class="cert-card-container">
-          <div>
-            <b data-i18n="trackCertTitle" style="font-size:16px; display:block; margin-bottom:14px;">डिजिटल साक्षरता प्रमाणपत्र</b>
-            <div class="cert-status locked" id="cert-status-box">
-              <div style="font-size:32px;">🔒</div>
-              <div>
-                <h4 style="color:#666; font-weight:800; font-size:15px;" data-i18n="trackCertLocked">प्रमाणपत्र सध्या लॉक आहे</h4>
-                <p style="font-size:12.5px; color:#777;" data-i18n="trackCertLockedDesc">प्रमाणपत्र अनलॉक करण्यासाठी किमान ३ व्हिडिओ मॉड्यूल्स पूर्ण करा.</p>
+        <div class="tracker-grid">
+          <!-- Progress & Badges Card -->
+          <div class="progress-summary-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <b data-i18n="trackProgressLabel" style="font-size:15px;">कोर्स प्रगती</b>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="progress-pct-text" style="font-weight:800; font-size:16px; color:var(--green-dark);">0%</span>
+                <button class="btn btn-xs btn-outline" id="btn-reset-learning-progress" data-i18n="trackResetBtn" title="Reset progress to 0%">🔄 रीसेट करा</button>
+              </div>
+            </div>
+            <div class="hp-bar" style="height:10px;"><div class="hp-fill" id="tracker-progress-fill" style="width:0%;"></div></div>
+            
+            <div style="display:flex; justify-content:space-between; margin-top:14px; font-size:13px; color:var(--muted);">
+              <span><span data-i18n="trackCompletedModules">पूर्ण मॉड्यूल्स:</span> <b class="completed-count-text">0 / 5</b></span>
+              <span>🔥 <span data-i18n="trackStreak">सराव:</span> <b id="streak-count-val">1 दिवस</b></span>
+            </div>
+
+            <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:16px;">
+              <b data-i18n="trackBadgesEarned" style="font-size:14px;">मिळालेले बॅजेस</b>
+              <div class="badges-grid" id="badges-grid">
+                <!-- Rendered dynamically by learning-tracker.js -->
               </div>
             </div>
           </div>
 
-          <div style="text-align:center; margin-top:20px;">
-            <button class="btn btn-orange btn-disabled" id="btn-download-cert" disabled style="width:100%; padding:14px;" data-i18n="btnDownloadCert">🎓 अधिकृत प्रमाणपत्र डाउनलोड करा (PNG/PDF)</button>
-            <small data-i18n="certReqNotice" style="display:block; margin-top:8px; color:var(--muted); font-size:11.5px;">* किमान ३ मॉड्यूल्स पूर्ण केल्यावर अनलॉक होईल.</small>
+          <!-- Certificate Card -->
+          <div class="cert-card-container">
+            <div>
+              <b data-i18n="trackCertTitle" style="font-size:16px; display:block; margin-bottom:14px;">डिजिटल साक्षरता प्रमाणपत्र</b>
+              <div class="cert-status locked" id="cert-status-box">
+                <div style="font-size:32px;">🔒</div>
+                <div>
+                  <h4 style="color:#666; font-weight:800; font-size:15px;" data-i18n="trackCertLocked">प्रमाणपत्र सध्या लॉक आहे</h4>
+                  <p style="font-size:12.5px; color:#777;" data-i18n="trackCertLockedDesc">प्रमाणपत्र अनलॉक करण्यासाठी किमान ३ व्हिडिओ मॉड्यूल्स पूर्ण करा.</p>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:center; margin-top:20px;">
+              <button class="btn btn-orange btn-disabled" id="btn-download-cert" disabled style="width:100%; padding:14px;" data-i18n="btnDownloadCert">🎓 अधिकृत प्रमाणपत्र डाउनलोड करा (PNG/PDF)</button>
+              <small data-i18n="certReqNotice" style="display:block; margin-top:8px; color:var(--muted); font-size:11.5px;">* किमान ३ मॉड्यूल्स पूर्ण केल्यावर अनलॉक होईल.</small>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Daily Quiz Box -->
-      <div class="daily-quiz-box" id="daily-quiz-container">
-        <!-- Rendered dynamically by learningTracker.renderQuiz(lang) -->
+        <!-- Daily Quiz Box -->
+        <div class="daily-quiz-box" id="daily-quiz-container">
+          <!-- Rendered dynamically by learningTracker.renderQuiz(lang) -->
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div><!-- /#view-tracker -->
 
   <!-- ======================================================================= -->
-  <!-- 8. HELP DESK & QUERIES RESOLUTION SECTION                              -->
+  <!-- 9. HELP DESK & QUERIES RESOLUTION VIEW                                 -->
   <!-- ======================================================================= -->
-  <section class="help-section" id="help">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow-tag" style="background:#eaf2fa; color:#2f6fb0;">💬 Help Desk & Q&A</span>
-        <h2 data-i18n="helpTitle">उद्योजक मदत कक्ष आणि प्रश्न विचारा</h2>
-        <p data-i18n="helpSubtitle">व्यवसायात किंवा टूल्स वापरताना काही अडचण आली आहे? प्रश्न विचारा — आमचे तज्ज्ञ आणि ॲडमिन तुम्हाला मार्गदर्शन करतील.</p>
-      </div>
+  <div class="app-view" id="view-help-desk">
+    <section class="help-section" id="help">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow-tag" style="background:#eaf2fa; color:#2f6fb0;">💬 Help Desk & Q&A</span>
+          <h2 data-i18n="helpTitle">उद्योजक मदत कक्ष आणि प्रश्न विचारा</h2>
+          <p data-i18n="helpSubtitle">व्यवसायात किंवा टूल्स वापरताना काही अडचण आली आहे? प्रश्न विचारा — आमचे तज्ज्ञ आणि ॲडमिन तुम्हाला मार्गदर्शन करतील.</p>
+        </div>
 
-      <div class="help-grid">
-        <!-- Submit Query Box -->
-        <div style="background:var(--cream); border:1.5px solid var(--line); border-radius:20px; padding:24px;">
-          <b data-i18n="helpAskLabel" style="font-size:15px; display:block; margin-bottom:10px;">तुमचा प्रश्न विचारा (टाईप करा किंवा बोला):</b>
-          <textarea id="user-query-input" class="trans-textarea" style="min-height:130px; background:#fff;" data-i18n-ph="helpPlaceholder" placeholder="उदा. मला दुकानासाठी करंट अकाउंट उघडायचे आहे, कोणती कागदपत्रे लागतील?"></textarea>
-          <div class="help-action-row">
-            <button class="btn btn-sm btn-outline" onclick="askVoiceForQuery()" data-i18n="helpBtnVoice">🎙️ आवाजाने बोला</button>
-            <button class="btn btn-primary" id="btn-submit-query" data-i18n="helpBtnSubmit">📤 प्रश्न पाठवा</button>
+        <div class="help-grid">
+          <!-- Submit Query Box -->
+          <div style="background:var(--cream); border:1.5px solid var(--line); border-radius:20px; padding:24px;">
+            <b data-i18n="helpAskLabel" style="font-size:15px; display:block; margin-bottom:10px;">तुमचा प्रश्न विचारा (टाईप करा किंवा बोला):</b>
+            <textarea id="user-query-input" class="trans-textarea" style="min-height:130px; background:#fff;" data-i18n-ph="helpPlaceholder" placeholder="उदा. मला दुकानासाठी करंट अकाउंट उघडायचे आहे, कोणती कागदपत्रे लागतील?"></textarea>
+            <div class="help-action-row">
+              <button class="btn btn-sm btn-outline" onclick="askVoiceForQuery()" data-i18n="helpBtnVoice">🎙️ आवाजाने बोला</button>
+              <button class="btn btn-primary" id="btn-submit-query" data-i18n="helpBtnSubmit">📤 प्रश्न पाठवा</button>
+            </div>
+          </div>
+
+          <!-- Queries & Admin Answers List -->
+          <div>
+            <b data-i18n="helpRecentTitle" style="font-size:15px; display:block; margin-bottom:12px;">तुमचे विचारलेले प्रश्न आणि उत्तरे</b>
+            <div id="user-queries-list">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /#view-help-desk -->
+
+  <!-- ======================================================================= -->
+  <!-- 10. USER PROFILE VIEW                                                  -->
+  <!-- ======================================================================= -->
+  <div class="app-view" id="view-profile">
+    <div class="container" style="padding-top:40px; padding-bottom:60px;">
+      <div class="profile-view-card">
+        <div class="profile-avatar-banner">
+          <div class="profile-avatar-big">🧔🏽</div>
+          <div>
+            <h2 style="font-size:22px; font-family:'Poppins',sans-serif; color:var(--green-dark);"><span class="logged-in-user-name">उद्योजक</span></h2>
+            <div style="margin-top:4px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <span class="logged-in-user-location" style="font-size:13px; color:var(--muted);">📍 महाराष्ट्र</span>
+              <span style="font-size:11px; background:#e7f5ec; color:var(--green-dark); padding:3px 8px; border-radius:10px; font-weight:700;">✓ प्रमाणित उद्योजक खाते</span>
+            </div>
           </div>
         </div>
 
-        <!-- Queries & Admin Answers List -->
-        <div>
-          <b data-i18n="helpRecentTitle" style="font-size:15px; display:block; margin-bottom:12px;">तुमचे विचारलेले प्रश्न आणि उत्तरे</b>
-          <div id="user-queries-list">
-            <!-- Rendered dynamically by app.js -->
+        <div class="profile-details-grid">
+          <div class="profile-detail-item">
+            <label>पूर्ण नाव (Full Name)</label>
+            <b class="logged-in-user-name">उद्योजक</b>
           </div>
+          <div class="profile-detail-item">
+            <label>नोंदणीकृत ईमेल (Email Address)</label>
+            <b id="prof-view-email">user@gmail.com</b>
+          </div>
+          <div class="profile-detail-item">
+            <label>गाव / शहर (Village / City)</label>
+            <b id="prof-view-village" class="logged-in-user-location">महाराष्ट्र</b>
+          </div>
+          <div class="profile-detail-item">
+            <label>व्यवसायाचा प्रकार (Business Type)</label>
+            <b id="prof-view-biz">किराणा व जनरल स्टोअर्स</b>
+          </div>
+          <div class="profile-detail-item">
+            <label>डिजिटल साक्षरता प्रगती</label>
+            <b><span class="progress-pct-text">0%</span> पूर्ण</b>
+          </div>
+          <div class="profile-detail-item">
+            <label>सराव सातत्य (Learning Streak)</label>
+            <b id="prof-view-streak">🔥 १ दिवस</b>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+          <a href="#tracker" class="btn btn-primary" style="flex:1;">🏆 माझी प्रगती व प्रमाणपत्र पहा</a>
+          <button class="btn btn-outline" onclick="openSetNewPasswordModal(window.currentUser ? window.currentUser.email : '')">🔑 पासवर्ड बदला</button>
+          <button class="btn btn-danger" onclick="logout()" data-i18n="logout" style="flex:1;">⏻ लॉगआउट</button>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- TRUST STRIP -->
-  <div class="trust-strip">
-    <div class="container trust-grid">
-      <div class="trust-item"><div class="ic">🌐</div><b data-i18n="trust1Title">आपली भाषा</b><span data-i18n="trust1Desc">मराठी, हिंदी व स्थानिक बोली</span></div>
-      <div class="trust-item"><div class="ic">📖</div><b data-i18n="trust2Title">सोपे व्हिडिओ</b><span data-i18n="trust2Desc">प्रत्यक्ष सोपे मार्गदर्शन</span></div>
-      <div class="trust-item"><div class="ic">✅</div><b data-i18n="trust3Title">१००% मोफत व सुरक्षित</b><span data-i18n="trust3Desc">शासकीय नियमांनुसार</span></div>
-      <div class="trust-item"><div class="ic">💬</div><b data-i18n="trust4Title">तज्ज्ञ मार्गदर्शन</b><span data-i18n="trust4Desc">थेट प्रश्न निवारण</span></div>
-    </div>
-  </div>
+  </div><!-- /#view-profile -->
 
   <!-- FOOTER -->
   <footer>
@@ -655,27 +835,27 @@
         <div class="footer-col">
           <h4 data-i18n="footerColModules">मॉड्यूल्स</h4>
           <ul>
-            <li><a href="#learn" data-i18n="f2Title">NotebookLM व्हिडिओ भाषांतर</a></li>
-            <li><a href="#translate" data-i18n="transTitle">AI मजकूर भाषांतरकार</a></li>
-            <li><a href="#doc-translate" data-i18n="navDocTranslate">दस्तऐवज</a></li>
+            <li><a href="#video-hub" data-i18n="f2Title">NotebookLM व्हिडिओ भाषांतर</a></li>
+            <li><a href="#translator" data-i18n="transTitle">AI मजकूर भाषांतरकार</a></li>
+            <li><a href="#document-translator" data-i18n="navDocTranslate">दस्तऐवज</a></li>
             <li><a href="#tracker" data-i18n="trackCertTitle">डिजिटल साक्षरता प्रमाणपत्र</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4 data-i18n="footerColSchemes">सरकारी योजना</h4>
           <ul>
-            <li><a href="#learn">PMEGP सबसिडी</a></li>
-            <li><a href="#learn">मुद्रा योजना (PMMY)</a></li>
-            <li><a href="#learn">उद्योग आधार नोंदणी</a></li>
-            <li><a href="#learn">महिला बचत गट योजना</a></li>
+            <li><a href="#schemes">PMEGP सबसिडी</a></li>
+            <li><a href="#schemes">मुद्रा योजना (PMMY)</a></li>
+            <li><a href="#schemes">उद्योग आधार नोंदणी</a></li>
+            <li><a href="#schemes">महिला बचत गट योजना</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4 data-i18n="footerColSupport">मदत व सपोर्ट</h4>
           <ul>
-            <li><a href="#help" data-i18n="helpTitle">मदत कक्ष आणि प्रश्न</a></li>
+            <li><a href="#help-desk" data-i18n="helpTitle">मदत कक्ष आणि प्रश्न</a></li>
             <li><a href="https://api.whatsapp.com" target="_blank">WhatsApp सपोर्ट</a></li>
-            <li><a href="#assistant" data-i18n="navAssistant">AI मार्गदर्शक</a></li>
+            <li><a href="#voice-ai" data-i18n="navAssistant">AI मार्गदर्शक</a></li>
           </ul>
         </div>
       </div>
@@ -688,11 +868,11 @@
 
   <!-- Bottom Mobile Navigation Bar -->
   <nav class="bottom-navbar" id="bottomNav">
-    <a href="#home" class="bn-item active"><span class="bn-ic">🏠</span><span data-i18n="bnHome">मुख्य</span></a>
-    <a href="#assistant" class="bn-item"><span class="bn-ic">🎙️</span><span data-i18n="bnVoice">आवाज</span></a>
-    <a href="#learn" class="bn-item"><span class="bn-ic">📖</span><span data-i18n="bnLearn">शिकणे</span></a>
-    <a href="#translate" class="bn-item"><span class="bn-ic">🌐</span><span data-i18n="bnTranslate">भाषांतर</span></a>
-    <a href="#tracker" class="bn-item"><span class="bn-ic">👤</span><span data-i18n="bnProgress">प्रगती</span></a>
+    <a href="#home" data-route="home" class="bn-item active"><span class="bn-ic">🏠</span><span data-i18n="bnHome">मुख्य</span></a>
+    <a href="#voice-ai" data-route="voice-ai" class="bn-item"><span class="bn-ic">🎙️</span><span data-i18n="bnVoice">आवाज</span></a>
+    <a href="#video-hub" data-route="video-hub" class="bn-item"><span class="bn-ic">📖</span><span data-i18n="bnLearn">शिकणे</span></a>
+    <a href="#translator" data-route="translator" class="bn-item"><span class="bn-ic">🌐</span><span data-i18n="bnTranslate">भाषांतर</span></a>
+    <a href="#profile" data-route="profile" class="bn-item"><span class="bn-ic">👤</span><span data-i18n="bnProfile">प्रोफाईल</span></a>
   </nav>
 
 </div><!-- /#user-portal -->
