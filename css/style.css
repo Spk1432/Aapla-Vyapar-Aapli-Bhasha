@@ -262,6 +262,20 @@ header.site-header {
   color: var(--orange);
 }
 
+.logo-title-group {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.logo-line1 {
+  color: var(--green-dark);
+}
+
+.logo-line2 {
+  color: var(--orange);
+}
+
 .brand-logo-img {
   width: 36px;
   height: 36px;
@@ -1448,8 +1462,30 @@ footer {
   }
   
   .site-header { padding: 8px 0; }
-  .logo { font-size: 15px; gap: 6px; }
+  .logo { font-size: 14px; gap: 7px; }
   .logo .badge { width: 30px; height: 30px; font-size: 15px; }
+  .logo-title-group {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    text-align: left;
+  }
+  .logo-line1 {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--green-dark);
+    line-height: 1.15;
+  }
+  .logo-line2 {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--orange);
+    line-height: 1.15;
+  }
+  .brand-logo-img {
+    width: 34px;
+    height: 34px;
+  }
   .nav-logout-btn { display: none !important; }
   
   .wa-fab {
@@ -1469,7 +1505,9 @@ footer {
 }
 
 @media (max-width: 420px) {
-  .logo span { display: none; }
+  .logo-line1 { font-size: 12.5px; }
+  .logo-line2 { font-size: 11.5px; }
+  .brand-logo-img { width: 32px; height: 32px; }
   .lang-pill { padding: 5px 8px; font-size: 11.5px; }
   .hero-stats { grid-template-columns: 1fr 1fr; gap: 8px; }
   .bn-item { font-size: 10px; padding: 4px 6px; }
