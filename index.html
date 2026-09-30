@@ -155,12 +155,6 @@
 
     <div class="auth-divider" data-i18n="orText">किंवा</div>
     <button class="btn btn-outline" style="width:100%;" onclick="continueAsGuest()" data-i18n="btnGuest">👤 पाहुणे म्हणून पुढे जा</button>
-    
-    <div style="text-align:center; margin-top:14px;">
-      <a href="javascript:void(0)" onclick="triggerAppInstall()" style="font-size:12px; color:var(--green-dark); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-        <span>📲</span> <span data-i18n="authInstallLink">Chrome वर ॲप इन्स्टॉल करा / Create Shortcut</span>
-      </a>
-    </div>
   </div>
 </div>
 
@@ -191,12 +185,6 @@
       </nav>
 
       <div class="nav-actions">
-        <!-- Install App / Create Shortcut Button -->
-        <button class="btn btn-sm btn-install-app" id="btn-header-install" onclick="triggerAppInstall()" title="Install This App / Create Shortcut">
-          <span class="install-icon">📲</span>
-          <span class="install-text" data-i18n="navInstallApp">Install App</span>
-        </button>
-
         <!-- Language Switcher Dropdown -->
         <div class="lang-dropdown">
           <div class="lang-pill"><span class="lang-current-label">मराठी ▾</span></div>
@@ -230,11 +218,6 @@
       <a href="#tracker" data-route="tracker" data-i18n="navTracker" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🏆 माझी प्रगती (Progress)</a>
       <a href="#help-desk" data-route="help-desk" data-i18n="navHelp" onclick="document.getElementById('mobile-drawer').classList.remove('open')">💬 मदत आणि प्रश्न (Help Desk)</a>
       <a href="#profile" data-route="profile" data-i18n="navProfile" onclick="document.getElementById('mobile-drawer').classList.remove('open')">👤 माझी प्रोफाईल (Profile)</a>
-      
-      <!-- Mobile Drawer Install Shortcut Button -->
-      <button class="btn btn-primary" style="margin-top:10px; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="document.getElementById('mobile-drawer').classList.remove('open'); triggerAppInstall();">
-        <span>📲</span> <span data-i18n="btnInstallAppMobile">ॲप इन्स्टॉल करा (Install / Shortcut)</span>
-      </button>
 
       <div style="margin-top:14px; display:flex; gap:8px;">
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('mr')">मराठी</button>
@@ -371,13 +354,6 @@
           <div class="hq-info">
             <b data-i18n="navProfile">माझी प्रोफाईल</b>
             <span data-i18n="hqProfileDesc">तुमची माहिती, व्यवसाय व खात्याची स्थिती</span>
-          </div>
-        </a>
-        <a class="home-quick-card" href="javascript:void(0)" onclick="triggerAppInstall()">
-          <div class="hq-icon" style="background:#e8f4fc; color:#0b6399;">📲</div>
-          <div class="hq-info">
-            <b data-i18n="hqInstallTitle">ॲप इन्स्टॉल करा (Install App)</b>
-            <span data-i18n="hqInstallDesc">Chrome वरून थेट होम स्क्रीनवर किंवा कॉम्प्युटरवर शॉर्टकट जोडा</span>
           </div>
         </a>
       </div>
@@ -1344,51 +1320,6 @@
     <div style="display:flex; gap:10px;">
       <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeAdminProfileModal(); openSupabaseSetupModal();" data-i18n="adminBtnSettings">⚙️ ॲडमिन सेटिंग्ज</button>
       <button type="button" class="btn btn-primary" style="flex:1;" onclick="closeAdminProfileModal()" data-i18n="modalCloseBtn">बंद करा</button>
-    </div>
-  </div>
-</div>
-
-<!-- ========================================================================= -->
-<!-- 9. PWA APP INSTALL & CHROME SHORTCUT MODAL                                -->
-<!-- ========================================================================= -->
-<div class="modal-overlay" id="app-install-modal" style="display:none;">
-  <div class="modal-card" style="max-width:500px; padding:28px;">
-    <div class="modal-header" style="padding:0 0 14px 0; margin-bottom:14px; border-bottom:1px solid var(--line);">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <img src="images/logo.png" alt="Logo" style="width:36px; height:36px; border-radius:50%; object-fit:cover; box-shadow:0 2px 6px rgba(15,107,61,0.25);">
-        <b style="font-size:16px; font-weight:800; color:var(--green-dark);" data-i18n="installModalTitle">📲 ॲप इन्स्टॉल करा आणि शॉर्टकट बनवा</b>
-      </div>
-      <button class="modal-close-btn" onclick="closeInstallModal()">✕</button>
-    </div>
-
-    <div style="text-align:center; padding:10px 0 16px 0;">
-      <img src="images/logo.png" alt="Logo" style="width:72px; height:72px; border-radius:50%; object-fit:cover; margin:0 auto 10px; display:block; box-shadow:0 6px 18px rgba(15,107,61,0.25); border:2px solid #fff;">
-      <h3 style="font-size:17px; font-weight:800; color:var(--ink); margin-bottom:4px;">Aapla Vyapar, Aapli Bhasha</h3>
-      <p style="font-size:12.5px; color:var(--muted); line-height:1.45;" data-i18n="installModalSub">हे ॲप तुमच्या फोनवर किंवा कॉम्प्युटरवर कोणत्याही प्ले स्टोअरशिवाय थेट इन्स्टॉल करा:</p>
-    </div>
-
-    <!-- Direct Install Button if supported -->
-    <div style="margin-bottom:18px;">
-      <button class="btn btn-primary" style="width:100%; padding:12px; font-size:14px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="triggerAppInstall(); closeInstallModal();">
-        <span data-i18n="installBtnDirect">⚡ थेट इन्स्टॉल करा (Install Now)</span>
-      </button>
-    </div>
-
-    <!-- Step-by-Step Chrome Instructions -->
-    <div class="install-step-card">
-      <h5 data-i18n="installStepTitleDesktop">💻 कॉम्प्युटर / लॅपटॉप Chrome वापरकर्त्यांसाठी:</h5>
-      <p data-i18n="installStep1Desktop">१. Chrome ॲड्रेस बारच्या उजव्या बाजूला दिसणाऱ्या कॉम्प्युटर चिन्हावर (Install icon 🖥️) क्लिक करा.</p>
-      <p data-i18n="installStep2Desktop">२. किंवा Chrome मेनू (⋮) वर क्लिक करा → 'Save and share' → 'Install page as app' / 'Create shortcut' निवडा.</p>
-    </div>
-
-    <div class="install-step-card">
-      <h5 data-i18n="installStepTitleMobile">📱 Android मोबाईल Chrome वापरकर्त्यांसाठी:</h5>
-      <p data-i18n="installStep1Mobile">१. Chrome वरील उजव्या कोपऱ्यातील तीन ठिपक्यांवर (⋮) क्लिक करा.</p>
-      <p data-i18n="installStep2Mobile">२. 'Add to Home screen' किंवा 'Install app' पर्यायावर दाबा आणि 'Install' निवडा.</p>
-    </div>
-
-    <div style="margin-top:16px;">
-      <button type="button" class="btn btn-outline" style="width:100%;" onclick="closeInstallModal()" data-i18n="modalCloseBtn">बंद करा</button>
     </div>
   </div>
 </div>
