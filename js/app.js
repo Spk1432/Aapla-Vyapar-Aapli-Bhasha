@@ -2105,3 +2105,87 @@ function closeAdminProfileModal() {
   if (modal) modal.style.display = 'none';
 }
 window.closeAdminProfileModal = closeAdminProfileModal;
+
+// =========================================================================
+// PWA INSTALLATION & CHROME SHORTCUT ENGINE
+// =========================================================================
+let deferredPrompt = null;
+let isAppInstalled = false;
+
+// Check if running in standalone mode (installed app window)
+if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+  isAppInstalled = true;
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent mini-infobar default prompt
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('beforeinstallprompt captured - ready for Chrome App Install / Shortcut');
+
+  // Highlight and ensure visibility of install buttons
+  document.querySelectorAll('.btn-install-app').forEach(btn => {
+    btn.style.display = 'inline-flex';
+  });
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  isAppInstalled = true;
+  console.log('Aapla Vyapar App installed successfully in Chrome!');
+  const lang = window.currentLanguage || 'mr';
+  const successMsg = lang === 'hi' ? '🎉 ऐप सफलतापूर्वक इंस्टॉल हो गया!' : lang === 'en' ? '🎉 App installed successfully!' : '🎉 ॲप यशस्वीरीत्या इन्स्टॉल झाले!';
+  showToast(successMsg, 'success');
+
+  // Update button states
+  document.querySelectorAll('.btn-install-app').forEach(btn => {
+    btn.classList.add('installed');
+    btn.innerHTML = '<span>✅</span> <span>' + (lang === 'hi' ? 'इंस्टॉल हो गया' : lang === 'en' ? 'Installed' : 'इन्स्टॉल झाले') + '</span>';
+  });
+});
+
+async function triggerAppInstall() {
+  if (deferredPrompt) {
+    try {
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      if (choiceResult && choiceResult.outcome === 'accepted') {
+        console.log('User accepted Chrome install');
+      } else {
+        console.log('User dismissed Chrome install');
+      }
+      deferredPrompt = null;
+    } catch (err) {
+      console.warn('Install prompt error:', err);
+      openInstallModal();
+    }
+  } else {
+    // If browser doesn't offer direct prompt or on desktop/iOS, show the friendly guide
+    openInstallModal();
+  }
+}
+window.triggerAppInstall = triggerAppInstall;
+
+function openInstallModal() {
+  const modal = document.getElementById('app-install-modal');
+  if (modal) modal.style.display = 'flex';
+}
+window.openInstallModal = openInstallModal;
+
+function closeInstallModal() {
+  const modal = document.getElementById('app-install-modal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeInstallModal = closeInstallModal;
+
+// Register PWA Service Worker for Chrome Desktop & Android Mobile
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      console.log('Service Worker registered successfully with scope:', reg.scope);
+    }).catch(err => {
+      console.warn('Service Worker registration failed:', err);
+    });
+  });
+}
+

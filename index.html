@@ -21,9 +21,19 @@
   <!-- 4. Mammoth.js for reading & extracting text from DOCX Word files -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
+  <!-- Favicon & PWA Manifest for Chrome Installation & Shortcut -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f6b3d">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Aapla Vyapar">
+
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css?v=20260901_02">
-  <link rel="stylesheet" href="css/components.css?v=20260901_02">
+  <link rel="stylesheet" href="css/style.css?v=20260901_03">
+  <link rel="stylesheet" href="css/components.css?v=20260901_03">
 </head>
 <body>
 
@@ -36,7 +46,7 @@
 <div id="auth-gate">
   <div class="auth-card">
     <div style="text-align:center; margin-bottom:16px;">
-      <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg,var(--green),var(--green-dark)); display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 10px; color:#fff; box-shadow:0 10px 20px rgba(15,107,61,0.3);">🛍️</div>
+      <img src="images/logo.png" alt="Aapla Vyapar Logo" class="auth-brand-logo">
       <h1 data-i18n="authTitle" style="font-size:21px; font-weight:800; font-family:'Poppins',sans-serif; color:var(--ink); line-height:1.3;">आपला व्यापार, आपली भाषा</h1>
       <p data-i18n="authSubtitle" style="font-size:12.5px; color:var(--muted); margin-top:3px;">सुरू करण्यासाठी लॉगिन करा किंवा नवीन खाते तयार करा</p>
     </div>
@@ -145,6 +155,12 @@
 
     <div class="auth-divider" data-i18n="orText">किंवा</div>
     <button class="btn btn-outline" style="width:100%;" onclick="continueAsGuest()" data-i18n="btnGuest">👤 पाहुणे म्हणून पुढे जा</button>
+    
+    <div style="text-align:center; margin-top:14px;">
+      <a href="javascript:void(0)" onclick="triggerAppInstall()" style="font-size:12px; color:var(--green-dark); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <span>📲</span> <span data-i18n="authInstallLink">Chrome वर ॲप इन्स्टॉल करा / Create Shortcut</span>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -157,7 +173,7 @@
   <header class="site-header">
     <div class="nav-inner">
       <div class="logo" style="cursor:pointer;" onclick="showPage('home')">
-        <div class="badge">🛍️</div>
+        <img src="images/logo.png" alt="Aapla Vyapar Logo" class="brand-logo-img">
         Aapla Vyapar, <span>Aapli Bhasha</span>
       </div>
 
@@ -175,6 +191,12 @@
       </nav>
 
       <div class="nav-actions">
+        <!-- Install App / Create Shortcut Button -->
+        <button class="btn btn-sm btn-install-app" id="btn-header-install" onclick="triggerAppInstall()" title="Install This App / Create Shortcut">
+          <span class="install-icon">📲</span>
+          <span class="install-text" data-i18n="navInstallApp">Install App</span>
+        </button>
+
         <!-- Language Switcher Dropdown -->
         <div class="lang-dropdown">
           <div class="lang-pill"><span class="lang-current-label">मराठी ▾</span></div>
@@ -194,6 +216,10 @@
 
     <!-- Mobile Navigation Drawer -->
     <div class="mobile-nav" id="mobile-drawer">
+      <div style="display:flex; align-items:center; gap:10px; padding:0 0 12px 0; margin-bottom:10px; border-bottom:1px solid var(--line);">
+        <img src="images/logo.png" alt="Logo" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+        <b style="font-size:15px; color:var(--green-dark);">Aapla Vyapar</b>
+      </div>
       <a href="#home" data-route="home" data-i18n="navHome" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🏠 मुख्य पृष्ठ (Home)</a>
       <a href="#modules" data-route="modules" data-i18n="navFeatures" onclick="document.getElementById('mobile-drawer').classList.remove('open')">📚 काय शिकायचे (Modules)</a>
       <a href="#voice-ai" data-route="voice-ai" data-i18n="navAssistant" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🎙️ AI मार्गदर्शक (Voice)</a>
@@ -204,6 +230,12 @@
       <a href="#tracker" data-route="tracker" data-i18n="navTracker" onclick="document.getElementById('mobile-drawer').classList.remove('open')">🏆 माझी प्रगती (Progress)</a>
       <a href="#help-desk" data-route="help-desk" data-i18n="navHelp" onclick="document.getElementById('mobile-drawer').classList.remove('open')">💬 मदत आणि प्रश्न (Help Desk)</a>
       <a href="#profile" data-route="profile" data-i18n="navProfile" onclick="document.getElementById('mobile-drawer').classList.remove('open')">👤 माझी प्रोफाईल (Profile)</a>
+      
+      <!-- Mobile Drawer Install Shortcut Button -->
+      <button class="btn btn-primary" style="margin-top:10px; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="document.getElementById('mobile-drawer').classList.remove('open'); triggerAppInstall();">
+        <span>📲</span> <span data-i18n="btnInstallAppMobile">ॲप इन्स्टॉल करा (Install / Shortcut)</span>
+      </button>
+
       <div style="margin-top:14px; display:flex; gap:8px;">
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('mr')">मराठी</button>
         <button class="btn btn-sm btn-outline" style="flex:1;" onclick="setLanguage('hi')">हिंदी</button>
@@ -339,6 +371,13 @@
           <div class="hq-info">
             <b data-i18n="navProfile">माझी प्रोफाईल</b>
             <span data-i18n="hqProfileDesc">तुमची माहिती, व्यवसाय व खात्याची स्थिती</span>
+          </div>
+        </a>
+        <a class="home-quick-card" href="javascript:void(0)" onclick="triggerAppInstall()">
+          <div class="hq-icon" style="background:#e8f4fc; color:#0b6399;">📲</div>
+          <div class="hq-info">
+            <b data-i18n="hqInstallTitle">ॲप इन्स्टॉल करा (Install App)</b>
+            <span data-i18n="hqInstallDesc">Chrome वरून थेट होम स्क्रीनवर किंवा कॉम्प्युटरवर शॉर्टकट जोडा</span>
           </div>
         </a>
       </div>
@@ -832,7 +871,7 @@
       <div class="footer-grid">
         <div>
           <div class="footer-logo">
-            <div class="badge" style="width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;">🛍️</div>
+            <img src="images/logo.png" alt="Aapla Vyapar Logo" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,0.35); box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
             Aapla Vyapar, Aapli Bhasha
           </div>
           <p data-i18n="footerDesc" style="font-size:13px; max-width:300px; opacity:0.85;">महाराष्ट्र आणि ग्रामीण भारतातील प्रत्येक उद्योजकाला त्यांच्या स्वतःच्या भाषेत डिजिटल सक्षम बनवणे हे आमचे ध्येय आहे.</p>
@@ -1310,16 +1349,61 @@
 </div>
 
 <!-- ========================================================================= -->
+<!-- 9. PWA APP INSTALL & CHROME SHORTCUT MODAL                                -->
+<!-- ========================================================================= -->
+<div class="modal-overlay" id="app-install-modal" style="display:none;">
+  <div class="modal-card" style="max-width:500px; padding:28px;">
+    <div class="modal-header" style="padding:0 0 14px 0; margin-bottom:14px; border-bottom:1px solid var(--line);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <img src="images/logo.png" alt="Logo" style="width:36px; height:36px; border-radius:50%; object-fit:cover; box-shadow:0 2px 6px rgba(15,107,61,0.25);">
+        <b style="font-size:16px; font-weight:800; color:var(--green-dark);" data-i18n="installModalTitle">📲 ॲप इन्स्टॉल करा आणि शॉर्टकट बनवा</b>
+      </div>
+      <button class="modal-close-btn" onclick="closeInstallModal()">✕</button>
+    </div>
+
+    <div style="text-align:center; padding:10px 0 16px 0;">
+      <img src="images/logo.png" alt="Logo" style="width:72px; height:72px; border-radius:50%; object-fit:cover; margin:0 auto 10px; display:block; box-shadow:0 6px 18px rgba(15,107,61,0.25); border:2px solid #fff;">
+      <h3 style="font-size:17px; font-weight:800; color:var(--ink); margin-bottom:4px;">Aapla Vyapar, Aapli Bhasha</h3>
+      <p style="font-size:12.5px; color:var(--muted); line-height:1.45;" data-i18n="installModalSub">हे ॲप तुमच्या फोनवर किंवा कॉम्प्युटरवर कोणत्याही प्ले स्टोअरशिवाय थेट इन्स्टॉल करा:</p>
+    </div>
+
+    <!-- Direct Install Button if supported -->
+    <div style="margin-bottom:18px;">
+      <button class="btn btn-primary" style="width:100%; padding:12px; font-size:14px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="triggerAppInstall(); closeInstallModal();">
+        <span data-i18n="installBtnDirect">⚡ थेट इन्स्टॉल करा (Install Now)</span>
+      </button>
+    </div>
+
+    <!-- Step-by-Step Chrome Instructions -->
+    <div class="install-step-card">
+      <h5 data-i18n="installStepTitleDesktop">💻 कॉम्प्युटर / लॅपटॉप Chrome वापरकर्त्यांसाठी:</h5>
+      <p data-i18n="installStep1Desktop">१. Chrome ॲड्रेस बारच्या उजव्या बाजूला दिसणाऱ्या कॉम्प्युटर चिन्हावर (Install icon 🖥️) क्लिक करा.</p>
+      <p data-i18n="installStep2Desktop">२. किंवा Chrome मेनू (⋮) वर क्लिक करा → 'Save and share' → 'Install page as app' / 'Create shortcut' निवडा.</p>
+    </div>
+
+    <div class="install-step-card">
+      <h5 data-i18n="installStepTitleMobile">📱 Android मोबाईल Chrome वापरकर्त्यांसाठी:</h5>
+      <p data-i18n="installStep1Mobile">१. Chrome वरील उजव्या कोपऱ्यातील तीन ठिपक्यांवर (⋮) क्लिक करा.</p>
+      <p data-i18n="installStep2Mobile">२. 'Add to Home screen' किंवा 'Install app' पर्यायावर दाबा आणि 'Install' निवडा.</p>
+    </div>
+
+    <div style="margin-top:16px;">
+      <button type="button" class="btn btn-outline" style="width:100%;" onclick="closeInstallModal()" data-i18n="modalCloseBtn">बंद करा</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
 <!-- JavaScript Files (Supabase SDK + App Modules)                             -->
 <!-- ========================================================================= -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase-config.js?v=20260901_02"></script>
-<script src="js/translations.js?v=20260901_02"></script>
-<script src="js/voice-assistant.js?v=20260901_02"></script>
-<script src="js/translator.js?v=20260901_02"></script>
-<script src="js/learning-tracker.js?v=20260901_02"></script>
-<script src="js/admin.js?v=20260901_02"></script>
-<script src="js/app.js?v=20260901_02"></script>
+<script src="js/supabase-config.js?v=20260930_01"></script>
+<script src="js/translations.js?v=20260930_01"></script>
+<script src="js/voice-assistant.js?v=20260930_01"></script>
+<script src="js/translator.js?v=20260930_01"></script>
+<script src="js/learning-tracker.js?v=20260930_01"></script>
+<script src="js/admin.js?v=20260930_01"></script>
+<script src="js/app.js?v=20260930_01"></script>
 
 </body>
 </html>

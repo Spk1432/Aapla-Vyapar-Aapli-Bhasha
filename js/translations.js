@@ -370,7 +370,23 @@ const translations = {
     eyebrowDocTranslate: "📄 दस्तऐवज आणि PDF भाषांतर",
     eyebrowSchemes: "🏛️ सरकारी योजना आणि सबसिडी",
     eyebrowTracker: "🏆 शिकण्याची प्रगती आणि प्रमाणपत्र",
-    eyebrowHelp: "💬 मदत आणि प्रश्न कक्ष"
+    eyebrowHelp: "💬 मदत आणि प्रश्न कक्ष",
+
+    // PWA & Shortcut Installation Keys
+    navInstallApp: "📲 इन्स्टॉल करा",
+    btnInstallAppMobile: "📲 ॲप इन्स्टॉल करा (Install / Shortcut)",
+    hqInstallTitle: "ॲप इन्स्टॉल करा (Install App)",
+    hqInstallDesc: "Chrome वरून थेट होम स्क्रीनवर किंवा कॉम्प्युटरवर शॉर्टकट जोडा",
+    authInstallLink: "📲 Chrome वर ॲप इन्स्टॉल करा / Create Shortcut",
+    installModalTitle: "📲 ॲप इन्स्टॉल करा आणि शॉर्टकट बनवा",
+    installModalSub: "हे ॲप तुमच्या फोनवर किंवा कॉम्प्युटरवर कोणत्याही प्ले स्टोअरशिवाय थेट इन्स्टॉल करा:",
+    installBtnDirect: "⚡ थेट इन्स्टॉल करा (Install Now)",
+    installStepTitleDesktop: "💻 कॉम्प्युटर / लॅपटॉप Chrome वापरकर्त्यांसाठी:",
+    installStep1Desktop: "१. Chrome ॲड्रेस बारच्या उजव्या बाजूला दिसणाऱ्या कॉम्प्युटर चिन्हावर (Install icon 🖥️) क्लिक करा.",
+    installStep2Desktop: "२. किंवा Chrome मेनू (⋮) वर क्लिक करा → 'Save and share' → 'Install page as app' / 'Create shortcut' निवडा.",
+    installStepTitleMobile: "📱 Android मोबाईल Chrome वापरकर्त्यांसाठी:",
+    installStep1Mobile: "१. Chrome वरील उजव्या कोपऱ्यातील तीन ठिपक्यांवर (⋮) क्लिक करा.",
+    installStep2Mobile: "२. 'Add to Home screen' किंवा 'Install app' पर्यायावर दाबा आणि 'Install' निवडा."
   },
 
   hi: {
@@ -739,7 +755,23 @@ const translations = {
     eyebrowDocTranslate: "📄 दस्तावेज़ और PDF अनुवाद",
     eyebrowSchemes: "🏛️ सरकारी योजनाएं और सब्सिडी",
     eyebrowTracker: "🏆 सीखने की प्रगति और प्रमाण पत्र",
-    eyebrowHelp: "💬 मदद और प्रश्न डेस्क"
+    eyebrowHelp: "💬 मदद और प्रश्न डेस्क",
+
+    // PWA & Shortcut Installation Keys
+    navInstallApp: "📲 इंस्टॉल करें",
+    btnInstallAppMobile: "📲 ऐप इंस्टॉल करें (Install / Shortcut)",
+    hqInstallTitle: "ऐप इंस्टॉल करें (Install App)",
+    hqInstallDesc: "Chrome से सीधे होम स्क्रीन या कंप्यूटर पर शॉर्टकट जोड़ें",
+    authInstallLink: "📲 Chrome पर ऐप इंस्टॉल करें / Create Shortcut",
+    installModalTitle: "📲 ऐप इंस्टॉल करें और शॉर्टकट बनाएं",
+    installModalSub: "यह ऐप अपने फोन या कंप्यूटर पर बिना प्ले स्टोर के सीधे इंस्टॉल करें:",
+    installBtnDirect: "⚡ अभी इंस्टॉल करें (Install Now)",
+    installStepTitleDesktop: "💻 कंप्यूटर / लैपटॉप Chrome उपयोगकर्ताओं के लिए:",
+    installStep1Desktop: "1. Chrome एड्रेस बार के दाईं ओर दिखने वाले कंप्यूटर आइकन (Install icon 🖥️) पर क्लिक करें।",
+    installStep2Desktop: "2. या Chrome मेनू (⋮) पर क्लिक करें → 'Save and share' → 'Install page as app' / 'Create shortcut' चुनें।",
+    installStepTitleMobile: "📱 Android मोबाइल Chrome उपयोगकर्ताओं के लिए:",
+    installStep1Mobile: "1. Chrome में ऊपर दाएं कोने में तीन डॉट्स (⋮) पर क्लिक करें।",
+    installStep2Mobile: "2. 'Add to Home screen' या 'Install app' विकल्प पर टैप करें और 'Install' चुनें।"
   },
 
   en: {
@@ -1108,7 +1140,23 @@ const translations = {
     eyebrowDocTranslate: "📄 Document & PDF Translator",
     eyebrowSchemes: "🏛️ Government Schemes & Subsidies",
     eyebrowTracker: "🏆 Learning Progress & Certificate",
-    eyebrowHelp: "💬 Help Desk & Support"
+    eyebrowHelp: "💬 Help Desk & Support",
+
+    // PWA & Shortcut Installation Keys
+    navInstallApp: "📲 Install App",
+    btnInstallAppMobile: "📲 Install App (Create Shortcut)",
+    hqInstallTitle: "Install App (Create Shortcut)",
+    hqInstallDesc: "Add app shortcut directly to your phone home screen or desktop computer",
+    authInstallLink: "📲 Install App on Chrome / Create Shortcut",
+    installModalTitle: "📲 Install App & Create Shortcut",
+    installModalSub: "Install this web app directly onto your phone or computer without app store:",
+    installBtnDirect: "⚡ Install Now (Create Shortcut)",
+    installStepTitleDesktop: "💻 For Desktop & Laptop Chrome Users:",
+    installStep1Desktop: "1. Click the Install icon (🖥️) on the right side of the Chrome address bar.",
+    installStep2Desktop: "2. Or click Chrome Menu (⋮) → 'Save and share' → 'Install page as app' / 'Create shortcut'.",
+    installStepTitleMobile: "📱 For Android Mobile Chrome Users:",
+    installStep1Mobile: "1. Tap the three dots (⋮) in the top-right corner of Chrome browser.",
+    installStep2Mobile: "2. Tap 'Add to Home screen' or 'Install app' and confirm."
   }
 };
 
